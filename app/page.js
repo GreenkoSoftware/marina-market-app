@@ -1,6 +1,10 @@
 /* Aqui debemos redirigir entre el home o el login */
+import { Button } from '@nextui-org/button'
+
 export default function Home () {
   return (
-    <h1>This is my Home Page</h1>
+    <div>
+      <Button>Click me</Button>
+    </div>
   );
 }
