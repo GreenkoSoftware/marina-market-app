@@ -1,18 +1,22 @@
- import { Navigation } from "@/components/navigation/Navigation";
+import { Navigation } from "@/components/navigation/Navigation";
+
+import { Header } from "../header";
 export default function LayoutApp ({ children }) {
   return (
     <section className="min-h-screen flex flex-col bg-primary-200">
-    <header className="">Header</header>
+    <Header/>
     <div className="flex-1 flex flex-col sm:flex-row">
       <main className="flex-1">
         {children}
       </main>
       {/* Sidebar */}
-      <nav className="order-first sm:w-32"></nav>
+      <nav className="order-first sm:w-[10rem]"></nav>
       {/* Right Sidebar */}
-      <aside className="sm:w-32 "></aside>
+      <aside className="sm:w-[10rem]"></aside>
     </div>
-    <footer className="sm:h-32"><Navigation/></footer>
+    <footer className="h-[4rem] sm:h-[8rem]">
+      <Navigation/>
+    </footer>
     </section>
   );
 }

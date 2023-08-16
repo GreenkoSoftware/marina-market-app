@@ -1,5 +1,6 @@
+import Cards from "./card";
 export default function Inventory () {
   return (
-    <h1>This is Inventory</h1>
+        <Cards/>
   );
 }
