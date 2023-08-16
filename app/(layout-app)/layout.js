@@ -1,6 +1,6 @@
+'use client'
 import { Navigation } from "@/components/navigation/Navigation";
-
-import { Header } from "../header";
+import  { Header }  from "./header";
 export default function LayoutApp ({ children }) {
   return (
     <section className="min-h-screen flex flex-col bg-primary-200">

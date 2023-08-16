@@ -27,8 +27,8 @@ export default function MainTittleCard (props) {
             />
             <CardFooter className="justify-between before:bg-white/10 border-white/20 border-1 overflow-hidden py-1 absolute before:rounded-xl rounded-large bottom-1 w-[calc(100%_-_8px)] h-20 shadow-small ml-1 z-10">
                 <p className="text-xs sm:text-xl text-white/80 m-2 px-3 ">{footerMessage}</p>
-            <Button className={`${route === '/application/reports' ? 'cursor-not-allowed' : ''} text-xl text-white bg-sky-500/75 w-[50px] sm:w-[100px]`} variant="flat" color="default" radius="md" size="lg"
-                onPress = {() => route === '/application/reports' ?  null : router.push(route)
+            <Button className={`${route === '/reports' ? 'cursor-not-allowed' : ''} text-xl text-white bg-sky-500/75 w-[50px] sm:w-[100px]`} variant="flat" color="default" radius="md" size="lg"
+                onPress = {() => route === '/reports' ?  null : router.push(route)
             }>
                 Ingresar 
             </Button>

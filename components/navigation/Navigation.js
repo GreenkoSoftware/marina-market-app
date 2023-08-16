@@ -5,29 +5,29 @@ import { Tabs, Tab } from "@nextui-org/react";
 import { usePathname, useRouter } from 'next/navigation'
 export function Navigation () {
   const pathname = usePathname()
-  const moduleApplication = pathname.replace("/application/","")
+  const moduleApplication = pathname.replace("/","")
   const router = useRouter()
   const [selected, setSelected] = useState(moduleApplication);
   let tabs = [
     {
       id: "sales",
       label: "Ventas",
-      route:'/application/sales'
+      route:'/sales'
     },
     {
       id: "inventory",
       label: "Inventario",
-      route:'/application/inventory'
+      route:'/inventory'
     },
     {
       id: "reports",
       label: "Reportes",
-      route:'/application/reports'
+      route:'/reports'
     }
   ];
   useEffect(()=>{
     if(selected && selected !== moduleApplication){
-     router.push('/application/' + selected)
+     router.push('/' + selected)
     }
   },[selected])
   return (

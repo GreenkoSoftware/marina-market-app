@@ -7,19 +7,19 @@ export default function Application() {
       <section className="flex flex-col items-center ">
         <div className="gap-10 pt-20 pb-2 grid  grid-cols-3 grid-rows-[auto_minmax(auto,_1fr)_auto] h-full w-full pr-4 pl-4">
           <MainTittleCard
-            route ="/application/sales"
+            route ="/sales"
             title="Ventas"
             imgSrc="https://confidentefinanciero.com/wp-content/uploads/2023/04/Facturacion-electronica-restaurantes-scaled.jpg"
             footerMessage="Gestión eficiente para tu minimarket."
           />
           <MainTittleCard
-            route="/application/inventory"
+            route="/inventory"
             title="Inventario"
             imgSrc="https://impulsapopular.com/wp-content/uploads/2019/09/4568-Comercio-minorista-vs.-mayorista.jpg?"
             footerMessage="Optimiza existencias en tiempo real."
           />
           <MainTittleCard
-            route ="/application/reports"
+            route ="/reports"
             title="Reportes"
             imgSrc="https://www.roberthalf.cl/sites/roberthalf.cl/files/styles/full_width_content_image_1x_extra_large_1036/public/2020-10/Mercado%20laboral%20de%20finanzas%20y%20contabilidad%20muestra%20sus%20cartas%20para%202021.jpeg?itok=PGP19hbX"
             footerMessage="Datos clave para decisiones informadas y estratégicas."
