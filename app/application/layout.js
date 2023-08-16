@@ -1,10 +1,10 @@
 import SettingFooter from "@/components/ui/settingsFooter";
 
-export default function LayoutApp ({ children }) {
+export default function ApplicationLayout({ children }) {
   return (
-    <section className="min-h-screen flex flex-col bg-primary-200 dark:bg-secondary-500">
+    <section className="min-h-screen flex flex-col">
       <div className="flex-1 flex flex-col sm:flex-row">
-        <main className="flex-1">
+        <main className="flex-1 flex">
           {children}
         </main>
       </div>
