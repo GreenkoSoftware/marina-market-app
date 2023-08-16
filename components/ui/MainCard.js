@@ -36,8 +36,3 @@ export default function MainTittleCard (props) {
         </Card>
     );
 }
-
-
-
-
-//className="text-xl text-white bg-sky-500/75 w-[50px] sm:w-[100px]"

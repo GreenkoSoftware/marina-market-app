@@ -4,8 +4,8 @@ import React from "react";
 
 export default function Application() {
     return (
-      <section className="flex flex-col items-center ">
-        <div className="gap-10 pt-20 pb-2 grid  grid-cols-3 grid-rows-[auto_minmax(auto,_1fr)_auto] h-full w-full pr-4 pl-4">
+      <section className="flex flex-col items-center m-10 ">
+        <div className="gap-10 grid grid-cols-3 grid-rows-[auto_minmax(auto,_1fr)_auto] ">
           <MainTittleCard
             route ="/application/sales"
             title="Ventas"
