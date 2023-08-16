@@ -100,7 +100,7 @@ module.exports = {
           small: "1px", // border-small
           medium: "2px", // border-medium (default)
           large: "3px", // border-large
-        },
+        }
       },
       themes: {
         light: {
