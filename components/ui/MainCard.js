@@ -11,7 +11,7 @@ export default function MainTittleCard (props) {
         <Card
             isFooterBlurred
             radius="lg"
-            className="col-span-12 sm:col-auto saturate-100 hover:saturate-140 h-full mt-12 sm:h-[40rem] shadow-2xl"
+            className="col-span-12 sm:col-auto saturate-100 hover:saturate-140 h-full  sm:h-[40rem] shadow-2xl"
         >
             <CardHeader className="absolute z-10 top-1 flex-col drop-shadow-6xl !items-start ">
                 <p className="text-tiny text-white/60 uppercase font-bold ">MÓDULO</p>
