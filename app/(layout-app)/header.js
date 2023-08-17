@@ -1,11 +1,11 @@
 'use client'
-import { useRouter } from 'next/navigation'
-import { AiFillHome } from 'react-icons/ai';
+import ThemeButton from '@/components/ui/ThemeButton'
+import { HomeButton } from '@/components/ui/HomeButton';
 export function Header () {
-  const router = useRouter()
   return (
-    <header className={'flex  flex-row-reverse mt-[1rem] mx-[5rem]'}>   
-         <AiFillHome className="w-10 h-10 cursor-pointer fill-primary-500" onClick={()=>{router.push('/home')}}/>
+    <header className={'sticky z-20 bg-primary-200 top-0 flex  flex-row-reverse mt-[1rem] mx-[9.5rem] mb-[1rem] space-x-3'}>
+      <HomeButton/>
+      <ThemeButton/>   
     </header>
   );
 }

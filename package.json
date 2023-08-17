@@ -11,6 +11,7 @@
     "format:fix": "prettier --write --ignore-path .gitignore ."
   },
   "dependencies": {
+    "@heroicons/react": "^2.0.18",
     "@next/eslint-plugin-next": "^13.4.15",
     "@next/font": "^13.4.15",
     "@nextui-org/react": "^2.0.19",
@@ -19,6 +20,7 @@
     "eslint-config-next": "13.4.15",
     "framer-motion": "^10.15.2",
     "next": "^13.4.16",
+    "next-themes": "^0.2.1",
     "postcss": "8.4.27",
     "react": "18.2.0",
     "react-dom": "18.2.0",

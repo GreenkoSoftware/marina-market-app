@@ -12,7 +12,7 @@ export default function Card(props) {
               radius="lg"
               width="100%"
               alt={item.title}
-              className="w-full object-cover h-[140px]"
+              className="w-full object-cover h-[14rem]"
               src={item.img}
             />
           </CardBody>
