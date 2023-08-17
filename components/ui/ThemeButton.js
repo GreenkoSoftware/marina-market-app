@@ -25,7 +25,7 @@ const ThemeButton = () => {
       {resolvedTheme === 'dark' ? (
         <SunIcon className='w-10 h-10 text-orange-300' />
       ) : (
-        <MoonIcon className='w-10 h-10 text-slate-800' />
+        <MoonIcon className='w-10 h-10 text-primary-500' />
       )}
     </button>
   )
