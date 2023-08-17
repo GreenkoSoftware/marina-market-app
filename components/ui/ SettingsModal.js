@@ -13,9 +13,9 @@ export default function SettingModal({ isOpen, onClose }) {
         <ModalContent>
           {(onClose) => (
             <>
-              <ModalHeader className="flex flex-col gap-1 text-primary-500">Atajos</ModalHeader>
+              <ModalHeader className="flex flex-col gap-1 text-primary-500 dark:text-primary-200">Atajos</ModalHeader>
               <ModalBody>
-              <p className="text-primary-500">Al escanear un producto</p>
+              <p className="text-primary-500 dark:text-primary-200">Al escanear un producto</p>
               <Checkbox isSelected={isSelected} onValueChange={setIsSelected} color="danger">
                 se genera automaticamente una venta
               </Checkbox>
