@@ -6,7 +6,7 @@ export default function UserAvatar( props ) {
   const { userName,userType } = props
 
   return (
-    <div className="flex ">
+    <div className="flex w-full">
       <Card className="flex gap-1">
       <CardHeader className="justify-between">
         <div className="flex gap-5">

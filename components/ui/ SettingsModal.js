@@ -1,7 +1,10 @@
 import React from "react";
-import { Modal,Switch, ModalContent, ModalHeader, ModalBody, ModalFooter, Button } from "@nextui-org/react";
+import { Modal,Checkbox, ModalContent, ModalHeader, ModalBody, ModalFooter, Button } from "@nextui-org/react";
 
 export default function SettingModal({ isOpen, onClose }) {
+  const [isSelected, setIsSelected] = React.useState(false);
+  const [isSelected2, setIsSelected2] = React.useState(false);
+
   return (
     <>
       <div className="flex flex-wrap gap-3">
@@ -10,14 +13,15 @@ export default function SettingModal({ isOpen, onClose }) {
         <ModalContent>
           {(onClose) => (
             <>
-              <ModalHeader className="flex flex-col gap-1">Modal Title</ModalHeader>
+              <ModalHeader className="flex flex-col gap-1 text-primary-500">Atajos</ModalHeader>
               <ModalBody>
-              <Switch defaultSelected color="success">
-                Al escanear un producto, se genera automaticamente una venta
-              </Switch>
-              <Switch defaultSelected color="success">
-                Al escanear un producto, se despliega automaticamente la informacion
-              </Switch>
+              <p className="text-primary-500">Al escanear un producto</p>
+              <Checkbox isSelected={isSelected} onValueChange={setIsSelected} color="danger">
+                se genera automaticamente una venta
+              </Checkbox>
+              <Checkbox isSelected={isSelected2} onValueChange={setIsSelected2} color="danger">
+                se obtiene la informacion del producto
+              </Checkbox>
               </ModalBody>
               <ModalFooter>
                 <Button className ="dark" onClick={onClose}>
