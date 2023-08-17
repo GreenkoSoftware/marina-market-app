@@ -14,7 +14,7 @@ export default function LayoutApp ({ children }) {
       {/* Right Sidebar */}
       <aside className="sm:w-[10rem]"></aside>
     </div>
-    <footer className="sticky z-10 bg-primary-200  bottom-0 h-[4rem] sm:h-[8rem]">
+    <footer className="sticky z-10 bg-primary-200 dark:bg-secondary-500 bottom-0 h-[4rem] sm:h-[8rem]">
       <Navigation/>
     </footer>
     </section>
