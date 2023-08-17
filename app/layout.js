@@ -10,12 +10,12 @@ export const metadata = {
 
 export default function RootLayout ({ children }) {
   return (
-    <html lang='en'>
+    <html lang='en' suppressHydrationWarning>
       <head>
         <title>Marina Market App</title>
       </head>
       <body className={inter.className}>
-      <Providers>
+        <Providers>
           {children}
         </Providers>
       </body>
