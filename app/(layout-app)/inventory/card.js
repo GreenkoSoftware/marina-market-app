@@ -1,57 +1,64 @@
 'use client'
-import React,{  useState } from "react";
+import React,{  useEffect, useState } from "react";
 import CardUi from "@/components/ui/Card";
 import { Tabs, Tab } from "@nextui-org/react";
 export default function Card() {
-  const [selected, setSelected] = useState(null);
+  const [selected, setSelected] = useState('fruts');
+  const [listInventory, setListInventory] = useState([]);
   const list = [
     {
-      title: "Orange",
+      title: "Naranja",
       img: 'https://images.unsplash.com/photo-1559181567-c3190ca9959b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1064&q=80',
       price: "$5.000",
-      stock:100
+      stock:100,
+      type:'fruts'
     },
     {
-      title: "Tangerine",
+      title: "Mandarina",
       img: "https://images.unsplash.com/photo-1559181567-c3190ca9959b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1064&q=80",
       price: "$6.000",
-      stock:100
+      stock:100,type:'fruts'
     },
     {
-      title: "Raspberry",
+      title: "Cerezas",
       img: "https://images.unsplash.com/photo-1559181567-c3190ca9959b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1064&q=80",
       price: "$1.000",
-      stock:100
+      stock:100,type:'fruts'
     },
     {
-      title: "Lemon",
+      title: "Limón",
       img: "https://images.unsplash.com/photo-1559181567-c3190ca9959b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1064&q=80",
       price: "$5.300",
-      stock:100
+      stock:100,
+      type:'vegetables'
     },
     {
-      title: "Avocado",
+      title: "Palta",
       img: "https://images.unsplash.com/photo-1559181567-c3190ca9959b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1064&q=80",
       price: "$15.700",
-      stock:100
+      stock:100,
+      type:'vegetables'
     },
     {
-      title: "Lemon 2",
+      title: "Espinaca",
       img: "https://images.unsplash.com/photo-1559181567-c3190ca9959b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1064&q=80",
       price: "$8.000",
-      stock:100
+      stock:100,
+      type:'vegetables'
     },
     {
-      title: "Banana",
+      title: "Platano",
       img: "https://images.unsplash.com/photo-1559181567-c3190ca9959b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1064&q=80",
       price: "$7.500",
-      stock:10
+      stock:10,
+      type:'fruts'
     },
     {
-      title: "Watermelon",
+      title: "Melón",
       img: "https://images.unsplash.com/photo-1559181567-c3190ca9959b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1064&q=80",
       price: "$12.200",
-      stock:50
+      stock:50,
+      type:'fruts'
     },
   ];
   let category = [
@@ -72,9 +79,14 @@ export default function Card() {
     }
   ];
   
+  useEffect(()=>{
+    if(selected){
+      setListInventory(list.filter((item)=> item.type === selected))
+    }
+  },[selected])
   return (
   <section>
-    <section className="absolute z-20 h-[4rem] w-[260px] top-[82px] rounded-t-[3px] bg-secondary-50 dark:bg-secondary-450">
+    <section className="z-10 h-[3rem] w-[260px] top-[52px] rounded-t-[12px] bg-secondary-50 dark:bg-secondary-450">
       <Tabs 
             disabledKeys={["reports"]}
             aria-label="Options"
@@ -86,16 +98,16 @@ export default function Card() {
           >
           {(item) => (
             <Tab key={item.id} size={"lg"} title={item.label}>
-              <section className="ml-[-4px] p-[3rem] w-full md:w-[58rem] xl:w-[80rem] shadow-md hover:shadow-lg  rounded-tl-[0px]  bg-secondary-50 dark:bg-secondary-450 rounded-[14px]">
-                <div className="gap-2 grid grid-cols-2 md:grid-cols-4">
-                  {list.map((item, index) => (
-                    <CardUi key={index} item={item} index={index} />
-                  ))}
-                </div>
-              </section>
             </Tab>
           )}
       </Tabs>
+    </section>
+    <section className="p-[3rem] w-auto shadow-md hover:shadow-lg  rounded-tl-[0px]  bg-secondary-50 dark:bg-secondary-450 rounded-[14px]">
+        <div className="gap-2 grid grid-cols-2 md:grid-cols-4">
+          {listInventory.map((item, index) => (
+            <CardUi key={index} item={item} index={index} />
+          ))}
+        </div>
     </section>
   </section>
   );
