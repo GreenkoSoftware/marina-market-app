@@ -1,12 +1,12 @@
 'use client'
-import { NextUIProvider } from '@nextui-org/react'
+import { SessionProvider } from 'next-auth/react'
 import { ThemeProvider } from 'next-themes'
 export function Providers({ children }) {
   return (
     <ThemeProvider attribute='class'>
-      <NextUIProvider>
+      <SessionProvider>
       {children}
-      </NextUIProvider>
+      </SessionProvider>
     </ThemeProvider>
    
   )
