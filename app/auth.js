@@ -1,9 +1,20 @@
 'use client'
-import React from 'react';
+import React, { useEffect } from 'react';
 import useAuthStore from '@/stores/user';
-import Home from './home/page';
-import Login from './login/page'
+import { redirect, useRouter } from 'next/navigation';
+
 export default function Auth () {
+  const router = useRouter()
   const token = useAuthStore((state) => state.token)
-  return ( !token ? <Home/> : <Login/> )
+  var path = window.location;
+
+  useEffect(() => {
+    if(!token) {
+      router.push('/login')
+    }else if(path.pathname === '/') {
+      router.push('/home')
+    }
+  },[token])
+  
+  return (<></>)
 }

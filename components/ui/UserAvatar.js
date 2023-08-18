@@ -1,9 +1,11 @@
 'use client'
 import React from "react";
 import { Card, CardHeader, Avatar, Button } from "@nextui-org/react";
+import useAuthStore from "@/stores/user";
 
 export default function UserAvatar( props ) {
   const { userName,userType } = props
+  const { signOut } = useAuthStore(({ signOut }) => ({ signOut }))
 
   return (
     <div className="flex w-full">
@@ -22,6 +24,7 @@ export default function UserAvatar( props ) {
           radius="full"
           size="sm"
           variant={"solid"}
+          onClick={() => signOut()}
         >
           {"Cerrar Sesion"}
         </Button>

@@ -1,5 +1,4 @@
 'use client'
-
 // import { LoginUserInput, LoginUserSchema } from "@/lib/validations/user.schema";
 // import { useForm, FormProvider } from "react-hook-form";
 // import { zodResolver } from "@hookform/resolvers/zod";
@@ -10,46 +9,24 @@
 // import useStore from "@/store";
 // import { handleApiError } from "@/lib/helpers";
 // import { toast } from "react-hot-toast";
-import { signIn } from 'next-auth/react'
-import { useRouter } from 'next/navigation'
 import { Button, Input } from '@nextui-org/react'
+import useAuthStore from '@/stores/user'
+import { useState } from 'react'
 
 export default function LoginForm () {
-  const router = useRouter()
+  const { signIn, loading } = useAuthStore(({ signIn, loading }) => ({ signIn, loading }))
+  const [ email, setEmail ] = useState(null)
+  const [ password, setPassword ] = useState(null)
 
-  /* async function LoginUserFunction (credentials) {
-    store.setRequestLoading(true)
-    try {
-      // await apiLoginUser(JSON.stringify(credentials));
 
-      toast.success('Logged in successfully')
-      return router.push('/home')
-    } catch (error) {
-      console.log(error)
-      if (error instanceof Error) {
-        handleApiError(error)
-      } else {
-        toast.error(error.message)
-        console.log('Error message:', error.message)
-      }
-    } finally {
-      store.setRequestLoading(false)
-    }
-  } */
 
-  const onSubmitHandler = async (values) => {
-    // LoginUserFunction(values)
-    // router.push('/application/inventory')
-    // router.replace('/')
-    const res = await signIn('credentials',
+  const onSubmitHandler = async () => {
+    signIn(
       {
-        email: 'Aaa@gmail.com',
-        password: '123456',
-        redirect: true
+        email: email,
+        password: password,
       }
     )
-    console.log({ res })
-    // alert('submit')
   }
 
   /*  const store = useStore();
@@ -121,9 +98,9 @@ export default function LoginForm () {
                 <div></div>
             }
             label="Usuario"
-            // placeholder="Enter your email"
             variant="bordered"
-            className='dark'
+            value={email}
+            onValueChange={setEmail}
         />
         <Input
             radius="full"
@@ -132,14 +109,16 @@ export default function LoginForm () {
             }
             autoComplete=''
             label="Contraseña"
-            // placeholder="Enter your password"
             type="password"
             variant="bordered"
+            value={password}
+            onValueChange={setPassword}
         />
         <div className="flex w-full py-2 px-1 justify-between">
           <Button
             radius="full"
             className="flex w-full justify-center"
+            isLoading={loading}
             onClick = {() => onSubmitHandler()}>
               Ingresar
           </Button>

@@ -1,3 +1,4 @@
+import { authenticate } from '@/utils/authSettings';
 import { create } from 'zustand';
 import { persist } from "zustand/middleware";
 const useAuthStore = create(
@@ -5,9 +6,24 @@ const useAuthStore = create(
       (set) => ({
         token: null,
         email: null,
+        loading: false,
         setToken: () => set((state) => ({ token: state })),
         setEmail: () => set((state) => ({ email: state })),
-        logout: () => {
+        signIn: ({ email, password }) => {
+          set({ loading: true })
+          authenticate(
+            {
+            email: email,
+            password: password,
+            }
+          ).then(({ user, statusCode, error, message }) => {
+            console.log(user)
+            const { token } = user
+            set({ email: email, token: token })  
+            set({ loading: false })
+          })
+        },
+        signOut: () => {
         set({ 
             token: null,
             email: null 
