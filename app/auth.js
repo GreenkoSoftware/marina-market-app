@@ -1,7 +1,7 @@
 'use client'
 import React, { useEffect } from 'react';
 import useAuthStore from '@/stores/user';
-import { redirect, useRouter } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 
 export default function Auth ({ pathname }) {
   const router = useRouter()
