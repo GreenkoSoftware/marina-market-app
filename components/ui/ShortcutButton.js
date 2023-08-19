@@ -9,10 +9,10 @@ const { isOpen, onClose,onOpen } = useDisclosure();
     <button
         aria-label='Toggle Dark Mode'
         type='button'
-        className='flex items-center justify-center rounded-lg pt-2 hover:bg-zinc-100 dark:hover:bg-zinc-700'
+        className='flex items-center justify-center rounded-lg  hover:bg-zinc-100 dark:hover:bg-zinc-700'
         onClick={(onOpen)}
     >
-        <AiOutlineSetting className="w-10 h-10 fill-primary-500 dark:fill-primary-200"/>
+        <AiOutlineSetting className="w-11 h-11 fill-primary-500 dark:fill-primary-200"/>
         <SettingModal isOpen={isOpen} onClose={onClose}/>
     </button> 
   )
