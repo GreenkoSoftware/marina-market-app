@@ -9,7 +9,7 @@ export default function ApplicationLayout({ children }) {
           {children}
         </main>
       </div>
-      <footer className="h-[8rem] sm:h-[8rem] sm:mt-0 mt-20 mr-5 sm:mr-5 mb-5">
+      <footer className="h-[8rem] sm:h-[8rem] mr-5 sm:mr-5 mb-5">
         <SettingFooter></SettingFooter>
       </footer>
     </section>
