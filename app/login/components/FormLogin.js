@@ -11,12 +11,14 @@
 // import { toast } from "react-hot-toast";
 import { Button, Input } from '@nextui-org/react'
 import useAuthStore from '@/stores/user'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
+import { ErrorLogin } from './Error'
 
 export default function LoginForm () {
-  const { signIn, loading } = useAuthStore(({ signIn, loading }) => ({ signIn, loading }))
+  const { signIn, loading, error } = useAuthStore(({ signIn, loading, error }) => ({ signIn, loading, error }))
   const [ email, setEmail ] = useState()
   const [ password, setPassword ] = useState()
+  const [ errorLogin, setErrorLogin ] = useState()
 
 
   const checkRequeredValues = () => {
@@ -32,6 +34,10 @@ export default function LoginForm () {
       }
     )
   }
+
+  useEffect(()=>{
+    setErrorLogin(error)
+  },[error])
 
   /*  const store = useStore();
 
@@ -129,6 +135,7 @@ export default function LoginForm () {
               Ingresar
           </Button>
         </div>
+        <ErrorLogin error={error}/>
       </form>
     </section>
   )
