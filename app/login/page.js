@@ -1,19 +1,23 @@
 'use client'
-import React from 'react'
+import React, { useEffect } from 'react'
 import LoginForm from './components/FormLogin/FormLogin'
 import { Card, CardHeader } from '@nextui-org/react'
-import { useSession } from 'next-auth/react'
+import { useRouter } from 'next/navigation'
+import useAuthStore from '@/stores/user'
 
 export default function Login () {
-  const { data: session, status } = useSession()
+  const router = useRouter()
+  const token = useAuthStore((state) => state.token)
+
+  useEffect(() => {
+    if(token) {
+      router.push('/home')
+    }
+  },[token])
 
   return (
       <section
       className=' bg-transparent'>
-        <div>
-      ClientComponent {status}{' '}
-      {status === 'authenticated' && session.user?.name}
-    </div>
         <Card
             // isBlurred
            // className='max-w-md w-full mx-auto overflow-hidden shadow-lg rounded-2xl p-8 space-y-5  bg-white bg-opacity-40 backdrop-blur-lg dark:bg-black dark:bg-opacity-50 dark:backdrop-blur-lg'
