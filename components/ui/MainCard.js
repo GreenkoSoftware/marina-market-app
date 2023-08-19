@@ -3,6 +3,7 @@ import React  from 'react';
 import { Card,Image,CardFooter,CardHeader, Button } from '@nextui-org/react';
 import { useRouter } from 'next/navigation'
 
+
 export default function MainTittleCard (props) {
     const { title,footerMessage,imgSrc,route } = props
     const router = useRouter()
