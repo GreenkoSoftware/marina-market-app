@@ -8,7 +8,7 @@ export default function Auth ({ pathname }) {
   const token = useAuthStore((state) => state.token)
 
   useEffect(() => {
-    if(!token) {
+       if(!token) {
       router.push('/login')
     }else if(pathname === '/') {
       router.push('/home')
