@@ -4,6 +4,10 @@ import { persist } from "zustand/middleware";
 const useAuthStore = create(
     persist(
       (set) => ({
+        name: null,
+        lastName: null,
+        fullName: null,
+        isAdmin: false,
         token: null,
         email: null,
         loading: false,
@@ -18,15 +22,28 @@ const useAuthStore = create(
             }
           ).then(({ user, statusCode, statusText, error, message }) => {
             console.log(user)
-            const { token } = user
-            set({ email: email, token: token })  
+            const { name, lastName, userType, token } = user
+            set({
+              name: name,
+              lastName: lastName,
+              fullName: name + ' ' + lastName,
+              email: email, 
+              token: token,
+              isAdmin: userType == 'admin' ? true : false,
+            })  
+            if(userType == 'admin') set({ isAdmin: true })  
             set({ loading: false })
           })
         },
         signOut: () => {
         set({ 
-            token: null,
-            email: null 
+          name: null,
+          lastName: null,
+          fullName: null,
+          isAdmin: false,
+          token: null,
+          email: null,
+          loading: false,
         })  
         },
       }),
