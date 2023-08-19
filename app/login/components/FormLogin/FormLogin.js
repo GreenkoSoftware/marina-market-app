@@ -18,12 +18,6 @@ export default function LoginForm () {
   const [ email, setEmail ] = useState()
   const [ password, setPassword ] = useState()
 
-
-  const checkRequeredValues = () => {
-    if (!email || !password ) return false
-  }
-
-
   const onSubmitHandler = async () => {
     signIn(
       {
