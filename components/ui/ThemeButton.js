@@ -23,9 +23,9 @@ const ThemeButton = () => {
       onClick={() => setTheme(resolvedTheme === 'dark' ? 'light' : 'dark')}
     >
       {resolvedTheme === 'dark' ? (
-        <SunIcon className='w-10 h-10 text-orange-300' />
+        <SunIcon className='w-6 h-6 sm:w-10 sm:h-10 text-orange-300' />
       ) : (
-        <MoonIcon className='w-10 h-10 text-primary-500' />
+        <MoonIcon className='w-6 h-6 sm:w-10 sm:h-10 text-primary-500' />
       )}
     </button>
   )
