@@ -1,7 +1,5 @@
 'use client'
 import React from "react";
-import ShortcutButton from "../../components/ui/ShortcutButton";
-import ThemeButton from "../../components/ui/ThemeButton";
 import UserAvatar from "../../components/ui/UserAvatar";
 
 export default function SettingFooter() {
