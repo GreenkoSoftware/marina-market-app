@@ -15,9 +15,13 @@ import { useState } from 'react'
 
 export default function LoginForm () {
   const { signIn, loading } = useAuthStore(({ signIn, loading }) => ({ signIn, loading }))
-  const [ email, setEmail ] = useState(null)
-  const [ password, setPassword ] = useState(null)
+  const [ email, setEmail ] = useState()
+  const [ password, setPassword ] = useState()
 
+
+  const checkRequeredValues = () => {
+    if (!email || !password ) return false
+  }
 
 
   const onSubmitHandler = async () => {
@@ -101,11 +105,12 @@ export default function LoginForm () {
             variant="bordered"
             value={email}
             onValueChange={setEmail}
-        />
+            isRequired
+            />
         <Input
             radius="full"
             endContent={
-            <div></div>
+              <div></div>
             }
             autoComplete=''
             label="Contraseña"
@@ -113,6 +118,7 @@ export default function LoginForm () {
             variant="bordered"
             value={password}
             onValueChange={setPassword}
+            //isRequired
         />
         <div className="flex w-full py-2 px-1 justify-between">
           <Button

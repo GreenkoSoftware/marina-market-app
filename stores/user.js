@@ -16,7 +16,7 @@ const useAuthStore = create(
             email: email,
             password: password,
             }
-          ).then(({ user, statusCode, error, message }) => {
+          ).then(({ user, statusCode, statusText, error, message }) => {
             console.log(user)
             const { token } = user
             set({ email: email, token: token })  

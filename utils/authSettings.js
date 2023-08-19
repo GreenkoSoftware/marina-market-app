@@ -3,6 +3,7 @@ export async function authenticate({ email, password }) {
     user: {
     }, 
     statusCode: undefined,
+    statusText: undefined,
     error: undefined,
     message: undefined
   }
@@ -17,7 +18,8 @@ export async function authenticate({ email, password }) {
       })
     })
     .then(response => {
-      console.log(response)
+      data.statusCode = response?.status
+      data.statusText = response?.statusText
       return response.json()
     }).then(response => {
       if (response?.code === 200) {
@@ -28,9 +30,12 @@ export async function authenticate({ email, password }) {
           userType,
           name: userData?.name,
           lastName: userData?.last_name
-          // rest info
         }
+      } else {
+        data.error = response?.messages
       }
+      data.statusCode = response?.code
+      data.message = response?.messages
     })
 
     return data
