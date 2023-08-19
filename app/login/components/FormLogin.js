@@ -15,11 +15,9 @@ import { useEffect, useState } from 'react'
 import { ErrorLogin } from './Error'
 
 export default function LoginForm () {
-  const { signIn, loading, error } = useAuthStore(({ signIn, loading, error }) => ({ signIn, loading, error }))
+  const { signIn, loading } = useAuthStore()
   const [ email, setEmail ] = useState()
   const [ password, setPassword ] = useState()
-  const [ errorLogin, setErrorLogin ] = useState()
-
 
   const checkRequeredValues = () => {
     if (!email || !password ) return false
@@ -35,9 +33,7 @@ export default function LoginForm () {
     )
   }
 
-  useEffect(()=>{
-    setErrorLogin(error)
-  },[error])
+  useEffect(() => {},[])
 
   /*  const store = useStore();
 
@@ -126,17 +122,17 @@ export default function LoginForm () {
             onValueChange={setPassword}
             //isRequired
         />
-        <div className="flex w-full py-2 px-1 justify-between">
-          <Button
-            radius="full"
-            className="flex w-full justify-center"
-            isLoading={loading}
-            onClick = {() => onSubmitHandler()}>
-              Ingresar
-          </Button>
-        </div>
-        <ErrorLogin error={error}/>
       </form>
+      <div className="flex w-full py-2 px-1 justify-between">
+        <Button
+          radius="full"
+          className="flex w-full justify-center"
+          isLoading={loading}
+          onClick = {() => onSubmitHandler()}>
+            Ingresar
+        </Button>
+      </div>
+      <ErrorLogin/>
     </section>
   )
 }

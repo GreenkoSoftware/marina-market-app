@@ -11,9 +11,10 @@ const useAuthStore = create(
         token: null,
         email: null,
         loading: false,
-        error: false,
+        error: null,
         setToken: () => set((state) => ({ token: state })),
         setEmail: () => set((state) => ({ email: state })),
+        setError: () => set((state) => ({ error: state })),
         signIn: ({ email, password }) => {
           set({ loading: true, error: null })
           try {
@@ -32,6 +33,7 @@ const useAuthStore = create(
                   email: email, 
                   token: token,
                   isAdmin: userType == 'admin' ? true : false,
+                  error: null,
                 })  
                 if(userType == 'admin') set({ isAdmin: true })  
               }else {
@@ -52,7 +54,7 @@ const useAuthStore = create(
           token: null,
           email: null,
           loading: false,
-          error: false,
+          error: null,
         })  
         },
       }),
