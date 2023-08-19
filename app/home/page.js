@@ -10,7 +10,7 @@ export default function Home() {
         
       <section className="min-h-screen flex-1 flex flex-col bg-primary-300 dark:bg-secondary-500">
         <Auth/>
-        <div className="flex-1 flex flex-col sm:flex-row sm:mt-20 sm:ml-5 sm:mr-5 sm:mb-0 ">
+        <div className="flex-1  flex flex-col sm:flex-row sm:mt-36 sm:ml-5 sm:mr-5 sm:mb-0 ">
           <main>
             <section className="flex flex-col items-center sm:mr-0 mr-5 sm:ml-0 ml-5 sm:mt-0 mt-5">
               <motion.div 
