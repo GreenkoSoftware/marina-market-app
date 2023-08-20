@@ -1,101 +1,73 @@
-import React,{ useCallback } from "react";
-import { Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Button ,Table, TableHeader, TableColumn, TableBody, TableRow, TableCell, User, Chip, Tooltip } from "@nextui-org/react";
+import React,{ useMemo,useState } from "react";
+import { Input,Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Button ,Table, TableHeader, TableColumn, TableBody, TableRow, TableCell } from "@nextui-org/react";
 
-import { EditIcon } from "@/assets/icons/EditIcon";
-import { DeleteIcon } from "@/assets/icons/DeleteIcon";
-import { EyeIcon } from "@/assets/icons/EyeIcon";
-import { columns, users } from "../data";
-const statusColorMap = {
-  active: "success",
-  paused: "danger",
-  vacation: "warning",
-};
 
 export default function DetailedProduct({ targeProduct, isOpen, onClose,setTargetProduct }){
+  const [edit,setEdit]=useState(false)
 
-  const renderCell = useCallback((user, columnKey) => {
-    const cellValue = user[columnKey];
-    switch (columnKey) {
-      case "name":
-        return (
-          <User
-            avatarProps={{ radius: "lg", src: user.avatar }}
-            description={user.email}
-            name={cellValue}
-          >
-            {user.email}
-          </User>
-        );
-      case "role":
-        return (
-          <div className="flex flex-col">
-            <p className="text-bold text-sm capitalize">{cellValue}</p>
-            <p className="text-bold text-sm capitalize text-default-400">{user.team}</p>
-          </div>
-        );
-      case "status":
-        return (
-          <Chip className="capitalize" color={statusColorMap[user.status]} size="sm" variant="flat">
-            {cellValue}
-          </Chip>
-        );
-      case "actions":
-        return (
-          <div className="relative flex items-center gap-2">
-            <Tooltip content="Details">
-              <span className="text-lg text-default-400 cursor-pointer active:opacity-50">
-                <EyeIcon />
-              </span>
-            </Tooltip>
-            <Tooltip content="Edit user">
-              <span className="text-lg text-default-400 cursor-pointer active:opacity-50">
-                <EditIcon />
-              </span>
-            </Tooltip>
-            <Tooltip color="danger" content="Delete user">
-              <span className="text-lg text-danger cursor-pointer active:opacity-50">
-                <DeleteIcon />
-              </span>
-            </Tooltip>
-          </div>
-        );
-      default:
-        return cellValue;
-    }
-  }, []);
+  const classNames =useMemo(
+    () => ({
+      wrapper: ["max-h-[902px]", "max-w-4xl"],
+      th: ["bg-transparent", "text-default-500", "border-b", "border-divider"],
+      td: [
+        // changing the rows border radius
+        // first
+        "group-data-[first=true]:first:before:rounded-none",
+        "group-data-[first=true]:last:before:rounded-none",
+        // middle
+        "group-data-[middle=true]:before:rounded-none",
+        // last
+        "group-data-[last=true]:first:before:rounded-none",
+        "group-data-[last=true]:last:before:rounded-none",
+      ],
+    }),
+    [],
+  );
+  
     return (
       <>
         <div className="flex flex-wrap gap-3">
         </div>
         <Modal backdrop="blur" isOpen={isOpen} onClose={onClose}>
+        {edit ?
           <ModalContent>
             {(onClose) => (
-              <>
+              <section>
                 <ModalHeader className="flex flex-col gap-1 text-primary-500 dark:text-primary-200">Detalles del producto</ModalHeader>
                 <ModalBody>
-                <Table aria-label="Example table with custom cells">
-                <TableHeader columns={columns}>
-                  {(column) => (
-                    <TableColumn key={column.uid} align={column.uid === "actions" ? "center" : "start"}>
-                      {column.name}
-                    </TableColumn>
-                  )}
+                <Table className={classNames} hideHeader aria-label="Example table with custom cells">
+                <TableHeader>
+                  <TableColumn>Producto</TableColumn>
+                  <TableColumn>Acciones</TableColumn>
                 </TableHeader>
-                <TableBody items={users}>
-                  {(item) => (
-                    <TableRow key={item.id}>
-                      {(columnKey) => <TableCell>{renderCell(item, columnKey)}</TableCell>}
-                    </TableRow>
-                  )}
+                <TableBody>
+                  <TableRow key="1">
+                    <TableCell><p className="text-primary-500 dark:text-primary-200 font-bold">{ 'Nombre'}</p></TableCell>
+                    <TableCell><Input type="email" variant={"underlined"} label="Email" /></TableCell>
+                  </TableRow>
+                  <TableRow key="1">
+                    <TableCell><p className="text-primary-500 dark:text-primary-200 font-bold"> { 'Stock'}</p></TableCell>
+                    <TableCell><p className="text-primary-500 dark:text-primary-200"> { targeProduct?.stock}</p></TableCell>
+                  </TableRow>
+                  <TableRow key="1">
+                    <TableCell><p className="text-primary-500 dark:text-primary-200 font-bold"> { 'Precio'}</p></TableCell>
+                    <TableCell><p className="text-primary-500 dark:text-primary-200"> { targeProduct?.price}</p></TableCell>
+                  </TableRow>
                 </TableBody>
                 </Table>
                 </ModalBody>
                 <ModalFooter>
-                  <Button className ="dark" onClick={onClose}>
-                    Agregar mejor una tabla para dsp editar
+                  <Button className =" bg-green-500 text-primary-50" onClick={()=>{
+                    setEdit(false)
+                    setTargetProduct(null)
+                    onClose()
+                  }
+                  }>
+                     Guardar
                   </Button> 
                   <Button color="danger" variant="light" 
                     onClick={()=>{
+                        setEdit(false)
                         setTargetProduct(null)
                         onClose()
                     }}
@@ -103,28 +75,54 @@ export default function DetailedProduct({ targeProduct, isOpen, onClose,setTarge
                     Cerrar
                   </Button>
                 </ModalFooter>
-              </>
+              </section>
             )}
-          </ModalContent>
+          </ModalContent> :
+          <ModalContent>
+            {(onClose) => (
+              <section>
+                <ModalHeader className="flex flex-col gap-1 text-primary-500 dark:text-primary-200">Detalles del producto</ModalHeader>
+                <ModalBody>
+                <Table className={classNames} hideHeader aria-label="Example table with custom cells">
+                <TableHeader>
+                  <TableColumn>Producto</TableColumn>
+                  <TableColumn>Acciones</TableColumn>
+                </TableHeader>
+                <TableBody>
+                  <TableRow key="1">
+                    <TableCell><p className="text-primary-500 dark:text-primary-200 font-bold">{ 'Nombre'}</p></TableCell>
+                    <TableCell><p className="text-primary-500 dark:text-primary-200"> { targeProduct?.title}</p></TableCell>
+                  </TableRow>
+                  <TableRow key="1">
+                    <TableCell><p className="text-primary-500 dark:text-primary-200 font-bold"> { 'Stock'}</p></TableCell>
+                    <TableCell><p className="text-primary-500 dark:text-primary-200"> { targeProduct?.stock}</p></TableCell>
+                  </TableRow>
+                  <TableRow key="1">
+                    <TableCell><p className="text-primary-500 dark:text-primary-200 font-bold"> { 'Precio'}</p></TableCell>
+                    <TableCell><p className="text-primary-500 dark:text-primary-200"> { targeProduct?.price}</p></TableCell>
+                  </TableRow>
+                </TableBody>
+                </Table>
+                </ModalBody>
+                <ModalFooter>
+                  <Button className =" bg-blue-500 text-primary-50" onClick={()=>{setEdit(!edit)}}>
+                     Editar
+                  </Button> 
+                  <Button color="danger" variant="light" 
+                    onClick={()=>{
+                        setEdit(false)
+                        setTargetProduct(null)
+                        onClose()
+                    }}
+                   >
+                    Cerrar
+                  </Button>
+                </ModalFooter>
+              </section>
+            )}
+          </ModalContent>        
+         }  
         </Modal>
       </>
     );
 }
-
-/* 
- <ModalBody>
-                <div className="flex flex-row space-x-1">
-                  <p className="text-primary-500 dark:text-primary-200 font-bold">  { 'Nombre :'}</p>
-                  <p className="text-primary-500 dark:text-primary-200">  { targeProduct?.title}</p>
-                </div>
-                <div className="flex flex-row space-x-1">
-                  <p className="text-primary-500 dark:text-primary-200 font-bold">  { 'Stock :'}</p>
-                  <p className="text-primary-500 dark:text-primary-200">  { targeProduct?.stock + ' unidades'}</p>
-                </div>
-                <div className="flex flex-row space-x-1">
-                  <p className="text-primary-500 dark:text-primary-200 font-bold">  { 'Precio :'}</p>
-                  <p className="text-primary-500 dark:text-primary-200">  { targeProduct?.price}</p>
-                </div>
-                </ModalBody>
-
-*/
