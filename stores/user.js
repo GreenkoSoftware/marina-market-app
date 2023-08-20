@@ -11,29 +11,39 @@ const useAuthStore = create(
         token: null,
         email: null,
         loading: false,
+        error: null,
         setToken: () => set((state) => ({ token: state })),
         setEmail: () => set((state) => ({ email: state })),
+        setError: () => set((state) => ({ error: state })),
         signIn: ({ email, password }) => {
-          set({ loading: true })
-          authenticate(
-            {
-            email: email,
-            password: password,
-            }
-          ).then(({ user, statusCode, statusText, error, message }) => {
-            console.log(user)
-            const { name, lastName, userType, token } = user
-            set({
-              name: name,
-              lastName: lastName,
-              fullName: name + ' ' + lastName,
-              email: email, 
-              token: token,
-              isAdmin: userType == 'admin' ? true : false,
-            })  
-            if(userType == 'admin') set({ isAdmin: true })  
-            set({ loading: false })
+          set({ loading: true, error: null })
+          try {
+            authenticate(
+              {
+              email: email,
+              password: password,
+              }
+            ).then(({ user, statusCode, statusText, error, message }) => {
+              if (user.token){
+                const { name, lastName, userType, token } = user
+                set({
+                  name: name,
+                  lastName: lastName,
+                  fullName: name + ' ' + lastName,
+                  email: email, 
+                  token: token,
+                  isAdmin: userType == 'admin' ? true : false,
+                  error: null,
+                })  
+                if(userType == 'admin') set({ isAdmin: true })  
+              }else {
+                set({ error: statusCode + ' ' + (error || message || statusText) })  
+              }
+              set({ loading: false })
           })
+        } catch {
+            set({ loading: false })
+          }
         },
         signOut: () => {
         set({ 
@@ -44,6 +54,7 @@ const useAuthStore = create(
           token: null,
           email: null,
           loading: false,
+          error: null,
         })  
         },
       }),
