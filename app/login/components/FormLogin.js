@@ -11,26 +11,73 @@
 // import { toast } from "react-hot-toast";
 import { Button, Input } from '@nextui-org/react'
 import useAuthStore from '@/stores/user'
-import { useEffect, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { ErrorLogin } from './Error'
+import { validateEmail } from '@/utils/email'
 
 export default function LoginForm () {
   const { signIn, loading } = useAuthStore()
-  const [ email, setEmail ] = useState()
-  const [ password, setPassword ] = useState()
+  const [ validateValues, setValidateValues ] = useState(false)
+  const [ sendDisabled, setSendDisabled ] = useState(false)
+  const [ email, setEmail ] = useState("")
+  const [ password, setPassword ] = useState("")
+  const [ emailError, setEmailError ] = useState()
+  const [ passwordError, setPasswordError ] = useState()
+
+  const validationStateEmail = useMemo(() => {
+    console.log(email)
+    if (validateValues) {
+      if (!email || email === "") {
+        setEmailError("Este campo es requerido")
+        return
+      }
+      
+      const valid = validateEmail(email);
+      
+      if(!valid) {
+        setEmailError("Ingresa un email válido.")
+      } else {
+        setEmailError(null)
+      }
+      
+    }
+
+  }, [email]);
+
+  useEffect(() => {
+    console.log(email, password, emailError, passwordError)
+    console.log(!email, !password, emailError, passwordError)
+    console.log(!email || !password || emailError || passwordError)
+    if(validateValues && (!email || !password || emailError || passwordError)) {
+      setSendDisabled(true)
+    } else {
+      setSendDisabled(false)
+    }
+  }, [email, password, emailError, passwordError, validateValues])
+
+  const validationStatePassword = useMemo(() => {
+    if (validateValues && (!password || password === "")) {
+        setPasswordError("Este campo es requerido")
+        return
+    } else {
+      setPasswordError(null)
+    }
+  }, [password]);
 
   const checkRequeredValues = () => {
-    if (!email || !password ) return false
+    if ( email ) return false
   }
 
 
   const onSubmitHandler = async () => {
-    signIn(
-      {
-        email: email,
-        password: password,
-      }
-    )
+    if (!emailError && !passwordError){
+      signIn(
+        {
+          email: email,
+          password: password,
+        }
+      )
+    }
   }
 
   useEffect(() => {},[])
@@ -92,10 +139,10 @@ export default function LoginForm () {
   ); */
 
   return (
-    <section className="max-w-md w-full mx-auto overflow-hidden rounded-2xl">
+    <section className="max-w-md w-full mx-auto overflow-hidden  space-y-5 rounded-2xl">
          <form
         onSubmit={onSubmitHandler}
-        className="max-w-md w-full overflow-hidden p-8 space-y-5"
+        className="max-w-md w-full overflow-hidden space-y-5"
       >
         <Input
             autoFocus
@@ -107,6 +154,10 @@ export default function LoginForm () {
             variant="bordered"
             value={email}
             onValueChange={setEmail}
+            validationState={validationStateEmail}
+            color={emailError ? "danger" : "default"}
+            errorMessage={emailError}
+            onBlur={() => setValidateValues(true)}
             isRequired
             />
         <Input
@@ -120,6 +171,10 @@ export default function LoginForm () {
             variant="bordered"
             value={password}
             onValueChange={setPassword}
+            validationState={validationStatePassword}
+            color={passwordError ? "danger" : "default"}
+            errorMessage={passwordError}
+            onBlur={() => setValidateValues(true)}
             //isRequired
         />
       </form>
@@ -128,6 +183,7 @@ export default function LoginForm () {
           radius="full"
           className="flex w-full justify-center"
           isLoading={loading}
+          isDisabled={sendDisabled}
           onClick = {() => onSubmitHandler()}>
             Ingresar
         </Button>
