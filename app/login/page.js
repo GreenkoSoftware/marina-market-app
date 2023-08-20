@@ -1,6 +1,6 @@
 'use client'
 import React, { useEffect } from 'react'
-import LoginForm from './components/FormLogin/FormLogin'
+import LoginForm from './components/FormLogin'
 import { Card, CardHeader } from '@nextui-org/react'
 import { useRouter } from 'next/navigation'
 import useAuthStore from '@/stores/user'
