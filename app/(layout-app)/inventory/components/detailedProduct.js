@@ -42,16 +42,16 @@ export default function DetailedProduct({ targeProduct, isOpen, onClose,setTarge
                 </TableHeader>
                 <TableBody>
                   <TableRow key="1">
-                    <TableCell><p className="text-primary-500 dark:text-primary-200 font-bold">{ 'Nombre'}</p></TableCell>
-                    <TableCell><Input type="email" variant={"underlined"} label="Email" /></TableCell>
+                    <TableCell><p className="text-primary-500 dark:text-primary-200 font-bold mt-[1rem]">{ 'Nombre'}</p></TableCell>
+                    <TableCell><Input type="email" variant={"underlined"} label={ targeProduct?.title} /></TableCell>
                   </TableRow>
                   <TableRow key="1">
-                    <TableCell><p className="text-primary-500 dark:text-primary-200 font-bold"> { 'Stock'}</p></TableCell>
-                    <TableCell><p className="text-primary-500 dark:text-primary-200"> { targeProduct?.stock}</p></TableCell>
+                    <TableCell><p className="text-primary-500 dark:text-primary-200 font-bold  mt-[1rem]"> { 'Stock'}</p></TableCell>
+                    <TableCell><Input type="email" variant={"underlined"} label={ targeProduct?.stock} /></TableCell>
                   </TableRow>
                   <TableRow key="1">
-                    <TableCell><p className="text-primary-500 dark:text-primary-200 font-bold"> { 'Precio'}</p></TableCell>
-                    <TableCell><p className="text-primary-500 dark:text-primary-200"> { targeProduct?.price}</p></TableCell>
+                    <TableCell><p className="text-primary-500 dark:text-primary-200 font-bold  mt-[1rem]"> { 'Precio'}</p></TableCell>
+                    <TableCell><Input type="email" variant={"underlined"} label={ targeProduct?.price} /></TableCell>
                   </TableRow>
                 </TableBody>
                 </Table>
