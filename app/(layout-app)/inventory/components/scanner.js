@@ -1,6 +1,6 @@
 'use client'
 import React, { useEffect, useRef, useState } from 'react';
-import Quagga from 'quagga';
+import Quagga from '@ericblade/quagga2';
 import BarCodeScanner from 'barcode-react-scanner';
 
 
