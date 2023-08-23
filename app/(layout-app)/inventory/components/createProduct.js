@@ -14,8 +14,6 @@ export default function CreateProduct(){
     const [scanProduct, setScanProduct] = useState(false)
 
 
-
-
   const selectedValue = useMemo(
     () => Array.from(selectedKeys).join(", ").replaceAll("_", " "),
     [selectedKeys]
@@ -102,7 +100,7 @@ export default function CreateProduct(){
                         <Button onClick={() => {scanProduct ? setScanProduct(false) : setScanProduct(true)}}>{!scanProduct ? 'Scanner' : 'Finalizar Scanner'}</Button>
                         <div className="my-4 items-center gap-4 grid grid-cols-1 md:grid-cols-2">
                         {scanProduct ? 
-                        <BarcodeScanner/>
+                        <BarcodeScanner stopScan={() => setScanProduct(false)}/>
                         : null}
 
                             <div className="flex-3">
