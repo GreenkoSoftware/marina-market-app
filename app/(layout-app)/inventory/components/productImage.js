@@ -1,10 +1,11 @@
 'use client'
 import { Button } from "@nextui-org/react";
 import Image from "next/image";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 export default function ProductImage () {
   const [selectedImage, setSelectedImage] = useState();
+  const [selectedImageBytes, setSelectedImageBytes] = useState();
 
   // This function will be triggered when the file field change
   const imageChange = (e) => {
@@ -12,6 +13,28 @@ export default function ProductImage () {
       setSelectedImage(e.target.files[0]);
     }
   };
+
+  useEffect(() => {
+    if(selectedImage){
+        const reader = new FileReader();
+        reader.readAsArrayBuffer(selectedImage);
+
+        reader.onload = async () => {
+            const imageBytes = reader.result;
+            const base64 = btoa(
+                new Uint8Array(imageBytes)
+                  .reduce((data, byte) => data + String.fromCharCode(byte), '')
+              );
+              
+            console.log(imageBytes)
+            console.log(base64)
+            console.log(imageBytes?.toString())
+
+            setSelectedImageBytes(imageBytes)
+        }
+    }
+  },[selectedImage])
+
 
   // This function will be triggered when the "Remove This Image" button is clicked
   const removeSelectedImage = () => {

@@ -1,13 +1,19 @@
 'use client'
 import { Button, Divider, Dropdown, DropdownItem, DropdownMenu, DropdownTrigger, Input, Modal, ModalBody, ModalContent, ModalFooter, ModalHeader, useDisclosure } from "@nextui-org/react";
-import React, { Suspense, useMemo, useState } from "react";
+import React, { Suspense, createRef, useMemo, useState } from "react";
 import ProductImage from "./productImage";
 import BarcodeScanner from "./scanner";
+import { generateProductCode } from "@/utils/barcode";
+import Barcosde from "@/components/barcode";
 
 
 
 
 export default function CreateProduct(){
+
+  const elementRef = createRef(null); 
+   const productName="COCA-COLA" 
+   const productCode = generateProductCode(productName);
     const { isOpen, onClose, onOpen } = useDisclosure();
 
     const [selectedKeys, setSelectedKeys] = useState(new Set(["Seleccione"]))
@@ -63,9 +69,10 @@ export default function CreateProduct(){
     )
   }
 
-  const InputComponent = ({ title, type, placeholder, isPrice }) => {
+  const InputComponent = ({ title, type, placeholder, isPrice, isBarCode }) => {
     return (
         <Input 
+            autoFocus={isBarCode ? true : false}
             type={type} 
             variant={"underlined"} 
             label={title} 
@@ -96,25 +103,28 @@ export default function CreateProduct(){
                <ModalHeader className="flex flex-col gap-1 text-primary-500 dark:text-primary-200">Nuevo producto</ModalHeader>
                <ModalBody>
                 <section>
+                {/* <Barcosde showDetail={true} productName = {productName} productCode ={ productCode } productCost={"1790"}/> */}
                     <SectionProduct title={'Producto'}>
-                        <Button onClick={() => {scanProduct ? setScanProduct(false) : setScanProduct(true)}}>{!scanProduct ? 'Scanner' : 'Finalizar Scanner'}</Button>
                         <div className="my-4 items-center gap-4 grid grid-cols-1 md:grid-cols-2">
+                       {/*  <div>
+                        <Button onClick={() => {scanProduct ? setScanProduct(false) : setScanProduct(true)}}>{!scanProduct ? 'Scanner' : 'Finalizar Scanner'}</Button>
                         {scanProduct ? 
                         <BarcodeScanner stopScan={() => setScanProduct(false)}/>
                         : null}
-
+                        </div> */}
                             <div className="flex-3">
                             <ProductImage/>
                             </div>
                             <div  className="flex flex-1 items-start flex-col w-full gap-4">
                                 <InputComponent 
-                                    type="text" 
-                                    title="Nombre" 
-                                    />
-                                <InputComponent 
+                                    isBarCode={true}
                                     type="text" 
                                     title="Codigo de barra" 
-                                    />
+                                />
+                                <InputComponent 
+                                    type="text" 
+                                    title="Nombre" 
+                                />
                                 <SelectItems title={'Categoria'} items={['PAN', 'BEBIDA', 'carne', 'AAAAAAASDSAD']}/>
                             </div>
                         </div>
