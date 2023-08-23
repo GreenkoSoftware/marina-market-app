@@ -1,18 +1,22 @@
 'use client'
-import { Option, Select } from "@material-tailwind/react";
-import { Button, Card, Divider, Dropdown, DropdownItem, DropdownMenu, DropdownTrigger, Input, Modal, ModalBody, ModalContent, ModalFooter, ModalHeader, useDisclosure } from "@nextui-org/react";
-import { useState } from "react";
-import React from "react";
+import { Button, Divider, Dropdown, DropdownItem, DropdownMenu, DropdownTrigger, Input, Modal, ModalBody, ModalContent, ModalFooter, ModalHeader, useDisclosure } from "@nextui-org/react";
+import React, { Suspense, useMemo, useState } from "react";
 import ProductImage from "./productImage";
+import BarcodeScanner from "./scanner";
 
 
 
-export default function CreateProduct({ trigger }){
+
+export default function CreateProduct(){
     const { isOpen, onClose, onOpen } = useDisclosure();
 
-    const [selectedKeys, setSelectedKeys] = React.useState(new Set(["Seleccione"]))
+    const [selectedKeys, setSelectedKeys] = useState(new Set(["Seleccione"]))
+    const [scanProduct, setScanProduct] = useState(false)
 
-  const selectedValue = React.useMemo(
+
+
+
+  const selectedValue = useMemo(
     () => Array.from(selectedKeys).join(", ").replaceAll("_", " "),
     [selectedKeys]
   );
@@ -80,6 +84,7 @@ export default function CreateProduct({ trigger }){
 
 
     return (
+        <Suspense fallback={<div>Cargando</div>}>
         <section>
             <header className="flex justify-end">
                 <Button onClick={onOpen}>Crear nuevo producto</Button>
@@ -94,7 +99,12 @@ export default function CreateProduct({ trigger }){
                <ModalBody>
                 <section>
                     <SectionProduct title={'Producto'}>
+                        <Button onClick={() => {scanProduct ? setScanProduct(false) : setScanProduct(true)}}>{!scanProduct ? 'Scanner' : 'Finalizar Scanner'}</Button>
                         <div className="my-4 items-center gap-4 grid grid-cols-1 md:grid-cols-2">
+                        {scanProduct ? 
+                        <BarcodeScanner/>
+                        : null}
+
                             <div className="flex-3">
                             <ProductImage/>
                             </div>
@@ -161,5 +171,6 @@ export default function CreateProduct({ trigger }){
             </ModalContent>
             </Modal>
         </section>
+        </Suspense>
     );
 }
