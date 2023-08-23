@@ -18,5 +18,5 @@
 
 /* trunk-ignore(git-diff-check/error) */
 body { 
-  @apply bg-black text-white
+  /* @apply bg-black text-white */
 }

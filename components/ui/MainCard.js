@@ -9,6 +9,7 @@ export default function MainTittleCard (props) {
     const router = useRouter()
 
     return (
+        
         <Card
             isFooterBlurred
             radius="lg"
