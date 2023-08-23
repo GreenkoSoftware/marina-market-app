@@ -9,10 +9,10 @@ import useBarcodeDetection from "use-barcode-detection";
 
 const BarcodeScanner = ({ stopScan }) => {
   const [isScanning, setIsScanning] = useState(false);
+  
   const onDetected = (barcodes) => {
     // Handle barcode detection...
     alert(barcodes);
-
     // Deactivate scanning, maybe close a modal...
     setIsScanning(false);
     stopScan()
