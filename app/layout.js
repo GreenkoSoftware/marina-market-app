@@ -4,21 +4,21 @@ import { Providers } from './providers'
 const inter = Inter({ subsets: ['latin'] })
 
 export const metadata = {
-  title: 'Marina Market App',
-  description: 'Marina Market Appp'
+    title: 'Marina Market App',
+    description: 'Marina Market Appp'
 }
 
 export default function RootLayout ({ children }) {
-  return (
-    <html lang='en' suppressHydrationWarning>
-      <head>
-        <title>Marina Market App</title>
-      </head>
-      <body className={inter.className}>
-        <Providers>
-          {children}
-        </Providers>
-      </body>
-    </html>
-  )
+    return (
+        <html lang='en' suppressHydrationWarning>
+            <head>
+                <title>Marina Market App</title>
+            </head>
+            <body className={inter.className}>
+                <Providers>
+                    {children}
+                </Providers>
+            </body>
+        </html>
+    )
 }

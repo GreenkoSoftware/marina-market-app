@@ -5,12 +5,12 @@ import ScannerDetection from '@/components/ScannerDetection/ScannerDetection'
 import CreateProduct from './components/NewProduct/createProduct'
 
 export default function Inventory () {
-  return (
-  <section>
-    <ScannerDetection/>
-    <CreateProduct/>
-    <Auth/>
-    <Cards/>
-  </section>
-  )
+    return (
+        <section>
+            <ScannerDetection/>
+            <CreateProduct/>
+            <Auth/>
+            <Cards/>
+        </section>
+    )
 }
