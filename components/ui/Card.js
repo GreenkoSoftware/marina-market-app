@@ -1,6 +1,7 @@
 'use client'
 import React from 'react'
 import { Badge, Card as CardUI, CardBody, CardFooter, Image } from '@nextui-org/react'
+import { ConvertBytesToImage } from '@/utils/image'
 export default function Card (props) {
     const { item, index, setTargetProduct } = props
     return (
@@ -15,8 +16,8 @@ export default function Card (props) {
                     width="100%"
                     alt={item?.name}
                     className="w-full object-cover h-[14rem]"
-                    src={'https://confidentefinanciero.com/wp-content/uploads/2023/04/Facturacion-electronica-restaurantes-scaled.jpg'}
-                    // src={item?.image}
+                    // src={'https://confidentefinanciero.com/wp-content/uploads/2023/04/Facturacion-electronica-restaurantes-scaled.jpg'}
+                    src={ConvertBytesToImage({ imageBytes: item?.image })}
                 />
             </CardBody>
             <CardFooter className="text-small justify-between">
