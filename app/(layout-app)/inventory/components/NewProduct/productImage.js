@@ -3,17 +3,31 @@
 import { Button } from '@nextui-org/react'
 import Image from 'next/image'
 import { useEffect, useState } from 'react'
+import useProductFormStore from './store'
 
 export default function ProductImage () {
-    const [selectedImage, setSelectedImage] = useState()
-    const [selectedImageBytes, setSelectedImageBytes] = useState()
+    const [selectedImage, setSelectedImage] = useState(null)
+    const [selectedImageBytes, setSelectedImageBytes] = useState(null)
 
-    // This function will be triggered when the file field change
+    const {
+        data,
+        setFormData
+    } = useProductFormStore()
+
     const imageChange = (e) => {
         if (e.target.files && e.target.files.length > 0) {
             setSelectedImage(e.target.files[0])
         }
     }
+
+    const removeSelectedImage = () => {
+        setSelectedImage(null)
+        setSelectedImageBytes(null)
+    }
+
+    useEffect(() => {
+        setFormData({ ...data, image: selectedImageBytes })
+    }, [selectedImageBytes])
 
     useEffect(() => {
         if (selectedImage) {
@@ -27,16 +41,10 @@ export default function ProductImage () {
                         .reduce((data, byte) => data + String.fromCharCode(byte), '')
                 )
 
-                console.log(base64)
                 setSelectedImageBytes(base64)
             }
         }
     }, [selectedImage])
-
-    // This function will be triggered when the "Remove This Image" button is clicked
-    const removeSelectedImage = () => {
-        setSelectedImage()
-    }
 
     return (
         <section>
@@ -53,7 +61,7 @@ export default function ProductImage () {
                                 />
                             </label>
                             <Button color="danger" variant="faded" onClick={removeSelectedImage}>
-                            Borrar imagen
+                                {'Borrar imagen'}
                             </Button>
                         </div>
                     )
