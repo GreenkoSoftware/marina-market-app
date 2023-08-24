@@ -41,14 +41,14 @@ export default function ScannerDetection () {
     }
 
     useEffect(() => {
-        console.log(scanner)
-        console.log(detected)
+        // console.log(scanner)
+        // console.log(detected)
         if (detected) {
-            console.log(scanner)
+            // console.log(scanner)
             startScanning()
         } else {
             if (scanner) {
-                console.log(scanner)
+                // console.log(scanner)
                 scanner?.stopScanning()
             }
         }

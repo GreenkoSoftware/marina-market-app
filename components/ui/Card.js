@@ -13,13 +13,15 @@ export default function Card (props) {
                     shadow="sm"
                     radius="lg"
                     width="100%"
-                    alt={item?.title}
+                    alt={item?.name}
                     className="w-full object-cover h-[14rem]"
-                    src={item?.img}/>
+                    src={'https://confidentefinanciero.com/wp-content/uploads/2023/04/Facturacion-electronica-restaurantes-scaled.jpg'}
+                    // src={item?.image}
+                />
             </CardBody>
             <CardFooter className="text-small justify-between">
-                <b>{item?.title}</b>
-                <p className="text-default-500">{item?.price}</p>
+                <b>{item?.name}</b>
+                <p className="text-default-500">{item?.netPrice * 1.19}</p>
             </CardFooter>
         </CardUI>
     )
