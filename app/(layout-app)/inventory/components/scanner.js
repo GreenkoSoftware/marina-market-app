@@ -1,37 +1,32 @@
 'use client'
-import { Button } from '@nextui-org/react';
-import React, { useEffect, useRef, useState } from 'react';
-import useBarcodeDetection from "use-barcode-detection";
-
-
-
-
+import React, { useEffect, useState } from 'react'
+import useBarcodeDetection from 'use-barcode-detection'
 
 const BarcodeScanner = ({ stopScan }) => {
-  const [isScanning, setIsScanning] = useState(false);
-  
+  const [isScanning, setIsScanning] = useState(false)
+
   const onDetected = (barcodes) => {
     // Handle barcode detection...
-    alert(barcodes);
+    alert(barcodes)
     // Deactivate scanning, maybe close a modal...
-    setIsScanning(false);
+    setIsScanning(false)
     stopScan()
-  };
+  }
 
   useEffect(() => {
     setIsScanning(true)
-  },[])
+  }, [])
   const { ref } = useBarcodeDetection({
     interval: 150,
     active: isScanning,
-    onDetected,
-  });
+    onDetected
+  })
 
   return (
     <div>
       <video ref={ref} autoPlay playsInline muted />
     </div>
-  );
-};
+  )
+}
 
-export default BarcodeScanner;
+export default BarcodeScanner

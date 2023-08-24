@@ -7,35 +7,32 @@ import { validateEmail } from '@/utils/email'
 
 export default function LoginForm () {
   const { signIn, loading } = useAuthStore()
-  const [ validateValues, setValidateValues ] = useState(false)
-  const [ sendDisabled, setSendDisabled ] = useState(false)
-  const [ email, setEmail ] = useState("")
-  const [ password, setPassword ] = useState("")
-  const [ emailError, setEmailError ] = useState()
-  const [ passwordError, setPasswordError ] = useState()
+  const [validateValues, setValidateValues] = useState(false)
+  const [sendDisabled, setSendDisabled] = useState(false)
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
+  const [emailError, setEmailError] = useState()
+  const [passwordError, setPasswordError] = useState()
 
   const validationStateEmail = useMemo(() => {
-    
     if (validateValues) {
-      if (!email || email === "") {
-        setEmailError("Este campo es requerido")
+      if (!email || email === '') {
+        setEmailError('Este campo es requerido')
         return
       }
-      
-      const valid = validateEmail(email);
-      
-      if(!valid) {
-        setEmailError("Ingresa un email válido.")
+
+      const valid = validateEmail(email)
+
+      if (!valid) {
+        setEmailError('Ingresa un email válido.')
       } else {
         setEmailError(null)
       }
-      
     }
-
-  }, [email]);
+  }, [email])
 
   useEffect(() => {
-    if(validateValues && (!email || !password || emailError || passwordError)) {
+    if (validateValues && (!email || !password || emailError || passwordError)) {
       setSendDisabled(true)
     } else {
       setSendDisabled(false)
@@ -43,20 +40,19 @@ export default function LoginForm () {
   }, [email, password, emailError, passwordError, validateValues])
 
   const validationStatePassword = useMemo(() => {
-    if (validateValues && (!password || password === "")) {
-        setPasswordError("Este campo es requerido")
-        return
+    if (validateValues && (!password || password === '')) {
+      setPasswordError('Este campo es requerido')
     } else {
       setPasswordError(null)
     }
-  }, [password]);
+  }, [password])
 
   const onSubmitHandler = async () => {
-    if (!emailError && !passwordError){
+    if (!emailError && !passwordError) {
       signIn(
         {
-          email: email,
-          password: password,
+          email,
+          password
         }
       )
     }
@@ -79,7 +75,7 @@ export default function LoginForm () {
             value={email}
             onValueChange={setEmail}
             validationState={validationStateEmail}
-            color={emailError ? "danger" : "default"}
+            color={emailError ? 'danger' : 'default'}
             errorMessage={emailError}
             onBlur={() => setValidateValues(true)}
             isRequired
@@ -96,10 +92,10 @@ export default function LoginForm () {
             value={password}
             onValueChange={setPassword}
             validationState={validationStatePassword}
-            color={passwordError ? "danger" : "default"}
+            color={passwordError ? 'danger' : 'default'}
             errorMessage={passwordError}
             onBlur={() => setValidateValues(true)}
-            //isRequired
+            // isRequired
         />
       </form>
       <div className="flex w-full py-2 px-1 justify-between">

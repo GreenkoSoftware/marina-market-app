@@ -1,13 +1,13 @@
 'use client'
-import { Navigation } from "@/components/navigation/Navigation";
-import  { Header }  from "./header";
-import { motion } from "framer-motion"
+import { Navigation } from '@/components/navigation/Navigation'
+import { Header } from './header'
+import { motion } from 'framer-motion'
 
 export default function LayoutApp ({ children }) {
   return (
-    
+
     <section className="min-h-screen w-full h-full flex flex-col bg-primary-200 dark:bg-secondary-500">
-      <motion.div 
+      <motion.div
                 initial={{ opacity: 0, scale: 0.5 }}
                 animate={{ opacity: 1, scale: 1 }}
                 transition={{
@@ -15,7 +15,7 @@ export default function LayoutApp ({ children }) {
                   delay: 0.2,
                   ease: [0, 0.71, 0.2, 1.01]
                 }}>
-        
+
     <header className="sticky z-20 bg-primary-200 dark:bg-secondary-500 top-0 h-[4rem]">
       <Header/>
     </header>
@@ -29,5 +29,5 @@ export default function LayoutApp ({ children }) {
     </footer>
     </motion.div>
     </section>
-  );
+  )
 }

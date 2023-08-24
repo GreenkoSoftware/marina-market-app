@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react'
 export const EyeIcon = (props) => (
   <svg
     aria-hidden="true"
@@ -25,4 +25,4 @@ export const EyeIcon = (props) => (
       strokeWidth={1.5}
     />
   </svg>
-);
+)
