@@ -1,3 +1,5 @@
+import { AUTH_LOGIN_API_URL } from "@/settings/constants"
+
 export async function authenticate({ email, password }) {
   var data = {
     user: {
@@ -9,7 +11,7 @@ export async function authenticate({ email, password }) {
   }
 
   try {
-    await fetch('https://marina-market-auth-api-c4pc-dev.fl0.io/auth/login',
+    await fetch(AUTH_LOGIN_API_URL,
       {
         method: 'POST',
         cache: 'no-store',
