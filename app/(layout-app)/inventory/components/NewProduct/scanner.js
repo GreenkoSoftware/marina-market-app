@@ -1,11 +1,7 @@
 'use client'
 import { Button } from '@nextui-org/react';
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import useBarcodeDetection from "use-barcode-detection";
-
-
-
-
 
 const BarcodeScanner = ({ stopScan }) => {
   const [isScanning, setIsScanning] = useState(false);

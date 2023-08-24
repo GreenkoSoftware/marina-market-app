@@ -26,11 +26,8 @@ export default function ProductImage () {
                   .reduce((data, byte) => data + String.fromCharCode(byte), '')
               );
               
-            console.log(imageBytes)
             console.log(base64)
-            console.log(imageBytes?.toString())
-
-            setSelectedImageBytes(imageBytes)
+            setSelectedImageBytes(base64)
         }
     }
   },[selectedImage])
