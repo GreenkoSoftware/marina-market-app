@@ -10,10 +10,10 @@ export default function Login () {
   const token = useAuthStore((state) => state.token)
 
   useEffect(() => {
-    if(token) {
+    if (token) {
       router.push('/home')
     }
-  },[token])
+  }, [token])
 
   return (
       <section

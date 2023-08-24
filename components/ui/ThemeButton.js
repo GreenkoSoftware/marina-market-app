@@ -8,7 +8,7 @@ import { SunIcon, MoonIcon } from '@heroicons/react/24/solid'
 const ThemeButton = () => {
   const { resolvedTheme, setTheme } = useTheme()
   const [mounted, setMounted] = useState(false)
-  
+
   useEffect(() => setMounted(true), [])
 
   if (!mounted) {
@@ -22,11 +22,13 @@ const ThemeButton = () => {
       className='flex items-center justify-center rounded-lg p-2 transition-colors hover:bg-zinc-100 dark:hover:bg-zinc-700'
       onClick={() => setTheme(resolvedTheme === 'dark' ? 'light' : 'dark')}
     >
-      {resolvedTheme === 'dark' ? (
+      {resolvedTheme === 'dark'
+        ? (
         <SunIcon className='w-6 h-6 sm:w-10 sm:h-10 text-orange-300' />
-      ) : (
+          )
+        : (
         <MoonIcon className='w-6 h-6 sm:w-10 sm:h-10 text-primary-500' />
-      )}
+          )}
     </button>
   )
 }

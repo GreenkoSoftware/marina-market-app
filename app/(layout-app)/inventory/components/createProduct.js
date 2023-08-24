@@ -1,29 +1,25 @@
+/* eslint-disable no-unused-vars */
 'use client'
-import { Button, Divider, Dropdown, DropdownItem, DropdownMenu, DropdownTrigger, Input, Modal, ModalBody, ModalContent, ModalFooter, ModalHeader, useDisclosure } from "@nextui-org/react";
-import React, { Suspense, createRef, useMemo, useState } from "react";
-import ProductImage from "./productImage";
-import BarcodeScanner from "./scanner";
-import { generateProductCode } from "@/utils/barcode";
-import Barcosde from "@/components/barcode";
+import { Button, Divider, Dropdown, DropdownItem, DropdownMenu, DropdownTrigger, Input, Modal, ModalBody, ModalContent, ModalFooter, ModalHeader, useDisclosure } from '@nextui-org/react'
+import React, { Suspense, createRef, useMemo, useState } from 'react'
+import ProductImage from './productImage'
+import BarcodeScanner from './scanner'
+import { generateProductCode } from '@/utils/barcode'
+import Barcosde from '@/components/barcode'
 
+export default function CreateProduct () {
+  const elementRef = createRef(null)
+  const productName = 'COCA-COLA'
+  const productCode = generateProductCode(productName)
+  const { isOpen, onClose, onOpen } = useDisclosure()
 
-
-
-export default function CreateProduct(){
-
-  const elementRef = createRef(null); 
-   const productName="COCA-COLA" 
-   const productCode = generateProductCode(productName);
-    const { isOpen, onClose, onOpen } = useDisclosure();
-
-    const [selectedKeys, setSelectedKeys] = useState(new Set(["Seleccione"]))
-    const [scanProduct, setScanProduct] = useState(false)
-
+  const [selectedKeys, setSelectedKeys] = useState(new Set(['Seleccione']))
+  const [scanProduct, setScanProduct] = useState(false)
 
   const selectedValue = useMemo(
-    () => Array.from(selectedKeys).join(", ").replaceAll("_", " "),
+    () => Array.from(selectedKeys).join(', ').replaceAll('_', ' '),
     [selectedKeys]
-  );
+  )
 
   const SectionProduct = ({ title, children, showDivider }) => {
     return (
@@ -43,14 +39,14 @@ export default function CreateProduct(){
             <label className="block text-small font-medium text-foreground pb-0">{title}</label>
             <Dropdown className="">
                 <DropdownTrigger>
-                    <Button 
-                    variant="bordered" 
+                    <Button
+                    variant="bordered"
                     className="capitalize w-full border"
                     >
                     {selectedValue}
                     </Button>
                 </DropdownTrigger>
-                <DropdownMenu 
+                <DropdownMenu
                     aria-label="Single selection actions"
                     variant="bordered"
                     disallowEmptySelection
@@ -59,9 +55,9 @@ export default function CreateProduct(){
                     onSelectionChange={setSelectedKeys}
                 >
                     {items?.map((item) => {
-                        return (
+                      return (
                             <DropdownItem key={item}>{item?.toUpperCase()}</DropdownItem>
-                        )
+                      )
                     })}
                 </DropdownMenu>
             </Dropdown>
@@ -71,33 +67,33 @@ export default function CreateProduct(){
 
   const InputComponent = ({ title, type, placeholder, isPrice, isBarCode }) => {
     return (
-        <Input 
-            autoFocus={isBarCode ? true : false}
-            type={type} 
-            variant={"underlined"} 
-            label={title} 
+        <Input
+            autoFocus={!!isBarCode}
+            type={type}
+            variant={'underlined'}
+            label={title}
             labelPlacement={'outside'}
-            placeholder={placeholder || ("Ingrese el " + title)}
-            endContent={isPrice ? 
-                <div className="pointer-events-none flex items-center">
+            placeholder={placeholder || ('Ingrese el ' + title)}
+            endContent={isPrice
+              ? <div className="pointer-events-none flex items-center">
                 <span className="text-default-400 text-small">$</span>
-                </div> : null}
+                </div>
+              : null}
             min={isPrice ? 0 : null}
         />
     )
   }
 
-
-    return (
+  return (
         <Suspense fallback={<div>Cargando</div>}>
         <section>
             <header className="flex justify-end">
                 <Button onClick={onOpen}>Crear nuevo producto</Button>
             </header>
-            <Modal size={"2xl"} 
-                isOpen={isOpen} 
+            <Modal size={'2xl'}
+                isOpen={isOpen}
                 onClose={() => onClose}
-                scrollBehavior={"inside"}    
+                scrollBehavior={'inside'}
             >
             <ModalContent>
                <ModalHeader className="flex flex-col gap-1 text-primary-500 dark:text-primary-200">Nuevo producto</ModalHeader>
@@ -108,22 +104,22 @@ export default function CreateProduct(){
                         <div className="my-4 items-center gap-4 grid grid-cols-1 md:grid-cols-2">
                        {/*  <div>
                         <Button onClick={() => {scanProduct ? setScanProduct(false) : setScanProduct(true)}}>{!scanProduct ? 'Scanner' : 'Finalizar Scanner'}</Button>
-                        {scanProduct ? 
+                        {scanProduct ?
                         <BarcodeScanner stopScan={() => setScanProduct(false)}/>
                         : null}
                         </div> */}
                             <div className="flex-3">
                             <ProductImage/>
                             </div>
-                            <div  className="flex flex-1 items-start flex-col w-full gap-4">
-                                <InputComponent 
+                            <div className="flex flex-1 items-start flex-col w-full gap-4">
+                                <InputComponent
                                     isBarCode={true}
-                                    type="text" 
-                                    title="Codigo de barra" 
+                                    type="text"
+                                    title="Codigo de barra"
                                 />
-                                <InputComponent 
-                                    type="text" 
-                                    title="Nombre" 
+                                <InputComponent
+                                    type="text"
+                                    title="Nombre"
                                 />
                                 <SelectItems title={'Categoria'} items={['PAN', 'BEBIDA', 'carne', 'AAAAAAASDSAD']}/>
                             </div>
@@ -162,15 +158,15 @@ export default function CreateProduct(){
                 </section>
                </ModalBody>
                 <ModalFooter>
-                    <Button className =" bg-green-500 text-primary-50" onClick={()=>{
-                        onClose()
+                    <Button className =" bg-green-500 text-primary-50" onClick={() => {
+                      onClose()
                     }
                     }>
                         Guardar
-                    </Button> 
-                    <Button color="danger" variant="light" 
-                        onClick={()=>{
-                            onClose()
+                    </Button>
+                    <Button color="danger" variant="light"
+                        onClick={() => {
+                          onClose()
                         }}
                     >
                         Cerrar
@@ -180,5 +176,5 @@ export default function CreateProduct(){
             </Modal>
         </section>
         </Suspense>
-    );
+  )
 }
