@@ -3,7 +3,7 @@
 import React, { useEffect } from 'react'
 import Auth from '@/app/auth'
 import TableProducs from './card'
-import CreateProduct from './components/createProduct'
+import CreateProduct from './components/NewProduct/createProduct'
 import ScannerDetection from '@/components/ScannerDetection/ScannerDetection'
 import useInventoryStore from './store'
 // import { fetchGetproducts } from '@/services/products'
