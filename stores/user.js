@@ -2,66 +2,66 @@ import { authenticate } from '@/utils/authSettings'
 import { create } from 'zustand'
 import { persist } from 'zustand/middleware'
 const useAuthStore = create(
-  persist(
-    (set) => ({
-      name: null,
-      lastName: null,
-      fullName: null,
-      isAdmin: false,
-      token: null,
-      email: null,
-      loading: false,
-      error: null,
-      setToken: () => set((state) => ({ token: state })),
-      setEmail: () => set((state) => ({ email: state })),
-      setError: () => set((state) => ({ error: state })),
-      signIn: ({ email, password }) => {
-        set({ loading: true, error: null })
-        try {
-          authenticate(
-            {
-              email,
-              password
+    persist(
+        (set) => ({
+            name: null,
+            lastName: null,
+            fullName: null,
+            isAdmin: false,
+            token: null,
+            email: null,
+            loading: false,
+            error: null,
+            setToken: () => set((state) => ({ token: state })),
+            setEmail: () => set((state) => ({ email: state })),
+            setError: () => set((state) => ({ error: state })),
+            signIn: ({ email, password }) => {
+                set({ loading: true, error: null })
+                try {
+                    authenticate(
+                        {
+                            email,
+                            password
+                        }
+                    ).then(({ user, statusCode, statusText, error, message }) => {
+                        if (user.token) {
+                            const { name, lastName, userType, token } = user
+                            set({
+                                name,
+                                lastName,
+                                fullName: name + ' ' + lastName,
+                                email,
+                                token,
+                                isAdmin: userType === 'admin',
+                                error: null
+                            })
+                            if (userType === 'admin') set({ isAdmin: true })
+                        } else {
+                            set({ error: statusCode + ' ' + (error || message || statusText) })
+                        }
+                        set({ loading: false })
+                    })
+                } catch {
+                    set({ loading: false })
+                }
+            },
+            signOut: () => {
+                set({
+                    name: null,
+                    lastName: null,
+                    fullName: null,
+                    isAdmin: false,
+                    token: null,
+                    email: null,
+                    loading: false,
+                    error: null
+                })
             }
-          ).then(({ user, statusCode, statusText, error, message }) => {
-            if (user.token) {
-              const { name, lastName, userType, token } = user
-              set({
-                name,
-                lastName,
-                fullName: name + ' ' + lastName,
-                email,
-                token,
-                isAdmin: userType === 'admin',
-                error: null
-              })
-              if (userType === 'admin') set({ isAdmin: true })
-            } else {
-              set({ error: statusCode + ' ' + (error || message || statusText) })
-            }
-            set({ loading: false })
-          })
-        } catch {
-          set({ loading: false })
+        }),
+        {
+            name: 'user'
         }
-      },
-      signOut: () => {
-        set({
-          name: null,
-          lastName: null,
-          fullName: null,
-          isAdmin: false,
-          token: null,
-          email: null,
-          loading: false,
-          error: null
-        })
-      }
-    }),
-    {
-      name: 'user'
-    }
-  )
+    )
 )
 
 export default useAuthStore

@@ -28,6 +28,10 @@
     "react-hooks/rules-of-hooks": "off",
     "react-hooks/exhaustive-deps": "off",
     "react/react-in-jsx-scope": "off",
-    "no-tabs": 0
+    "no-tabs": 0,
+    "indent": [
+      "error",
+      4
+    ]
   }
 }
