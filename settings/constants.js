@@ -1,4 +1,3 @@
-
 const BASE_AUTH_API_URL = 'https://marina-market-auth-api-c4pc-dev.fl0.io'
 const BASE_MARKET_API_URL = 'https://marina-market-inventory-api-j358-dev.fl0.io'
 

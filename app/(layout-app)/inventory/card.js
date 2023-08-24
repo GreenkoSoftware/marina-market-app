@@ -1,111 +1,113 @@
 'use client'
-import React,{  useEffect, useState } from "react";
-import CardUi from "@/components/ui/Card";
-import { Tabs, Tab, useDisclosure } from "@nextui-org/react";
-import DetailedProduct from "./components/detailedProduct";
-export default function Card() {
-  const { isOpen, onClose,onOpen } = useDisclosure();
-  const [targeProduct,setTargetProduct]=useState(null)
-  const [selected, setSelected] = useState('fruts');
-  const [listInventory, setListInventory] = useState([]);
+import React, { useEffect, useState } from 'react'
+import CardUi from '@/components/ui/Card'
+import { Tabs, Tab, useDisclosure } from '@nextui-org/react'
+import DetailedProduct from './components/detailedProduct'
+export default function Card () {
+  const { isOpen, onClose, onOpen } = useDisclosure()
+  const [targeProduct, setTargetProduct] = useState(null)
+  const [selected, setSelected] = useState('fruts')
+  const [listInventory, setListInventory] = useState([])
   const list = [
     {
-      title: "Naranja",
+      title: 'Naranja',
       img: 'https://images.unsplash.com/photo-1559181567-c3190ca9959b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1064&q=80',
-      price: "$5.000",
-      stock:100,
-      type:'fruts'
+      price: '$5.000',
+      stock: 100,
+      type: 'fruts'
     },
     {
-      title: "Mandarina",
-      img: "https://images.unsplash.com/photo-1559181567-c3190ca9959b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1064&q=80",
-      price: "$6.000",
-      stock:100,type:'fruts'
+      title: 'Mandarina',
+      img: 'https://images.unsplash.com/photo-1559181567-c3190ca9959b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1064&q=80',
+      price: '$6.000',
+      stock: 100,
+      type: 'fruts'
     },
     {
-      title: "Cerezas",
-      img: "https://images.unsplash.com/photo-1559181567-c3190ca9959b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1064&q=80",
-      price: "$1.000",
-      stock:100,type:'fruts'
+      title: 'Cerezas',
+      img: 'https://images.unsplash.com/photo-1559181567-c3190ca9959b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1064&q=80',
+      price: '$1.000',
+      stock: 100,
+      type: 'fruts'
     },
     {
-      title: "Limón",
-      img: "https://images.unsplash.com/photo-1559181567-c3190ca9959b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1064&q=80",
-      price: "$5.300",
-      stock:100,
-      type:'vegetables'
+      title: 'Limón',
+      img: 'https://images.unsplash.com/photo-1559181567-c3190ca9959b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1064&q=80',
+      price: '$5.300',
+      stock: 100,
+      type: 'vegetables'
     },
     {
-      title: "Palta",
-      img: "https://images.unsplash.com/photo-1559181567-c3190ca9959b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1064&q=80",
-      price: "$15.700",
-      stock:100,
-      type:'vegetables'
+      title: 'Palta',
+      img: 'https://images.unsplash.com/photo-1559181567-c3190ca9959b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1064&q=80',
+      price: '$15.700',
+      stock: 100,
+      type: 'vegetables'
     },
     {
-      title: "Espinaca",
-      img: "https://images.unsplash.com/photo-1559181567-c3190ca9959b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1064&q=80",
-      price: "$8.000",
-      stock:100,
-      type:'vegetables'
+      title: 'Espinaca',
+      img: 'https://images.unsplash.com/photo-1559181567-c3190ca9959b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1064&q=80',
+      price: '$8.000',
+      stock: 100,
+      type: 'vegetables'
     },
     {
-      title: "Platano",
-      img: "https://images.unsplash.com/photo-1559181567-c3190ca9959b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1064&q=80",
-      price: "$7.500",
-      stock:10,
-      type:'fruts'
+      title: 'Platano',
+      img: 'https://images.unsplash.com/photo-1559181567-c3190ca9959b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1064&q=80',
+      price: '$7.500',
+      stock: 10,
+      type: 'fruts'
     },
     {
-      title: "Melón",
-      img: "https://images.unsplash.com/photo-1559181567-c3190ca9959b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1064&q=80",
-      price: "$12.200",
-      stock:50,
-      type:'fruts'
-    },
-  ];
-  let category = [
-    {
-      id: "fruts",
-      label: "Frutas",
-      route:'/sales'
-    },
-    {
-      id: "vegetables",
-      label: "Verduras",
-      route:'/inventory'
-    },
-    {
-      id: "other",
-      label: "Otros",
-      route:'/reports'
+      title: 'Melón',
+      img: 'https://images.unsplash.com/photo-1559181567-c3190ca9959b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1064&q=80',
+      price: '$12.200',
+      stock: 50,
+      type: 'fruts'
     }
-  ];
-  
-  useEffect(()=>{
-    if(selected){
-      setListInventory(list.filter((item)=> item.type === selected))
+  ]
+  const category = [
+    {
+      id: 'fruts',
+      label: 'Frutas',
+      route: '/sales'
+    },
+    {
+      id: 'vegetables',
+      label: 'Verduras',
+      route: '/inventory'
+    },
+    {
+      id: 'other',
+      label: 'Otros',
+      route: '/reports'
     }
-  },[selected])
-  useEffect(()=>{
-    if(targeProduct){
+  ]
+
+  useEffect(() => {
+    if (selected) {
+      setListInventory(list.filter((item) => item.type === selected))
+    }
+  }, [selected])
+  useEffect(() => {
+    if (targeProduct) {
       onOpen()
     }
-  },[targeProduct])
+  }, [targeProduct])
   return (
   <section>
     <section className="z-10 h-[3rem] w-[260px] top-[52px] rounded-t-[12px] bg-secondary-50 dark:bg-secondary-450">
-      <Tabs 
-            disabledKeys={["reports"]}
+      <Tabs
+            disabledKeys={['reports']}
             aria-label="Options"
-            items={category} 
+            items={category}
             selectedKey={selected}
             onSelectionChange={setSelected}
             variant={'light'}
             className="pt-3 pl-3"
           >
           {(item) => (
-            <Tab key={item.id} size={"lg"} title={item.label}>
+            <Tab key={item.id} size={'lg'} title={item.label}>
             </Tab>
           )}
       </Tabs>
@@ -120,5 +122,5 @@ export default function Card() {
     {/* Modal with detailed product */}
     <DetailedProduct targeProduct={targeProduct} isOpen={isOpen} onClose={onClose} setTargetProduct={setTargetProduct}/>
   </section>
-  );
+  )
 }

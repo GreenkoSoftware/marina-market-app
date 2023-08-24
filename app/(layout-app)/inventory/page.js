@@ -1,12 +1,10 @@
 'use client'
-import Auth from "@/app/auth";
-import Cards from "./card";
-import CreateProduct from "./components/NewProduct/createProduct";
-import ScannerDetection from "@/components/ScannerDetection/ScannerDetection";
-
+import Auth from '@/app/auth'
+import Cards from './card'
+import CreateProduct from './components/createProduct'
+import ScannerDetection from '@/components/ScannerDetection/ScannerDetection'
 
 export default function Inventory () {
-
   return (
         <section>
           <ScannerDetection/>
@@ -14,5 +12,5 @@ export default function Inventory () {
           <Auth/>
           <Cards/>
         </section>
-  );
+  )
 }

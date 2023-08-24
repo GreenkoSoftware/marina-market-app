@@ -1,15 +1,14 @@
-'use client';
-import React  from 'react';
-import { Card,Image,CardFooter,CardHeader, Button } from '@nextui-org/react';
+'use client'
+import React from 'react'
+import { Card, Image, CardFooter, CardHeader, Button } from '@nextui-org/react'
 import { useRouter } from 'next/navigation'
 
-
 export default function MainTittleCard (props) {
-    const { title,footerMessage,imgSrc,route } = props
-    const router = useRouter()
+  const { title, footerMessage, imgSrc, route } = props
+  const router = useRouter()
 
-    return (
-        
+  return (
+
         <Card
             isFooterBlurred
             radius="lg"
@@ -25,16 +24,16 @@ export default function MainTittleCard (props) {
                 className="z-0 w-full h-full object-cover"
                 isZoomed
                 src={imgSrc}
-                
+
             />
             <CardFooter className="justify-between before:bg-white/10 border-white/20 border-1 overflow-hidden py-1 absolute before:rounded-xl rounded-large bottom-1 w-[calc(100%_-_8px)] h-20 shadow-small ml-1 z-10">
                 <p className="text-l sm:text-xxlg text-white/80 m-2 px-3 ">{footerMessage}</p>
             <Button className={`${route === '/reports' ? 'cursor-not-allowed' : ''} text-xl text-white bg-sky-500/75 w-[50px] sm:w-[100px]`} variant="flat" color="default" radius="md" size="lg"
-                onPress = {() => route === '/reports' ?  null : router.push(route)
+                onPress = {() => route === '/reports' ? null : router.push(route)
             }>
-                Ingresar 
+                Ingresar
             </Button>
             </CardFooter>
         </Card>
-    );
+  )
 }

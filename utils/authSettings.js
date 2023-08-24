@@ -1,9 +1,9 @@
-import { AUTH_LOGIN_API_URL } from "@/settings/constants"
+import { AUTH_LOGIN_API_URL } from '@/settings/constants'
 
-export async function authenticate({ email, password }) {
-  var data = {
+export async function authenticate ({ email, password }) {
+  const data = {
     user: {
-    }, 
+    },
     statusCode: undefined,
     statusText: undefined,
     error: undefined,
@@ -25,14 +25,14 @@ export async function authenticate({ email, password }) {
         data.statusText = response?.statusText
         try {
           return response.json()
-        } catch{ 
-           data.error = response?.statusText
+        } catch {
+          data.error = response?.statusText
           return undefined
         }
       }).then(response => {
         if (response?.code === 200) {
           const { token, user_type: userType, user: userData } = response.data
-  
+
           data.user = {
             token,
             userType,

@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react'
 export const DeleteIcon = (props) => (
   <svg
     aria-hidden="true"
@@ -46,4 +46,4 @@ export const DeleteIcon = (props) => (
       strokeWidth={1.5}
     />
   </svg>
-);
+)
