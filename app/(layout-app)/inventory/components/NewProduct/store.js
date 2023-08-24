@@ -31,8 +31,8 @@ const useProductFormStore = create((set) => ({
                         net_price: data.net_price,
                         code: data.barcode?.toString(),
                         image: data.image,
-                        product_category_id: data.category_id || 1,
-                        stock_type_id: data.stock_type_id || 1,
+                        product_categories_id: data.category_id || 1,
+                        stock_types_id: data.stock_type_id || 1,
                         product_stock: {
                             stock: data.stock,
                             stock_min: data.stock_min

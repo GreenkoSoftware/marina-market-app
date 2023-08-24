@@ -14,8 +14,21 @@ const useInventoryStore = create(
                 fetchGetproducts().then(result => {
                     if (result?.code === 200) {
                         set({
-                            listInventory: result?.data?.reduce((acc, { ID, code, cost_price, image, name, net_price, product_category_id, stock_type_id, product_stock }) => {
-                                return [...acc, { id: ID, code, costPrice: cost_price, image, name, netPrice: net_price, productCategoryId: product_category_id, stockTypeId: stock_type_id, stock: product_stock?.stock, stockMin: product_stock?.stock_min }]
+                            listInventory: result?.data?.reduce((acc, { ID, code, cost_price, image, name, net_price, product_categories_id, stock_types_id, product_stock }) => {
+                                return [...acc,
+                                    {
+                                        id: ID,
+                                        code,
+                                        costPrice: cost_price,
+                                        image,
+                                        name,
+                                        netPrice: net_price,
+                                        productCategoryId: product_categories_id,
+                                        stockTypeId: stock_types_id,
+                                        stock: product_stock?.stock,
+                                        stockMin: product_stock?.stock_min
+                                    }
+                                ]
                             }, [])
                         })
                     } else {
@@ -33,7 +46,7 @@ const useInventoryStore = create(
                     if (result?.code === 200) {
                         set({
                             listCategories: result?.data?.reduce((acc, value) => {
-                                return [...acc, { id: value?.ID, label: value?.category_name }]
+                                return [...acc, { id: value?.ID, label: value?.name }]
                             }, [])
                         })
                     } else {

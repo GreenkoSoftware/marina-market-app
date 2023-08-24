@@ -20,7 +20,7 @@ export default function LayoutApp ({ children }) {
                     <Header/>
                 </header>
                 <div className="flex-1 flex flex-col sm:flex-row  pt-[1rem]">
-                    <main className="flex-1 mx-[1rem] xl:mx-[14rem]">
+                    <main className="flex-1 mx-[1rem] xl:mx-[10rem] xlg:mx-[6rem]">
                         {children}
                     </main>
                 </div>
