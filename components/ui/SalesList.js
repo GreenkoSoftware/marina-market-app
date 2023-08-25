@@ -3,10 +3,12 @@ import React from 'react'
 import SaleListItem from './SalesListItem'
 import { Divider, ScrollShadow, Button } from '@nextui-org/react'
 import SearchBar from './SearchBar'
+import useSalesStore from '@/app/(layout-app)/sales/store'
+export default function SaleList () {
+    const { listSales } = useSalesStore(({ listSales }) => ({ listSales }))
 
-export default function SaleList (props) {
     return (
-        <section className='flex flex-col rounded-[12px] h-[47rem] ' >
+        <section className='flex flex-col rounded-[12px] h-[42rem] ' >
             <div className="w-full h-full flex-initial max-w-md rounded-[12px] bg-white border border-gray-200 dark:border-secondary-450 shadow   dark:bg-secondary-450">
                 <section >
                     <SearchBar></SearchBar>
@@ -17,29 +19,13 @@ export default function SaleList (props) {
                 <div className="flow-root">
                     <ul role="list" className="divide-y  divide-gray-200 dark:divide-white pr-8 pl-8">
                         <ScrollShadow className="w-[420px] h-[30rem] pr-6">
-                            <Divider orientation="horizontal" />
-                            <SaleListItem></SaleListItem>
-                            <Divider orientation="horizontal" />
-                            <SaleListItem></SaleListItem>
-                            <Divider orientation="horizontal" />
-                            <SaleListItem></SaleListItem>
-                            <Divider orientation="horizontal" />
-                            <SaleListItem></SaleListItem>
-                            <Divider orientation="horizontal" />
-                            <SaleListItem></SaleListItem>
-                            <Divider orientation="horizontal" />
-                            <SaleListItem></SaleListItem>
-                            <Divider orientation="horizontal" />
-                            <SaleListItem></SaleListItem>
-                            <Divider orientation="horizontal" />
-                            <SaleListItem></SaleListItem>
-                            <Divider orientation="horizontal" />
-                            <SaleListItem></SaleListItem>
-                            <Divider orientation="horizontal" />
-                            <SaleListItem></SaleListItem>
-                            <Divider orientation="horizontal" />
-                            <SaleListItem></SaleListItem>
-                            <Divider orientation="horizontal" />
+                            {listSales?.map((product, index) =>
+                                <section key={index}>
+                                    <Divider orientation="horizontal" />
+                                    <SaleListItem product={product} />
+                                    <Divider orientation="horizontal" />
+                                </section>
+                            )}
                         </ScrollShadow>
                     </ul>
                 </div>

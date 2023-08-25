@@ -1,20 +1,26 @@
 /* eslint-disable camelcase */
 import { create } from 'zustand'
 import { fetchGetproducts, fetchGetCategories } from '@/services/products'
-const useInventoryStore = create(
+
+const useSalesStore = create(
     (set) => ({
         listInventory: [],
         listCategories: [],
+        listSales: [],
         setListInventory: () => set((state) => ({ listInventory: state })),
         loading: false,
         error: null,
+        addFromNewSales: (listSales, product, setTargetProduct) => {
+            set({ listSales: [...listSales, product] })
+            setTargetProduct(null)
+        },
         getListInventory: () => {
             set({ loading: true, error: null })
             try {
                 fetchGetproducts().then(result => {
                     if (result?.code === 200) {
                         set({
-                            listInventory: result?.data?.reduce((acc, { ID, code, cost_price, image, name, net_price, product_categories_id, stock_types_id, product_stock }) => {
+                            listInventory: result?.data?.reduce((acc, { ID, code, cost_price, image, name, net_price, product_categories_id, stock_types_id, product_stock, sale_price }) => {
                                 return [...acc,
                                     {
                                         id: ID,
@@ -26,7 +32,8 @@ const useInventoryStore = create(
                                         productCategoryId: product_categories_id,
                                         stockTypeId: stock_types_id,
                                         stock: product_stock?.stock,
-                                        stockMin: product_stock?.stock_min
+                                        stockMin: product_stock?.stock_min,
+                                        salePrice: sale_price
                                     }
                                 ]
                             }, [])
@@ -62,12 +69,12 @@ const useInventoryStore = create(
         }
     }),
     {
-        name: 'inventory'
+        name: 'sales'
     }
 
 )
 
-export default useInventoryStore
+export default useSalesStore
 /*
 code,cost_price, image, name, net_price, product_category_id, stock_type_id
 */
