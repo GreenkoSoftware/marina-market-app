@@ -6,8 +6,8 @@ import SearchBar from './SearchBar'
 
 export default function SaleList (props) {
   return (
-    <section className='flex flex-col h-full' >
-        <div className="w-full h-full flex-initial max-w-md  bg-white border border-gray-200 dark:border-secondary-450 rounded-lg shadow   dark:bg-secondary-450">
+    <section className='flex flex-col h-full rounded-[12px]' >
+        <div className="w-full h-full flex-initial max-w-md rounded-[12px] bg-white border border-gray-200 dark:border-secondary-450 shadow   dark:bg-secondary-450">
             <section >
                 <SearchBar></SearchBar>
             </section>

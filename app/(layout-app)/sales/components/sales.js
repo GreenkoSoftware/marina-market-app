@@ -7,7 +7,7 @@ const SalesMenu = () => {
     <section className='flex flex-col items-center'>
     <section className='flex flex-row items-end gap-5'>
         <Card/>
-        <div className='flex h-full '>
+        <div className='flex h-full'>
         <SaleList/>
         </div>
     </section>
