@@ -1,9 +1,10 @@
 'use client'
 import React, { useEffect, useState } from 'react'
 import CardUi from '@/components/ui/Card'
-import { Tabs, Tab, useDisclosure } from '@nextui-org/react'
+import { Tabs, Tab, useDisclosure, ScrollShadow } from '@nextui-org/react'
 import DetailedProduct from './components/detailedProduct'
 import useInventoryStore from './store'
+
 export default function Card () {
     const { isOpen, onClose, onOpen } = useDisclosure()
     const [targeProduct, setTargetProduct] = useState(null)
@@ -28,6 +29,7 @@ export default function Card () {
         getCategories()
         getListInventory()
     }, [])
+
     return (
         <section className=''>
             <section className="z-10 h-[3rem] w-[260px] top-[52px] rounded-t-[12px] bg-secondary-50 dark:bg-secondary-450">
@@ -41,17 +43,21 @@ export default function Card () {
                     className="pt-3 pl-3"
                 >
                     {(item) => (
+
                         <Tab key={item.id} size={'lg'} title={item.label}>
                         </Tab>
                     )}
                 </Tabs>
             </section>
-            <section className="p-[3rem] shadow-md hover:shadow-lg  rounded-tl-[0px]  bg-secondary-50 dark:bg-secondary-450 rounded-[14px]">
-                <div className="gap-2 grid grid-cols-2 md:grid-cols-4">
-                    {listInventory.map((item, index) => (
-                        <CardUi className key={index} item={item} index={index} setTargetProduct={setTargetProduct}/>
-                    ))}
-                </div>
+            <section className="p-[3rem]  shadow-md hover:shadow-lg  rounded-tl-[0px]  bg-secondary-50 dark:bg-secondary-450 rounded-[14px]">
+                <ScrollShadow className="h-[41rem] w-auto">
+                    <div className="gap-4 grid grid-cols-2 md:grid-cols-5">
+                        {listInventory.map((item, index) => (
+                            <CardUi className key={index} item={item} index={index} setTargetProduct={setTargetProduct}/>
+                        ))}
+
+                    </div>
+                </ScrollShadow>
             </section>
             <DetailedProduct targeProduct={targeProduct} isOpen={isOpen} onClose={onClose} setTargetProduct={setTargetProduct}/>
         </section>
