@@ -21,7 +21,7 @@ const useProductFormStore = create((set) => ({
     setLoading: (value) => set({ loading: value }),
     setError: (value) => set({ error: value }),
     requestCreateProduct: async (data) => {
-        set({ loading: true, error: null })
+        set({ loading: true, error: null, complete: false })
 
         // has requered values
         const missingRequeredValues = !data || !data.name || !data.barcode || !data.category_id || !data.stock_type_id || !data.stock || !data.net_price || !data.cost_price
@@ -61,16 +61,15 @@ const useProductFormStore = create((set) => ({
                         return undefined
                     }
                 }).then(response => {
-                    set({ loading: false })
-                    console.log(response)
+                    set({ loading: false, complete: true })
                     if (response?.code === 200) {
-                    //
+                        //
                     } else {
                         set({ error: 'Ha ocurrido un error al crear el producto.' })
                     }
                 })
         } catch (err) {
-            set({ loading: false, error: err })
+            set({ loading: false, error: err, complete: true })
         }
     },
     clearStore: () => set({

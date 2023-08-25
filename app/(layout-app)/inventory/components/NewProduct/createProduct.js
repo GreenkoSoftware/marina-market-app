@@ -89,6 +89,13 @@ export default function CreateProduct () {
         setStockTypeOptions(listStockTypes)
     }, [listCategories, listStockTypes])
 
+    useEffect(() => {
+        if (complete && !error) {
+            clearStore()
+            onClose()
+        }
+    }, [complete, error])
+
     const handleInputChange = ({ field, value }) => {
         const newFormValues = { ...data, [field]: !isNaN(value) ? parseFloat(value) : value }
         console.log(newFormValues)
@@ -204,7 +211,7 @@ export default function CreateProduct () {
                         <Button className =" bg-green-500 text-primary-50"
                             onClick={() => { requestCreateProduct(data) }}
                             isLoading={!!loading}>
-                        Guardar
+                            Guardar
                         </Button>
                         <Button color="danger" variant="flat"
                             onClick={() => {
@@ -212,7 +219,7 @@ export default function CreateProduct () {
                                 clearStore()
                             }}
                         >
-                        Cerrar
+                            Cerrar
                         </Button>
                     </ModalFooter>
                 </ModalContent>
