@@ -1,6 +1,6 @@
 /* eslint-disable no-unused-vars */
 import { Button } from '@nextui-org/react'
-import { useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 
 export default function ScannerDetection () {
     const [detected, setDetected] = useState(null)
@@ -41,20 +41,21 @@ export default function ScannerDetection () {
     }
 
     useEffect(() => {
-        console.log(scanner)
-        console.log(detected)
+        // console.log(scanner)
+        // console.log(detected)
         if (detected) {
-            console.log(scanner)
+            // console.log(scanner)
             startScanning()
         } else {
             if (scanner) {
-                console.log(scanner)
+                // console.log(scanner)
                 scanner?.stopScanning()
             }
         }
     }, [detected])
 
-    return (<section>
-        <Button onClick={() => { detected ? setDetected(false) : setDetected(true) }} >{'Detectar scanner: ' + (detected ? 'ACTIVADO' : 'DESACTIVADO')}</Button>
-    </section>)
+    return (
+        <section>
+            <Button onClick={() => { detected ? setDetected(false) : setDetected(true) }} >{'Detectar scanner: ' + (detected ? 'ACTIVADO' : 'DESACTIVADO')}</Button>
+        </section>)
 }

@@ -1,16 +1,17 @@
+/* eslint-disable no-unused-vars */
 'use client'
 import Auth from '@/app/auth'
-import Cards from './card'
-import CreateProduct from './components/createProduct'
+import TableProducs from './card'
+import CreateProduct from './components/NewProduct/createProduct'
 import ScannerDetection from '@/components/ScannerDetection/ScannerDetection'
 
-export default function Inventory () {
+export default async function Inventory () {
     return (
         <section>
             <ScannerDetection/>
             <CreateProduct/>
             <Auth/>
-            <Cards/>
+            <TableProducs />
         </section>
     )
 }
