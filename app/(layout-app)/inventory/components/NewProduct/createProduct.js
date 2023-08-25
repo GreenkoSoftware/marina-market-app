@@ -1,12 +1,13 @@
 /* eslint-disable no-unused-vars */
 'use client'
-import { Button, Divider, Dropdown, DropdownItem, DropdownMenu, DropdownTrigger, Input, Modal, ModalBody, ModalContent, ModalFooter, ModalHeader, useDisclosure } from '@nextui-org/react'
+import { Button, Divider, Dropdown, DropdownItem, DropdownMenu, DropdownTrigger, Input, Modal, ModalBody, ModalContent, ModalFooter, ModalHeader, Select, SelectItem, dropdown, useDisclosure } from '@nextui-org/react'
 import React, { Suspense, createRef, useEffect, useMemo, useState } from 'react'
 import ProductImage from './productImage'
 import BarcodeScanner from './scanner'
 import { generateProductCode } from '@/utils/barcode'
 import Barcosde from '@/components/barcode'
 import useProductFormStore from './store'
+import useInventoryStore from '../../store'
 
 const SectionProduct = ({ title, children, showDivider }) => {
     return (
@@ -20,35 +21,26 @@ const SectionProduct = ({ title, children, showDivider }) => {
     )
 }
 
-const SelectItems = ({ title, items, selectedValue, selectedKeys, setSelectedKeys }) => {
+const SelectComponent = ({ title, type, placeholder, options, ...rest }) => {
     return (
-        <section className="space-y-2 w-full">
-            <label className="block text-small font-medium text-foreground pb-0">{title}</label>
-            <Dropdown className="">
-                <DropdownTrigger>
-                    <Button
-                        variant="bordered"
-                        className="capitalize w-full border"
-                    >
-                        {selectedValue}
-                    </Button>
-                </DropdownTrigger>
-                <DropdownMenu
-                    aria-label="Single selection actions"
-                    variant="bordered"
-                    disallowEmptySelection
-                    selectionMode="single"
-                    selectedKeys={selectedKeys}
-                    onSelectionChange={setSelectedKeys}
-                >
-                    {items?.map((item) => {
-                        return (
-                            <DropdownItem key={item}>{item?.toUpperCase()}</DropdownItem>
-                        )
-                    })}
-                </DropdownMenu>
-            </Dropdown>
-        </section>
+        <Select
+            isRequired
+            // defaultSelectedKeys={['cat']}
+            className="max-w-xs"
+            type={type}
+            variant={'underlined'}
+            label={title}
+            labelPlacement={'outside'}
+            placeholder={placeholder || ('Ingrese el ' + title)}
+            {...rest}
+
+        >
+            {options.map(({ id, label }) => (
+                <SelectItem key={id} value={label}>
+                    {label}
+                </SelectItem>
+            ))}
+        </Select>
     )
 }
 
@@ -73,33 +65,32 @@ const InputComponent = ({ title, type, placeholder, isPrice, isBarCode, ...rest 
 }
 
 export default function CreateProduct () {
-    const productName = 'COCA-COLA'
-    const productCode = generateProductCode(productName)
+    /*  const productName = 'COCA-COLA'
+    const productCode = generateProductCode(productName) */
+
     const { isOpen, onClose, onOpen } = useDisclosure()
-
-    const {
-        data,
-        setFormData,
-        requestCreateProduct
-    } = useProductFormStore()
-
-    useEffect(() => {
-        console.log('Setore name: ' + data?.name)
-        console.log('Setore barcode: ' + data?.barcode)
-        console.log('Setore image: ' + data?.image?.length)
-    }, [data])
-
-    const [selectedKeys, setSelectedKeys] = useState(new Set(['Seleccione']))
     const [scanProduct, setScanProduct] = useState(false)
 
-    const selectedValue = useMemo(
-        () => Array.from(selectedKeys).join(', ').replaceAll('_', ' '),
-        [selectedKeys]
-    )
+    const [categoryOptions, setCategoryOptions] = useState([])
+    const [stockTypeOptions, setStockTypeOptions] = useState([])
+
+    const { data, setFormData, requestCreateProduct, clearStore } = useProductFormStore()
+    const { listCategories, listStockTypes, getCategories, getStockTypes } = useInventoryStore()
+
+    useEffect(() => {
+        if (isOpen) {
+            getStockTypes()
+            getCategories()
+        }
+    }, [isOpen])
+
+    useEffect(() => {
+        setCategoryOptions(listCategories)
+        setStockTypeOptions(listStockTypes)
+    }, [listCategories, listStockTypes])
 
     const handleInputChange = ({ field, value }) => {
         const newFormValues = { ...data, [field]: !isNaN(value) ? parseFloat(value) : value }
-        console.log(value)
         console.log(newFormValues)
         setFormData(newFormValues)
     }
@@ -111,15 +102,17 @@ export default function CreateProduct () {
             </header>
             <Modal size={'2xl'}
                 isOpen={isOpen}
+                backdrop='opaque'
                 onClose={() => onClose}
                 scrollBehavior={'inside'}
+                closeButton={<></>}
             >
                 <ModalContent>
                     <ModalHeader className="flex flex-col gap-1 text-primary-500 dark:text-primary-200">Nuevo producto</ModalHeader>
                     <ModalBody>
                         <section>
                             {/* <Barcosde showDetail={true} productName = {productName} productCode ={ productCode } productCost={"1790"}/> */}
-                            <SectionProduct title={'Producto'}>
+                            <SectionProduct title={null}>
                                 <div className="my-4 items-center gap-4 grid grid-cols-1 md:grid-cols-2">
                                     {/*  <div>
                         <Button onClick={() => {scanProduct ? setScanProduct(false) : setScanProduct(true)}}>{!scanProduct ? 'Scanner' : 'Finalizar Scanner'}</Button>
@@ -142,8 +135,27 @@ export default function CreateProduct () {
                                             title="Nombre"
                                             onValueChange={(value) => { handleInputChange({ field: 'name', value }) }}
                                         />
-                                        {/*  <SelectItems title={'Categoria'} items={['PAN', 'BEBIDA', 'carne', 'AAAAAAASDSAD']}/> */}
+
                                     </div>
+                                </div>
+                                <div className="my-4 flex items-center gap-4">
+
+                                    <SelectComponent
+                                        isRequired
+                                        title="Categoria"
+                                        placeholder="Seleccione"
+                                        // defaultSelectedKeys={['']}
+                                        options={categoryOptions}
+                                        onSelectionChange={(value) => { handleInputChange({ field: 'category_id', value: value?.currentKey }) }}
+                                    />
+                                    <SelectComponent
+                                        isRequired
+                                        title="Tipo de stock"
+                                        placeholder="Seleccione"
+                                        // defaultSelectedKeys={['']}
+                                        options={stockTypeOptions}
+                                        onSelectionChange={(value) => { handleInputChange({ field: 'stock_type_id', value: value?.currentKey }) }}
+                                    />
                                 </div>
                             </SectionProduct>
                             <SectionProduct title={'Precio'} showDivider>
@@ -190,9 +202,10 @@ export default function CreateProduct () {
                         }>
                         Guardar
                         </Button>
-                        <Button color="danger" variant="light"
+                        <Button color="danger" variant="flat"
                             onClick={() => {
                                 onClose()
+                                clearStore()
                             }}
                         >
                         Cerrar

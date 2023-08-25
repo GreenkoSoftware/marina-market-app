@@ -1,10 +1,11 @@
 /* eslint-disable camelcase */
 import { create } from 'zustand'
-import { fetchGetproducts, fetchGetCategories } from '@/services/products'
+import { fetchGetproducts, fetchGetCategories, fetchGetTypeStocks } from '@/services/products'
 const useInventoryStore = create(
     (set) => ({
         listInventory: [],
         listCategories: [],
+        listStockTypes: [],
         setListInventory: () => set((state) => ({ listInventory: state })),
         loading: false,
         error: null,
@@ -57,8 +58,26 @@ const useInventoryStore = create(
                 set({ loading: false })
             }
         },
+        getStockTypes: () => {
+            set({ loading: true, error: null })
+            try {
+                fetchGetTypeStocks().then(result => {
+                    if (result?.code === 200) {
+                        set({
+                            listStockTypes: result?.data?.reduce((acc, value) => {
+                                return [...acc, { id: value?.ID, label: value?.name }]
+                            }, [])
+                        })
+                    } else {
+                        return null
+                    }
+                })
+            } catch {
+                set({ loading: false })
+            }
+        },
         clearState: () => {
-            set({ error: null, loading: false, listInventory: [], listCategories: [] })
+            set({ error: null, loading: false, listInventory: [], listCategories: [], listStockTypes: [] })
         }
     }),
     {

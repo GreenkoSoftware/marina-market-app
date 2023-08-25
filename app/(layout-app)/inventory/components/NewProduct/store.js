@@ -1,3 +1,4 @@
+import { getToken } from '@/services/user'
 import { CREATE_PRODUCT_API_URL } from '@/settings/constants'
 import { create } from 'zustand'
 
@@ -26,21 +27,19 @@ const useProductFormStore = create((set) => ({
                     method: 'POST',
                     cache: 'no-store',
                     body: JSON.stringify({
-                        name: data.name,
+                        name: data.name?.toString(),
                         cost_price: data.cost_price,
                         net_price: data.net_price,
                         code: data.barcode?.toString(),
                         image: data.image,
-                        product_categories_id: data.category_id || 1,
-                        stock_types_id: data.stock_type_id || 1,
+                        product_categories_id: data.category_id,
+                        stock_types_id: data.stock_type_id,
                         product_stock: {
                             stock: data.stock,
                             stock_min: data.stock_min
                         }
                     }),
-                    headers: {
-                        Authorization: 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2OTI5MzIyODksInN1YiI6ImdyZWVua28uc29mdHdhcmVAZ21haWwuY29tIn0.O-AAF7BjBS6vlcb2SaZJmj8u8seG8forjB7CsYcgwzY'
-                    }
+                    headers: { Authorization: 'Bearer ' + getToken() }
                 })
                 .then(response => {
                     console.log(response)
