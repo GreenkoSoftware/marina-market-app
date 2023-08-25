@@ -74,7 +74,7 @@ export default function CreateProduct () {
     const [categoryOptions, setCategoryOptions] = useState([])
     const [stockTypeOptions, setStockTypeOptions] = useState([])
 
-    const { data, setFormData, requestCreateProduct, clearStore } = useProductFormStore()
+    const { data, setFormData, requestCreateProduct, loading, error, setError, complete, hasRequeredValues, clearStore } = useProductFormStore()
     const { listCategories, listStockTypes, getCategories, getStockTypes } = useInventoryStore()
 
     useEffect(() => {
@@ -196,10 +196,14 @@ export default function CreateProduct () {
                         </section>
                     </ModalBody>
                     <ModalFooter>
-                        <Button className =" bg-green-500 text-primary-50" onClick={() => {
-                            requestCreateProduct(data)
-                        }
-                        }>
+                        {error
+                            ? <div className='flex mx-5 self-center'>
+                                <h1>{error}</h1>
+                            </div>
+                            : null}
+                        <Button className =" bg-green-500 text-primary-50"
+                            onClick={() => { requestCreateProduct(data) }}
+                            isLoading={!!loading}>
                         Guardar
                         </Button>
                         <Button color="danger" variant="flat"
