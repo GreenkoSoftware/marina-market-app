@@ -5,7 +5,7 @@ import DeleteButton from './DeleteButton'
 export default function SaleListItem (props) {
     const { product: productDetail } = props
     const { product, quantity } = productDetail
-    const { name, code, costPrice } = product
+    const { name, code, netPrice: price } = product
     return (
         <li className="py-3 sm:py-4">
             <div className="flex items-center space-x-4">
@@ -21,7 +21,7 @@ export default function SaleListItem (props) {
                     <div className='flex flex-row gap-3'>
                         <div>{quantity}</div>
                         <div>x</div>
-                        <div>{costPrice}</div>
+                        <div>{price}</div>
                         <div>CLP</div>
                         <DeleteButton></DeleteButton>
                     </div>
