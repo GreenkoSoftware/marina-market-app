@@ -5,17 +5,19 @@ import { Button } from '@nextui-org/react'
 import React, { useEffect, useState } from 'react'
 
 export default function ScannerDetection () {
-    const [detected, setDetected] = useState(null)
+    const [detected, setDetected] = useState(true)
     const [scanner, setScanner] = useState(null)
     const { listInventory, getProductByCode } = useInventoryStore()
-    const { listSales, addFromNewSales } = useSalesStore()
+    const { addFromNewSales } = useSalesStore()
 
     const onComplete = (barcode) => {
     // Do stuff with the barcode
-        const product = getProductByCode(listInventory, barcode)
+        const currentListSales = useSalesStore.getState().listSales
+        const product = useInventoryStore.getState().getProductByCode(useInventoryStore.getState().listInventory, barcode)
+        console.log(currentListSales)
         console.log(product)
         // alert('PRODUCTO: ' + (product?.name || 'NO EXISTE'))
-        if (product) { addFromNewSales(listSales, product) }
+        if (product) { addFromNewSales(currentListSales, product) }
     }
     const onError = (value) => console.log(value) // Devolución de llamada después de la detección de un escaneo fallido
     const onReceive = (value) => console.log(value) // Devolución de llamada después de recibir un char
