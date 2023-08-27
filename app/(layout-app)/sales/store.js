@@ -8,7 +8,7 @@ const useSalesStore = create(
         setTotalPrice: (value) => set({ totalPrice: value }),
         addFromNewSales: (listSales, product, setTargetProduct) => {
             set({ listSales: [...listSales, product] })
-            setTargetProduct(null)
+            if (setTargetProduct) { setTargetProduct(null) }
         },
         loading: false,
         error: null

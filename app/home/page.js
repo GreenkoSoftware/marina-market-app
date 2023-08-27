@@ -7,7 +7,7 @@ import Auth from '../auth'
 export default function Home () {
     return (
 
-        <section className="min-h-screen flex-1 flex flex-col bg-primary-300 dark:bg-secondary-500">
+        <section className="h-full w-full flex-1 flex flex-col bg-primary-300 dark:bg-secondary-500">
             <Auth/>
             <div className="flex-1  flex flex-col sm:flex-row sm:mt-36 sm:ml-5 sm:mr-5 sm:mb-0 ">
                 <main>
