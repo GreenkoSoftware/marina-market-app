@@ -30,8 +30,8 @@ export default function tableProducts () {
     useEffect(() => {
         if (listSales?.length) {
             let currentTotal = 0
-            listSales?.forEach((product) => {
-                currentTotal += product?.netPrice
+            listSales?.forEach((item) => {
+                currentTotal += item.product?.netPrice * item.quantity
                 // TODO: agregar logica de ofertas
             })
 

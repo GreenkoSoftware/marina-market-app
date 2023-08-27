@@ -3,7 +3,8 @@ import React from 'react'
 import DeleteButton from './DeleteButton'
 
 export default function SaleListItem (props) {
-    const { product, quantity = 1 } = props
+    const { product: productDetail } = props
+    const { product, quantity } = productDetail
     const { name, code, costPrice } = product
     return (
         <li className="py-3 sm:py-4">
