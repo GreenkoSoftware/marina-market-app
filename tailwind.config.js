@@ -10,6 +10,29 @@ module.exports = {
     ],
     theme: {
         extend: {
+            keyframes: {
+                fadeIn: {
+                    '0%': {
+                        opacity: 0
+                    },
+                    '100%': {
+                        opacity: 1
+                    }
+                },
+                blink: {
+                    '50%': {
+                        borderColor: 'transparent'
+                    },
+                    '100%': {
+                        borderColor: 'white'
+                    }
+                }
+            },
+            animation: {
+                typing: 'typing 2s steps(20) infinite alternate, blink .7s infinite',
+                typing_not_infinte:
+                            'typing 2s steps(12), blink 0.5s infinite step-end alternate'
+            },
             colors: {
                 transparent: 'transparent',
                 blue: {
@@ -45,6 +68,7 @@ module.exports = {
           'conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))'
             }
         },
+
         screens: {
             xs: '300px',
             s: '480px',
