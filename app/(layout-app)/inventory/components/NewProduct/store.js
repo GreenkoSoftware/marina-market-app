@@ -39,6 +39,7 @@ const useProductFormStore = create((set) => ({
                         name: data.name?.toString(),
                         cost_price: data.cost_price,
                         net_price: data.net_price,
+                        sale_price: data.net_price * 1.19,
                         code: data.barcode?.toString(),
                         image: data.image,
                         product_categories_id: data.category_id,

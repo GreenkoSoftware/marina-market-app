@@ -7,11 +7,11 @@ import ScannerDetection from '@/components/ScannerDetection/ScannerDetection'
 
 export default async function Inventory () {
     return (
-        <section>
-            <ScannerDetection/>
-            <CreateProduct/>
+        <section className='h-full'>
             <Auth/>
-            <TableProducs />
+            <section className='h-full'>
+                <TableProducs />
+            </section>
         </section>
     )
 }

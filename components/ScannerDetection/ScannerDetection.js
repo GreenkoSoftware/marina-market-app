@@ -1,15 +1,21 @@
 /* eslint-disable no-unused-vars */
+import useInventoryStore from '@/app/(layout-app)/inventory/store'
+import useSalesStore from '@/app/(layout-app)/sales/store'
 import { Button } from '@nextui-org/react'
 import React, { useEffect, useState } from 'react'
 
 export default function ScannerDetection () {
     const [detected, setDetected] = useState(null)
     const [scanner, setScanner] = useState(null)
+    const { listInventory, getProductByCode } = useInventoryStore()
+    const { listSales, addFromNewSales } = useSalesStore()
 
     const onComplete = (barcode) => {
     // Do stuff with the barcode
-        console.log('PRODUCTO: ' + barcode)
-        alert('PRODUCTO: ' + barcode)
+        const product = getProductByCode(listInventory, barcode)
+        console.log(product)
+        // alert('PRODUCTO: ' + (product?.name || 'NO EXISTE'))
+        if (product) { addFromNewSales(listSales, product) }
     }
     const onError = (value) => console.log(value) // Devolución de llamada después de la detección de un escaneo fallido
     const onReceive = (value) => console.log(value) // Devolución de llamada después de recibir un char

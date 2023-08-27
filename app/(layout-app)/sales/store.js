@@ -12,7 +12,7 @@ const useSalesStore = create(
         error: null,
         addFromNewSales: (listSales, product, setTargetProduct) => {
             set({ listSales: [...listSales, product] })
-            setTargetProduct(null)
+            if (setTargetProduct) { setTargetProduct(null) }
         },
         getListInventory: () => {
             set({ loading: true, error: null })

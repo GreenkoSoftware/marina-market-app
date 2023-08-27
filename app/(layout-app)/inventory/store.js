@@ -76,6 +76,10 @@ const useInventoryStore = create(
                 set({ loading: false })
             }
         },
+        getProductByCode: (products, searchCode) => {
+            const result = products?.find(({ code }) => code === searchCode)
+            return result || undefined
+        },
         clearState: () => {
             set({ error: null, loading: false, listInventory: [], listCategories: [], listStockTypes: [] })
         }
