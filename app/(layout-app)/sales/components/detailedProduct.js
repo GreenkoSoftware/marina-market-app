@@ -1,27 +1,8 @@
-import React, { useMemo, useState } from 'react'
+import React, { useState } from 'react'
 import { Input, Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Button, Table, TableHeader, TableColumn, TableBody, TableRow, TableCell } from '@nextui-org/react'
 
 export default function DetailedProduct ({ targeProduct, isOpen, onClose, setTargetProduct }) {
     const [edit, setEdit] = useState(false)
-
-    const classNames = useMemo(
-        () => ({
-            wrapper: ['max-h-[902px]', 'max-w-4xl'],
-            th: ['bg-transparent', 'text-default-500', 'border-b', 'border-divider'],
-            td: [
-                // changing the rows border radius
-                // first
-                'group-data-[first=true]:first:before:rounded-none',
-                'group-data-[first=true]:last:before:rounded-none',
-                // middle
-                'group-data-[middle=true]:before:rounded-none',
-                // last
-                'group-data-[last=true]:first:before:rounded-none',
-                'group-data-[last=true]:last:before:rounded-none'
-            ]
-        }),
-        []
-    )
 
     return (
         <>
@@ -34,7 +15,7 @@ export default function DetailedProduct ({ targeProduct, isOpen, onClose, setTar
                             <section>
                                 <ModalHeader className="flex flex-col gap-1 text-primary-500 dark:text-primary-200">Detalles del producto</ModalHeader>
                                 <ModalBody>
-                                    <Table className={classNames} hideHeader aria-label="Example table with custom cells">
+                                    <Table hideHeader aria-label="Example table with custom cells">
                                         <TableHeader>
                                             <TableColumn>Producto</TableColumn>
                                             <TableColumn>Acciones</TableColumn>
@@ -82,7 +63,7 @@ export default function DetailedProduct ({ targeProduct, isOpen, onClose, setTar
                             <section>
                                 <ModalHeader className="flex flex-col gap-1 text-primary-500 dark:text-primary-200">Detalles del producto</ModalHeader>
                                 <ModalBody>
-                                    <Table className={classNames} hideHeader aria-label="Example table with custom cells">
+                                    <Table hideHeader aria-label="Example table with custom cells">
                                         <TableHeader>
                                             <TableColumn>Producto</TableColumn>
                                             <TableColumn>Acciones</TableColumn>

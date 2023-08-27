@@ -4,8 +4,10 @@ import SaleListItem from './SalesListItem'
 import { Divider, ScrollShadow, Button } from '@nextui-org/react'
 import SearchBar from './SearchBar'
 import useSalesStore from '@/app/(layout-app)/sales/store'
+import { motion } from 'framer-motion'
+
 export default function SaleList () {
-    const { listSales } = useSalesStore(({ listSales }) => ({ listSales }))
+    const { listSales, totalPrice } = useSalesStore()
 
     return (
         <section className='flex flex-col rounded-[12px] h-[42rem] ' >
@@ -30,12 +32,24 @@ export default function SaleList () {
                     </ul>
                 </div>
             </div>
-            <Button color="success" variant="shadow" className='text-white mt-3 h-16 w-auto font-bold text-2xl'>
-                <div className="text-2xl font-bol flex flex-row gap-4 items-center">
-                    <a>PAGAR </a>
-                    <a className=''>$200.000 </a>
-                </div>
-            </Button>
+
+            {totalPrice
+                ? <Button color="success" variant="shadow" className='text-white mt-3 h-24 w-auto font-bold text-2xl'>
+                    <motion.div
+                        initial={{ opacity: 0, scale: 0.5 }}
+                        animate={{ opacity: 1, scale: 1 }}
+                        transition={{
+                            duration: 0.6,
+                            delay: 0.2,
+                            ease: [0, 0.71, 0.2, 1.01]
+                        }}>
+                        <div className="text-2xl font-bol flex flex-row gap-4 items-center">
+                            <a>PAGAR $</a>
+                            {totalPrice }
+                        </div>
+                    </motion.div>
+                </Button>
+                : <></>}
         </section>
     )
 }
