@@ -6,8 +6,9 @@ import { motion } from 'framer-motion'
 export default function LayoutApp ({ children }) {
     return (
 
-        <section className="min-h-screen w-full h-full flex flex-col bg-primary-200 dark:bg-secondary-500">
+        <section className="min-h-full w-screen h-full bg-primary-200 dark:bg-secondary-500 overflow-x-hidden">
             <motion.div
+                className='min-h-full flex flex-col'
                 initial={{ opacity: 0, scale: 0.5 }}
                 animate={{ opacity: 1, scale: 1 }}
                 transition={{
