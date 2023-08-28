@@ -1,7 +1,7 @@
 'use client'
 import React, { useState } from 'react'
 import SaleList from '@/components/ui/SalesList'
-import TableInventory from '../tableProduct'
+import TableInventory from './tableProduct'
 const SalesMenu = () => {
     const [searchInput, setSearchInput] = useState(null)
     const [filteredList, setFilteredList] = useState([])
