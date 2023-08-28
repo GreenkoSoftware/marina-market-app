@@ -2,42 +2,27 @@
 import React, { useEffect, useState } from 'react'
 import CardUi from '@/components/ui/Card'
 import { Tabs, Tab, useDisclosure, ScrollShadow } from '@nextui-org/react'
-import DetailedProduct from './components/detailedProduct'
-import useSalesStore from './store'
-import useInventoryStore from '../inventory/store'
-export default function tableProducts () {
-    const { isOpen, onClose } = useDisclosure()
+import DetailedProduct from './detailedProduct'
+import useSalesStore from '../store'
+
+export default function Card () {
+    const { isOpen, onClose, onOpen } = useDisclosure()
     const [targeProduct, setTargetProduct] = useState(null)
     const [selected, setSelected] = useState(1)
     const [listInventory, setListInventory] = useState([])
-    const { listCategories, listInventory: list, getCategories, getListInventory } = useInventoryStore()
-
-    const { listSales, addFromNewSales, setTotalPrice } = useSalesStore()
-
+    const { listCategories, listInventory: list, getCategories, getListInventory } = useSalesStore(
+        ({ listCategories, listInventory, getCategories, getListInventory }) => (
+            { listCategories, listInventory, getCategories, getListInventory }))
     useEffect(() => {
         if (selected) {
             setListInventory(list.filter((item) => item.productCategoryId === parseInt(selected)))
         }
     }, [selected, list])
-
     useEffect(() => {
         if (targeProduct) {
-            // agregar a la lista de venstas
-            addFromNewSales(listSales, targeProduct, setTargetProduct)
+            onOpen()
         }
     }, [targeProduct])
-
-    useEffect(() => {
-        if (listSales?.length >= 0) {
-            let currentTotal = 0
-            listSales?.forEach((item) => {
-                currentTotal += item.product?.netPrice * item.quantity
-                // TODO: agregar logica de ofertas
-            })
-
-            setTotalPrice(currentTotal)
-        }
-    }, [listSales])
 
     useEffect(() => {
         /* Add in the future refreshToken in this useEffect */
@@ -47,7 +32,7 @@ export default function tableProducts () {
 
     return (
         <section className=''>
-            <section className="z-10 h-[3rem] w-[290px] top-[52px] rounded-t-[12px] bg-secondary-50 dark:bg-secondary-450">
+            <section className="z-10 h-[3rem] w-[260px] top-[52px] rounded-t-[12px] bg-secondary-50 dark:bg-secondary-450">
                 <Tabs
                     disabledKeys={['reports']}
                     aria-label="Options"
@@ -70,6 +55,7 @@ export default function tableProducts () {
                         {listInventory.map((item, index) => (
                             <CardUi className key={index} item={item} index={index} isFromSales={true} setTargetProduct={setTargetProduct}/>
                         ))}
+
                     </div>
                 </ScrollShadow>
             </section>

@@ -1,16 +1,19 @@
 'use client'
 import React, { useState } from 'react'
 import SaleList from '@/components/ui/SalesList'
-import TableInventory from '../tableProduct'
+import TableInventory from './components/tableProduct'
+import PayPage from './payPage'
 const SalesMenu = () => {
-    const [searchInput, setSearchInput] = useState(null)
-    const [filteredList, setFilteredList] = useState([])
+    const [payment, setPayment] = useState(null)
     return (
         <section className='flex flex-col items-center '>
             <section className='flex flex-row items-end gap-5'>
-                <TableInventory filteredList={filteredList}/>
+                {payment
+                    ? <PayPage setPayment={setPayment}/>
+                    : <TableInventory/>
+                }
                 <div className='flex'>
-                    <SaleList setFilteredList={setFilteredList} searchInput={searchInput} setSearchInput={setSearchInput}/>
+                    <SaleList setPayment={setPayment}/>
                 </div>
             </section>
         </section>

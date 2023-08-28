@@ -2,8 +2,8 @@
 import React, { useEffect, useState } from 'react'
 import CardUi from '@/components/ui/Card'
 import { Tabs, Tab, useDisclosure, ScrollShadow } from '@nextui-org/react'
-import DetailedProduct from './components/detailedProduct'
-import useInventoryStore from '../inventory/store'
+import DetailedProduct from './detailedProduct'
+import useInventoryStore from '../../inventory/store'
 
 export default function Card () {
     const { isOpen, onClose, onOpen } = useDisclosure()

@@ -6,7 +6,8 @@ import SearchBar from './SearchBar'
 import useSalesStore from '@/app/(layout-app)/sales/store'
 import { motion } from 'framer-motion'
 
-export default function SaleList () {
+export default function SaleList (props) {
+    const { setPayment } = props
     const { listSales, totalPrice } = useSalesStore()
 
     return (
@@ -20,7 +21,7 @@ export default function SaleList () {
                 </div>
                 <div className="flow-root">
                     <ul role="list" className="divide-y  divide-gray-200 dark:divide-white pr-8 pl-8">
-                        <ScrollShadow className="w-[420px] h-[30rem] pr-6">
+                        <ScrollShadow className="w-[420px] h-[28rem] pr-6">
                             {listSales?.map((product, index) =>
                                 <section key={index}>
                                     <Divider orientation="horizontal" />
@@ -34,20 +35,22 @@ export default function SaleList () {
             </div>
 
             {totalPrice
-                ? <Button color="success" variant="shadow" className='text-white mt-3 h-24 w-auto font-bold text-2xl'>
-                    <motion.div
-                        initial={{ opacity: 0, scale: 0.5 }}
-                        animate={{ opacity: 1, scale: 1 }}
-                        transition={{
-                            duration: 0.6,
-                            delay: 0.2,
-                            ease: [0, 0.71, 0.2, 1.01]
-                        }}>
-                        <div className="text-2xl font-bol flex flex-row gap-4 items-center">
-                            <a>PAGAR $</a>
+                ? <Button color="success" variant="shadow" className='text-white mt-3 h-full w-auto font-bold text-2xl'
+                    onClick={() => { setPayment(true) }}>
+                    <div className="text-2xl font-bol flex flex-row gap-4 items-center">
+                        <a>PAGAR $</a>
+                        <motion.div
+                            initial={{ opacity: 0, scale: 0.5 }}
+                            animate={{ opacity: 1, scale: 1 }}
+                            transition={{
+                                duration: 0.6,
+                                delay: 0.2,
+                                ease: [0, 0.71, 0.2, 1.01]
+                            }}>
                             {totalPrice }
-                        </div>
-                    </motion.div>
+                        </motion.div>
+                    </div>
+
                 </Button>
                 : <></>}
         </section>
