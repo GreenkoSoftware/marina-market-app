@@ -1,6 +1,6 @@
 'use client'
 import Auth from '@/app/auth'
-import SalesMenu from './components/sales'
+import SalesMenu from './sales'
 import ScannerDetection from '@/components/ScannerDetection/ScannerDetection'
 
 export default function Sales () {
