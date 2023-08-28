@@ -1,19 +1,38 @@
 'use client'
-import React from 'react'
+import React, { useEffect } from 'react'
 import SaleListItem from './SalesListItem'
 import { Divider, ScrollShadow, Button } from '@nextui-org/react'
 import SearchBar from './SearchBar'
 import useSalesStore from '@/app/(layout-app)/sales/store'
+import useInventoryStore from '@/app/(layout-app)/inventory/store'
 import { motion } from 'framer-motion'
 
-export default function SaleList () {
+export default function SaleList (props) {
+    const { searchInput, setSearchInput, setFilteredList } = props
     const { listSales, totalPrice } = useSalesStore()
-
+    const { listInventory } = useInventoryStore()
+    const onChangeValue = (event) => {
+        setSearchInput(event.target.value)
+    }
+    useEffect(() => {
+        // Create copy of item list
+        if (searchInput) {
+            let updatedList = [...listInventory]
+            // Include all elements which includes the search query
+            updatedList = updatedList.filter((item) => {
+                return item?.meta?.toLowerCase().indexOf(searchInput?.toLowerCase()) !== -1
+            })
+            // Trigger render with updated values
+            setFilteredList(updatedList)
+        } else if (searchInput === '') {
+            setFilteredList([])
+        }
+    }, [searchInput])
     return (
         <section className='flex flex-col rounded-[12px] h-[42rem] ' >
             <div className="w-full h-full flex-initial max-w-md rounded-[12px] bg-white border border-gray-200 dark:border-secondary-450 shadow   dark:bg-secondary-450">
                 <section >
-                    <SearchBar></SearchBar>
+                    <SearchBar onChange={onChangeValue}/>
                 </section>
                 <div className="flex items-center justify-between mb-4 px-8">
                     <h5 className="text-2xl font-bold leading-none text-gray-900 dark:text-white pt-2">Productos</h5>
