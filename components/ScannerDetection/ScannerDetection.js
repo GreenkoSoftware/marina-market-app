@@ -20,13 +20,7 @@ export default function ScannerDetection () {
         if (product) { addFromNewSales(currentListSales, product) }
     }
     const onError = (value) => console.log(value) // Devolución de llamada después de la detección de un escaneo fallido
-    const onReceive = (value) => console.log(value) // Devolución de llamada después de recibir un char
-    const timeBeforeScanTest = 100 // Duración de la espera (ms) después evento de pulsación de tecla para verificar si el escaneo finalizó
-    const avgTimeByChar = 30 // Tiempo promedio (ms) entre 2 caracteres. Se usa para hacer la diferencia entre escribir con el teclado y escanear
-    const minLength = 6 // Longitud mínima para un escaneo
-    const endChar = [9, 13] // Caracteres para eliminar y significa el final del escaneo
     const stopPropagation = (value) => console.log(value) // Detiene la propagación inmediata en el evento de pulsación de tecla
-    const preventDefault = (value) => console.log(value) // Impide la acción predeterminada en el evento de pulsación de tecla
 
     const options = {
         onComplete,
@@ -36,8 +30,8 @@ export default function ScannerDetection () {
         // avgTimeByChar: avgTimeByChar,
         // minLength: minLength,
         // endChar: endChar,
-        stopPropagation,
-        preventDefault
+        stopPropagation
+        // preventDefault
     }
     async function startScanning () {
         if (typeof window !== 'undefined') {
