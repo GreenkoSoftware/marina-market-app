@@ -8,6 +8,7 @@ import { generateProductCode } from '@/utils/barcode'
 import Barcosde from '@/components/barcode'
 import useProductFormStore from './store'
 import useInventoryStore from '../../store'
+import useSalesStore from '@/app/(layout-app)/sales/store'
 
 const SectionProduct = ({ title, children, showDivider }) => {
     return (
@@ -81,6 +82,9 @@ export default function CreateProduct () {
         if (isOpen) {
             getStockTypes()
             getCategories()
+            useSalesStore.getState()?.disabledRedirectSales()
+        } else {
+            useSalesStore.getState()?.enabledRedirectSales()
         }
     }, [isOpen])
 

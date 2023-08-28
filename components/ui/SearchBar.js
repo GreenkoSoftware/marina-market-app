@@ -1,6 +1,7 @@
 import React from 'react'
 import { Input } from '@nextui-org/react'
 import { SearchIcon } from './SearchIcon'
+import useSalesStore from '@/app/(layout-app)/sales/store'
 
 export default function SearchBar (props) {
     const { onChange } = props
@@ -10,6 +11,11 @@ export default function SearchBar (props) {
                 label="Busqueda"
                 isClearable
                 radius="lg"
+                onFocusChange={(value) =>
+                    value
+                        ? useSalesStore.getState()?.disabledScanner()
+                        : useSalesStore.getState()?.enabledScanner()
+                }
                 classNames={{
                     label: 'text-black/50 dark:text-white/90',
                     input: [

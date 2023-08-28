@@ -7,6 +7,7 @@ import useInventoryStore from './store'
 import CreateProduct from './components/NewProduct/createProduct'
 import { MagnifyingGlassIcon } from '@heroicons/react/24/solid'
 import { SearchIcon } from '@/components/ui/SearchIcon'
+import useSalesStore from '../sales/store'
 export default function Card () {
     const { isOpen, onClose, onOpen } = useDisclosure()
     const [targeProduct, setTargetProduct] = useState(null)
@@ -39,6 +40,14 @@ export default function Card () {
             onOpen()
         }
     }, [targeProduct])
+
+    useEffect(() => {
+        if (isOpen) {
+            useSalesStore.getState()?.disabledRedirectSales()
+        } else {
+            useSalesStore.getState()?.enabledRedirectSales()
+        }
+    }, [isOpen])
 
     useEffect(() => {
         // Create copy of item list
@@ -91,6 +100,11 @@ export default function Card () {
                             isClearable
                             radius="lg"
                             onChange={onChangeValue}
+                            onFocusChange={(value) =>
+                                value
+                                    ? useSalesStore.getState()?.disabledRedirectSales()
+                                    : useSalesStore.getState()?.enabledRedirectSales()
+                            }
                             classNames={{
                                 label: 'text-black/50 dark:text-white/90',
                                 input: [
@@ -107,19 +121,25 @@ export default function Card () {
                             }
                         />
                         {filteredList?.map((item, index) => (
-                            <div key={index} className='w-1/2 sm:w-1/3 md:w-1/4 lg:w-1/5 xl:w-1/6 xlg:w-[12.5%] snap-start shrink-0'>
+                            <div key={'productSearch' + index} className='w-1/2 sm:w-1/3 md:w-1/4 lg:w-1/5 xl:w-1/6 xlg:w-[12.5%] snap-start shrink-0'>
                                 <div className='mx-1 my-1'>
-                                    <CardUi key={index} item={item} index={index} setTargetProduct={setTargetProduct}/>
+                                    <CardUi item={item} setTargetProduct={setTargetProduct}/>
                                 </div>
                             </div>
                         ))}
+                        {!listInventory?.length
+                            ? <div>No hay productos</div>
+                            : (!filteredList.length && searchInput?.length > 0)
+                                ? <div>Sin resultados</div>
+                                : null
+                        }
 
                     </section>
                     : <section style={{ scrollbarGutter: 'stable' }} className='max-h-[44rem] w-full overflow-y-auto flex flex-wrap snap-y snap-mandatory content-start'>
                         {listInventory?.map((item, index) => (
-                            <div key={index} className='w-1/2 sm:w-1/3 md:w-1/4 lg:w-1/5 xl:w-1/6 xlg:w-[12.5%] snap-start shrink-0'>
+                            <div key={'productList' + index} className='w-1/2 sm:w-1/3 md:w-1/4 lg:w-1/5 xl:w-1/6 xlg:w-[12.5%] snap-start shrink-0'>
                                 <div className='mx-1 my-1'>
-                                    <CardUi key={index} item={item} index={index} setTargetProduct={setTargetProduct}/>
+                                    <CardUi item={item} setTargetProduct={setTargetProduct}/>
                                 </div>
                             </div>
                         ))}
