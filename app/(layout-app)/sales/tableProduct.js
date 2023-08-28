@@ -5,7 +5,8 @@ import { Tabs, Tab, useDisclosure, ScrollShadow } from '@nextui-org/react'
 import DetailedProduct from './components/detailedProduct'
 import useSalesStore from './store'
 import useInventoryStore from '../inventory/store'
-export default function tableProducts () {
+export default function tableProducts (props) {
+    const { filteredList } = props
     const { isOpen, onClose } = useDisclosure()
     const [targeProduct, setTargetProduct] = useState(null)
     const [selected, setSelected] = useState(1)
@@ -51,7 +52,7 @@ export default function tableProducts () {
                 <Tabs
                     disabledKeys={['reports']}
                     aria-label="Options"
-                    items={listCategories}
+                    items={listCategories?.filter((category) => category?.id !== -1)}
                     selectedKey={selected}
                     onSelectionChange={setSelected}
                     variant={'light'}
@@ -67,9 +68,14 @@ export default function tableProducts () {
             <section className="p-[2rem]  shadow-md hover:shadow-lg  rounded-tl-[0px]  bg-secondary-50 dark:bg-secondary-450 rounded-[14px]">
                 <ScrollShadow className="h-[38rem] w-[44rem] p-1">
                     <div className="gap-4 grid grid-cols-2 md:grid-cols-5">
-                        {listInventory.map((item, index) => (
-                            <CardUi className key={index} item={item} index={index} isFromSales={true} setTargetProduct={setTargetProduct}/>
-                        ))}
+                        {filteredList?.length > 0
+                            ? filteredList?.map((item, index) => (
+                                <CardUi className key={index} item={item} index={index} isFromSales={true} setTargetProduct={setTargetProduct}/>
+                            ))
+                            : listInventory.map((item, index) => (
+                                <CardUi className key={index} item={item} index={index} isFromSales={true} setTargetProduct={setTargetProduct}/>
+                            ))
+                        }
                     </div>
                 </ScrollShadow>
             </section>

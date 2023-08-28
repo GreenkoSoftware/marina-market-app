@@ -28,7 +28,8 @@ const useInventoryStore = create(
                                         productCategoryId: product_categories_id,
                                         stockTypeId: stock_types_id,
                                         stock: product_stock?.stock,
-                                        stockMin: product_stock?.stock_min
+                                        stockMin: product_stock?.stock_min,
+                                        meta: name + ' ' + code
                                     }
                                 ]
                             }, [])
@@ -46,11 +47,11 @@ const useInventoryStore = create(
             try {
                 fetchGetCategories().then(result => {
                     if (result?.code === 200) {
-                        set({
-                            listCategories: result?.data?.reduce((acc, value) => {
-                                return [...acc, { id: value?.ID, label: value?.name }]
-                            }, [])
-                        })
+                        const data = result?.data?.reduce((acc, value) => {
+                            return [...acc, { id: value?.ID, label: value?.name }]
+                        }, [])
+                        data.push({ id: -1, label: 'search' })
+                        set({ listCategories: data })
                     } else {
                         return null
                     }
