@@ -5,6 +5,9 @@ const useSalesStore = create(
     (set) => ({
         totalPrice: 0,
         listSales: [],
+        scannerEnabled: false,
+        enabledScanner: (value) => set({ scannerEnabled: true }),
+        disabledScanner: (value) => set({ scannerEnabled: false }),
         setTotalPrice: (value) => set({ totalPrice: value }),
         addFromNewSales: (listSales, product, setTargetProduct) => {
             const searhProduct = listSales?.find((item) => { return item?.product?.id === product?.id })

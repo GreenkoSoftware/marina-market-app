@@ -2,11 +2,13 @@
 import { Navigation } from '@/components/navigation/Navigation'
 import { Header } from './header'
 import { motion } from 'framer-motion'
+import ScannerDetection from '@/components/ScannerDetection/ScannerDetection'
 
 export default function LayoutApp ({ children }) {
     return (
 
         <section className="min-h-full w-screen h-full bg-primary-200 dark:bg-secondary-500 overflow-x-hidden">
+            <ScannerDetection/>
             <motion.div
                 className='min-h-full flex flex-col'
                 initial={{ opacity: 0, scale: 0.5 }}

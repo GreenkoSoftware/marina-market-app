@@ -8,7 +8,7 @@ export default function ScannerDetection () {
     const [detected, setDetected] = useState(true)
     const [scanner, setScanner] = useState(null)
     const { listInventory, getProductByCode } = useInventoryStore()
-    const { addFromNewSales } = useSalesStore()
+    const { addFromNewSales, scannerEnabled } = useSalesStore()
 
     const onComplete = (barcode) => {
     // Do stuff with the barcode
@@ -49,21 +49,21 @@ export default function ScannerDetection () {
     }
 
     useEffect(() => {
-        // console.log(scanner)
-        // console.log(detected)
-        if (detected) {
+        // console.log('scannerEnabled: ', scannerEnabled)
+        if (scannerEnabled) {
             // console.log(scanner)
             startScanning()
         } else {
             if (scanner) {
                 // console.log(scanner)
                 scanner?.stopScanning()
+                setScanner(null)
             }
         }
-    }, [detected])
+    }, [detected, scannerEnabled])
 
     return (
         <section>
-            <Button onClick={() => { detected ? setDetected(false) : setDetected(true) }} >{'Detectar scanner: ' + (detected ? 'ACTIVADO' : 'DESACTIVADO')}</Button>
-        </section>)
+            {/*             <Button onClick={() => { detected ? setDetected(false) : setDetected(true) }} >{'Detectar scanner: ' + (detected ? 'ACTIVADO' : 'DESACTIVADO')}</Button>
+ */}        </section>)
 }

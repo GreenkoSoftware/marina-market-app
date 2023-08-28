@@ -5,7 +5,7 @@ import { Tabs, Tab, useDisclosure } from '@nextui-org/react'
 import DetailedProduct from './components/detailedProduct'
 import useInventoryStore from './store'
 import CreateProduct from './components/NewProduct/createProduct'
-import ScannerDetection from '@/components/ScannerDetection/ScannerDetection'
+
 export default function Card () {
     const { isOpen, onClose, onOpen } = useDisclosure()
     const [targeProduct, setTargetProduct] = useState(null)
@@ -50,7 +50,7 @@ export default function Card () {
                     </Tabs>
                 </div>
                 <div className="flex space-x-2">
-                    <ScannerDetection/>
+                    {/* <ScannerDetection/> */}
                     <CreateProduct/>
                 </div>
             </section>
