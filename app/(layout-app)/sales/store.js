@@ -16,6 +16,10 @@ const useSalesStore = create(
             }
             if (setTargetProduct) { setTargetProduct(null) }
         },
+        removeProduct: (listSales, productId) => {
+            const newList = listSales?.filter((item) => item?.product?.id !== productId)
+            set({ listSales: newList })
+        },
         loading: false,
         error: null
     }),
