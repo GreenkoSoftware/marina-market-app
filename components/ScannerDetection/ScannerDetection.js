@@ -36,8 +36,8 @@ export default function ScannerDetection () {
         // avgTimeByChar: avgTimeByChar,
         // minLength: minLength,
         // endChar: endChar,
-        stopPropagation,
-        preventDefault
+        stopPropagation
+        // preventDefault
     }
     async function startScanning () {
         if (typeof window !== 'undefined') {
