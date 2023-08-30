@@ -7,14 +7,19 @@ import SearchBar from './SearchBar'
 import useSalesStore from '@/app/(layout-app)/sales/store'
 import { motion } from 'framer-motion'
 
-export default function SaleList ({ setPayment, payment }) {
+export default function SaleList (props) {
+    const { setPayment, payment, setSearchInput } = props
     const { listSales, totalPrice } = useSalesStore()
+
+    const onChange = (event) => {
+        setSearchInput(event.target.value)
+    }
 
     return (
         <section className='flex flex-col rounded-[12px] h-[48rem] ' >
             <div className="h-full w-full flex-initial max-w-md rounded-[12px] bg-white border border-gray-200 dark:border-secondary-450 shadow   dark:bg-secondary-450">
                 <section >
-                    <SearchBar></SearchBar>
+                    <SearchBar onChange={onChange}/>
                 </section>
                 <div className="flex items-center justify-between mb-4 px-8">
                     <h5 className="text-2xl font-bold leading-none text-gray-900 dark:text-white pt-2">Productos</h5>

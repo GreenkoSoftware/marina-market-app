@@ -2,7 +2,6 @@
 import React, { useEffect, useState } from 'react'
 import CardUi from '@/components/ui/Card'
 import { Tabs, Tab, useDisclosure, Input } from '@nextui-org/react'
-import DetailedProduct from './components/detailedProduct'
 import useInventoryStore from './store'
 import CreateProduct from './components/NewProduct/createProduct'
 import { MagnifyingGlassIcon } from '@heroicons/react/24/solid'
