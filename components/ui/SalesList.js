@@ -1,5 +1,6 @@
+/* eslint-disable no-unused-vars */
 'use client'
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import SaleListItem from './SalesListItem'
 import { Divider, ScrollShadow, Button } from '@nextui-org/react'
 import SearchBar from './SearchBar'
@@ -29,6 +30,7 @@ export default function SaleList ({ setPayment }) {
                                 </section>
                             )}
                         </ScrollShadow>
+
                     </ul>
                 </div>
             </div>

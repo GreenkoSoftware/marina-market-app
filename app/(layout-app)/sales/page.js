@@ -10,9 +10,11 @@ export default function Sales () {
         useSalesStore.getState()?.enabledScanner()
     }, [])
     return (
-        <section>
+        <section className='h-full'>
             <Auth/>
-            <SalesMenu/>
+            <div className='h-full'>
+                <SalesMenu/>
+            </div>
         </section>
     )
 }
