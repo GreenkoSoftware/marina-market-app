@@ -3,12 +3,13 @@ import { Navigation } from '@/components/navigation/Navigation'
 import { Header } from './header'
 import { motion } from 'framer-motion'
 import ScannerDetection from '@/components/ScannerDetection/ScannerDetection'
-
+import { Balance } from '@/components/Balance/Balance'
 export default function LayoutApp ({ children }) {
     return (
 
         <section className="min-h-full w-screen h-full bg-primary-200 dark:bg-secondary-500 overflow-x-hidden">
             <ScannerDetection/>
+            <button className='w-10 h-10' onClick={() => { Balance() }}>Clickeamoe</button>
             <motion.div
                 className='min-h-full flex flex-col'
                 initial={{ opacity: 0, scale: 0.5 }}
