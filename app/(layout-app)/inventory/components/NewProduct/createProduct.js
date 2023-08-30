@@ -36,7 +36,7 @@ const SelectComponent = ({ title, type, placeholder, options, ...rest }) => {
             {...rest}
 
         >
-            {options.map(({ id, label }) => (
+            {options?.filter((item) => item?.id !== -1).map(({ id, label }) => (
                 <SelectItem key={id} value={label}>
                     {label}
                 </SelectItem>

@@ -51,7 +51,7 @@ export default function tableProducts () {
                 <Tabs
                     disabledKeys={['reports']}
                     aria-label="Options"
-                    items={listCategories}
+                    items={listCategories?.filter((category) => category?.id !== -1)}
                     selectedKey={selected}
                     onSelectionChange={setSelected}
                     variant={'light'}
