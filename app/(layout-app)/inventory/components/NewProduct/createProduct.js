@@ -109,7 +109,7 @@ export default function CreateProduct () {
     return (
         <section>
             <header className="flex justify-end">
-                <Button onClick={onOpen}>Crear nuevo producto</Button>
+                <Button color='primary' onClick={onOpen}>Crear nuevo producto</Button>
             </header>
             <Modal size={'2xl'}
                 isOpen={isOpen}
@@ -136,6 +136,7 @@ export default function CreateProduct () {
                                     </div>
                                     <div className="flex flex-1 items-start flex-col w-full gap-4">
                                         <InputComponent
+                                            isRequired
                                             isBarCode={true}
                                             type="text"
                                             title="Codigo de barra"

@@ -46,7 +46,7 @@ export default function tableProducts () {
     }, [])
 
     return (
-        <section className=''>
+        <section className='max-h-[56rem] w-full'>
             <section className="z-10 h-[3rem] w-[390px] top-[52px] rounded-t-[12px] bg-secondary-50 dark:bg-secondary-450">
                 <Tabs
                     disabledKeys={['reports']}
@@ -64,8 +64,8 @@ export default function tableProducts () {
                     )}
                 </Tabs>
             </section>
-            <section className="p-[2rem]  shadow-md hover:shadow-lg  rounded-tl-[0px]  bg-secondary-50 dark:bg-secondary-450 rounded-[14px]">
-                <ScrollShadow className="h-[38rem]  p-1">
+            <section className="p-[2rem] max-h-[48rem] w-full  shadow-md hover:shadow-lg  rounded-tl-[0px]  bg-secondary-50 dark:bg-secondary-450 rounded-[14px]">
+                <ScrollShadow className="h-[48rem] w-full">
                     <div className="gap-4 grid grid-cols-2 md:grid-cols-5">
                         {listInventory.map((item, index) => (
                             <CardUi className key={index} item={item} index={index} isFromSales={true} setTargetProduct={setTargetProduct}/>
