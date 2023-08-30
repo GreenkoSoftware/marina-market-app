@@ -6,8 +6,8 @@ import PayPage from './payPage'
 const SalesMenu = () => {
     const [payment, setPayment] = useState(null)
     return (
-        <section className='h-full flex flex-col items-center '>
-            <section className='flex flex-row items-end gap-5'>
+        <section className='h-full w-full flex flex-col '>
+            <section className='flex flex-row items-end gap-5 h-full w-full'>
                 {payment
                     ? <PayPage setPayment={setPayment}/>
                     : <TableInventory/>

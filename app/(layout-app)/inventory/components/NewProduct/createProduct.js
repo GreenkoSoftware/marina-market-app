@@ -136,6 +136,7 @@ export default function CreateProduct () {
                                     </div>
                                     <div className="flex flex-1 items-start flex-col w-full gap-4">
                                         <InputComponent
+                                            isRequired
                                             isBarCode={true}
                                             type="text"
                                             title="Codigo de barra"
