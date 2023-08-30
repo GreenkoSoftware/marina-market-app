@@ -70,7 +70,7 @@ export default function tableProducts (props) {
         }
     }, [searchInput])
     return (
-        <section className='max-h-[56rem] w-full'>
+        <section className='max-h-[54rem] w-full'>
             <section className="z-10 h-[3rem] w-[390px] top-[52px] rounded-t-[12px] bg-secondary-50 dark:bg-secondary-450">
                 <Tabs
                     disabledKeys={['reports']}
