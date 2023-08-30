@@ -1,6 +1,6 @@
 'use client'
 import Auth from '@/app/auth'
-import SalesMenu from './components/sales'
+import SalesMenu from './sales'
 import { useEffect } from 'react'
 import useSalesStore from './store'
 

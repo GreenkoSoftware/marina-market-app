@@ -6,9 +6,12 @@ const useSalesStore = create(
         totalPrice: 0,
         listSales: [],
         scannerEnabled: false,
-        enabledScanner: (value) => set({ scannerEnabled: true }),
+        enabledRedirect: false,
+        enabledScanner: (value) => set({ scannerEnabled: true, enabledRedirect: false }),
         disabledScanner: (value) => set({ scannerEnabled: false }),
         setTotalPrice: (value) => set({ totalPrice: value }),
+        enabledRedirectSales: (value) => set({ enabledRedirect: true }),
+        disabledRedirectSales: (value) => set({ enabledRedirect: false }),
         addFromNewSales: (listSales, product, setTargetProduct) => {
             const searhProduct = listSales?.find((item) => { return item?.product?.id === product?.id })
             if (!searhProduct) {
