@@ -5,8 +5,9 @@ import ImageComponent from 'next/image'
 import { useEffect, useState } from 'react'
 import useProductFormStore from './store'
 import html2canvas from 'html2canvas'
+import { ConvertBytesToImage } from '@/utils/image'
 
-export default function ProductImage () {
+export default function ProductImage ({ defaultImg }) {
     const [selectedImage, setSelectedImage] = useState(null)
     const [selectedImageBytes, setSelectedImageBytes] = useState(null)
     const [optimizedImage, setOptimizedImage] = useState(null)
@@ -25,7 +26,14 @@ export default function ProductImage () {
     const removeSelectedImage = () => {
         setSelectedImage(null)
         setSelectedImageBytes(null)
+        setOptimizedImage(null)
     }
+
+    useEffect(() => {
+        if (defaultImg) {
+            setOptimizedImage(defaultImg)
+        }
+    }, [defaultImg])
 
     useEffect(() => {
         // setFormData({ ...data, image: selectedImageBytes })
@@ -71,7 +79,7 @@ export default function ProductImage () {
                         newWidth = (img.width * maxHeight) / img.height
                     }
 
-                    html2canvas(document.getElementById('imageeee'), {
+                    html2canvas(document.getElementById('imageProduct'), {
                         width: newWidth,
                         height: newHeight
                     }).then((canvas) => {
@@ -87,13 +95,13 @@ export default function ProductImage () {
     return (
         <section>
             <div className="flex items-center justify-center min-w-[200px] w-full">
-                { selectedImage
+                { optimizedImage
                     ? (
                         <div className="rounded-lg flex items-center flex-col space-y-2 p-2 border-2 border-gray-300 border-dashed cursor-pointer hover:bg-gray-100 dark:border-gray-600 dark:hover:border-gray-500 dark:hover:bg-gray-600">
                             <label htmlFor={selectedImage ? 'dropzone-file' : ''}>
                                 <ImageComponent
-                                    id='imageeee'
-                                    src={URL.createObjectURL(selectedImage)}
+                                    id='imageProduct'
+                                    src={ConvertBytesToImage({ imageBytes: optimizedImage })}
                                     alt="Image name"
                                     width={200}
                                     height={200}

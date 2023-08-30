@@ -8,6 +8,7 @@ import CreateProduct from './components/NewProduct/createProduct'
 import { MagnifyingGlassIcon } from '@heroicons/react/24/solid'
 import { SearchIcon } from '@/components/ui/SearchIcon'
 import useSalesStore from '../sales/store'
+import ProductDetail from './components/productDetail'
 export default function Card () {
     const { isOpen, onClose, onOpen } = useDisclosure()
     const [targeProduct, setTargetProduct] = useState(null)
@@ -148,7 +149,8 @@ export default function Card () {
 
             </section>
             {/* Modal with detailed product */}
-            <DetailedProduct targeProduct={targeProduct} isOpen={isOpen} onClose={onClose} setTargetProduct={setTargetProduct}/>
+            {/* <DetailedProduct targeProduct={targeProduct} isOpen={isOpen} onClose={onClose} setTargetProduct={setTargetProduct}/> */}
+            <ProductDetail targeProduct={targeProduct} isOpen={isOpen} onClose={onClose} setTargetProduct={setTargetProduct}/>
         </section>
     )
 }
