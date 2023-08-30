@@ -7,7 +7,7 @@ import SearchBar from './SearchBar'
 import useSalesStore from '@/app/(layout-app)/sales/store'
 import { motion } from 'framer-motion'
 
-export default function SaleList ({ setPayment }) {
+export default function SaleList ({ setPayment, payment }) {
     const { listSales, totalPrice } = useSalesStore()
 
     return (
