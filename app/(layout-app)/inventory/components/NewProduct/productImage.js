@@ -1,13 +1,15 @@
 /* eslint-disable no-unused-vars */
 'use client'
 import { Button } from '@nextui-org/react'
-import Image from 'next/image'
+import ImageComponent from 'next/image'
 import { useEffect, useState } from 'react'
 import useProductFormStore from './store'
+import html2canvas from 'html2canvas'
 
 export default function ProductImage () {
     const [selectedImage, setSelectedImage] = useState(null)
     const [selectedImageBytes, setSelectedImageBytes] = useState(null)
+    const [optimizedImage, setOptimizedImage] = useState(null)
 
     const {
         data,
@@ -26,13 +28,16 @@ export default function ProductImage () {
     }
 
     useEffect(() => {
-        setFormData({ ...data, image: selectedImageBytes })
-    }, [selectedImageBytes])
+        // setFormData({ ...data, image: selectedImageBytes })
+        // console.log('selectedImageBytes: ', selectedImageBytes)
+        setFormData({ ...data, image: optimizedImage })
+        console.log('optimizedImage: ', optimizedImage)
+    }, [selectedImageBytes, optimizedImage])
 
     useEffect(() => {
         if (selectedImage) {
             const reader = new FileReader()
-            reader.readAsArrayBuffer(selectedImage)
+            /* reader.readAsArrayBuffer(selectedImage)
 
             reader.onload = async () => {
                 const imageBytes = reader.result
@@ -42,6 +47,39 @@ export default function ProductImage () {
                 )
 
                 setSelectedImageBytes(base64)
+            }
+ */
+            reader.readAsDataURL(selectedImage)
+            reader.onload = async (e) => {
+                const img = new Image()
+                img.src = e.target.result
+
+                img.onload = async () => {
+                    const maxWidth = 200
+                    const maxHeight = 200
+
+                    let newWidth = img.width
+                    let newHeight = img.height
+
+                    if (img.width > maxWidth) {
+                        newWidth = maxWidth
+                        newHeight = (img.height * maxWidth) / img.width
+                    }
+
+                    if (newHeight > maxHeight) {
+                        newHeight = maxHeight
+                        newWidth = (img.width * maxHeight) / img.height
+                    }
+
+                    html2canvas(document.getElementById('imageeee'), {
+                        width: newWidth,
+                        height: newHeight
+                    }).then((canvas) => {
+                        const optimizedImageData = canvas.toDataURL('image/jpeg', 0.7)
+                        setOptimizedImage(optimizedImageData)
+                        console.log(optimizedImage)
+                    })
+                }
             }
         }
     }, [selectedImage])
@@ -53,11 +91,12 @@ export default function ProductImage () {
                     ? (
                         <div className="rounded-lg flex items-center flex-col space-y-2 p-2 border-2 border-gray-300 border-dashed cursor-pointer hover:bg-gray-100 dark:border-gray-600 dark:hover:border-gray-500 dark:hover:bg-gray-600">
                             <label htmlFor={selectedImage ? 'dropzone-file' : ''}>
-                                <Image
+                                <ImageComponent
+                                    id='imageeee'
                                     src={URL.createObjectURL(selectedImage)}
                                     alt="Image name"
                                     width={200}
-                                    height={100}
+                                    height={200}
                                 />
                             </label>
                             <Button color="danger" variant="faded" onClick={removeSelectedImage}>

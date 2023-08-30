@@ -1,3 +1,3 @@
 export const ConvertBytesToImage = ({ imageBytes }) => {
-    return imageBytes ? ('data:image/png;base64,' + imageBytes?.toString()) : null
+    return imageBytes ? imageBytes?.include('data:image/png;base64') ? imageBytes : ('data:image/png;base64,' + imageBytes?.toString()) : null
 }
