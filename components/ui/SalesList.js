@@ -1,12 +1,13 @@
+/* eslint-disable no-unused-vars */
 'use client'
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import SaleListItem from './SalesListItem'
 import { Divider, ScrollShadow, Button } from '@nextui-org/react'
 import SearchBar from './SearchBar'
 import useSalesStore from '@/app/(layout-app)/sales/store'
 import { motion } from 'framer-motion'
 
-export default function SaleList ({ setPayment }) {
+export default function SaleList ({ setPayment, payment }) {
     const { listSales, totalPrice } = useSalesStore()
 
     return (
@@ -29,6 +30,7 @@ export default function SaleList ({ setPayment }) {
                                 </section>
                             )}
                         </ScrollShadow>
+
                     </ul>
                 </div>
             </div>
