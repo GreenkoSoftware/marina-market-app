@@ -109,7 +109,7 @@ export default function CreateProduct () {
     return (
         <section>
             <header className="flex justify-end">
-                <Button color='primary' onClick={onOpen}>Crear nuevo producto</Button>
+                <Button className='bg-primary-400 dark:bg-primary-400' color='primary' onClick={onOpen}>Crear nuevo producto</Button>
             </header>
             <Modal size={'2xl'}
                 isOpen={isOpen}
