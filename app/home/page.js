@@ -42,7 +42,7 @@ export default function Home () {
                             />
                         </motion.div>
                     </section>
-                    <div className='flex flex-row-reverse'>
+                    <div className='flex  sm:flex-row-reverse sm:items-end sm:m-0 m-5'>
                         <motion.div
                             initial={{ opacity: 0, scale: 0.5 }}
                             animate={{ opacity: 1, scale: 1 }}
