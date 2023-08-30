@@ -10,7 +10,7 @@ import useProductFormStore from './store'
 import useInventoryStore from '../../store'
 import useSalesStore from '@/app/(layout-app)/sales/store'
 
-const SectionProduct = ({ title, children, showDivider }) => {
+export const SectionProduct = ({ title, children, showDivider }) => {
     return (
         <section className="mt-3 space-y-2">
             { showDivider ? <Divider/> : null}
@@ -22,7 +22,7 @@ const SectionProduct = ({ title, children, showDivider }) => {
     )
 }
 
-const SelectComponent = ({ title, type, placeholder, options, ...rest }) => {
+export const SelectComponent = ({ title, type, placeholder, options, ...rest }) => {
     return (
         <Select
             isRequired
@@ -45,7 +45,7 @@ const SelectComponent = ({ title, type, placeholder, options, ...rest }) => {
     )
 }
 
-const InputComponent = ({ title, type, placeholder, isPrice, isBarCode, ...rest }) => {
+export const InputComponent = ({ title, type, placeholder, isPrice, isBarCode, ...rest }) => {
     return (
         <Input
             autoFocus={!!isBarCode}
