@@ -16,7 +16,7 @@ export default function SaleList ({ setPayment, payment }) {
     }, [units])
 
     return (
-        <section className='flex flex-col rounded-[12px] h-[48rem] ' >
+        <section className='flex flex-col rounded-[12px] h-[53rem] ' >
             <div className="h-full w-full flex-initial max-w-md rounded-[12px] bg-white border border-gray-200 dark:border-secondary-450 shadow   dark:bg-secondary-450">
                 <section className='flex flex-row'>
                     <SearchBar></SearchBar>
@@ -30,19 +30,21 @@ export default function SaleList ({ setPayment, payment }) {
                         onValueChange={(value) => { setUnits(value) }}>
                     </Input>
                 </section>
+
                 {listSales.length > 0
                     ? <div className="flex items-center justify-between mb-4 h-[4rem] px-6">
-                        <h5 className="text-2xl font-bold leading-none text-gray-900 dark:text-white pt-2">Productos</h5>
-
-                        <Button className='w-[2rem]' color="danger" variant="bordered" onClick={() => (clearList())}>
+                        <h5 className=" animation-fade-in text-2xl font-bold leading-none text-gray-900 dark:text-white pt-2">Productos</h5>
+                        <Button className='w-[2rem] animation-fade-in' color="danger" variant="bordered" onClick={() => (clearList())}>
                         cancelar
                         </Button></div>
+
                     : <></>
                 }
                 <div className="flow-root max-h-[44rem] w-full">
                     <ul role="list" className="divide-y  divide-gray-200 dark:divide-white pr-8 pl-8">
                         <ScrollShadow className="w-[420px] h-[28rem] pr-6">
                             {listSales?.map((product, index) =>
+
                                 <section key={index}>
                                     <Divider orientation="horizontal" />
                                     <SaleListItem product={product} />
