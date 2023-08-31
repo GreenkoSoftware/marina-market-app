@@ -4,8 +4,25 @@ import React from 'react'
 import { motion } from 'framer-motion'
 import Auth from '../auth'
 import UserAvatar from '../../components/ui/UserAvatar'
+import { Button } from '@nextui-org/react'
+import { Br, Cut, Line, Printer, Text, Row, render } from 'react-thermal-printer';
 
-export default function Home () {
+
+export default async function Home () {
+    const data = await render(
+        <Printer type="epson">
+          <Text>Hello World</Text>
+        </Printer>
+      );
+      
+      const port = await window.navigator.serial.requestPort();
+      await port.open({ baudRate: 9600 });
+      
+      const writer = port.writable?.getWriter();
+      if (writer != null) {
+        await writer.write(data);
+        writer.releaseLock();
+      }
     return (
 
         <section className="h-full w-full flex-1 flex flex-col bg-primary-300 dark:bg-secondary-500">
@@ -43,6 +60,7 @@ export default function Home () {
                         </motion.div>
                     </section>
                     <div className='flex  sm:flex-row-reverse sm:items-end sm:m-0 m-5'>
+                    <Button onClick={render(receipt)}>imprimir</Button>
                         <motion.div
                             initial={{ opacity: 0, scale: 0.5 }}
                             animate={{ opacity: 1, scale: 1 }}

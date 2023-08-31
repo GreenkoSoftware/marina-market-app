@@ -8,7 +8,10 @@ import { MagnifyingGlassIcon } from '@heroicons/react/24/solid'
 import { SearchIcon } from '@/components/ui/SearchIcon'
 import useSalesStore from '../sales/store'
 import ProductDetail from './components/productDetail'
-export default function Card () {
+
+
+export default  function Card () {
+
     const { isOpen, onClose, onOpen } = useDisclosure()
     const [targeProduct, setTargetProduct] = useState(null)
     const [selected, setSelected] = useState(1)
@@ -90,6 +93,7 @@ export default function Card () {
                 <div className="flex space-x-2">
                     {/* <ScannerDetection/> */}
                     <CreateProduct/>
+
                 </div>
             </section>
             <section className="flex flex-1 p-[1rem] w-auto shadow-md hover:shadow-lg  rounded-tl-[0px]  bg-secondary-50 dark:bg-secondary-450 rounded-[14px]">
