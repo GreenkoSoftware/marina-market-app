@@ -38,13 +38,12 @@ export default function SaleList ({ setPayment, payment }) {
                         cancelar
                         </Button></div>
 
-                    : <></>
+                    : <h5 className=" animation-fade-in m-5 text-2xl font-bold leading-none text-gray-900 dark:text-white pt-2">Escanee un producto para comenzar la venta...</h5>
                 }
                 <div className="flow-root max-h-[44rem] w-full">
                     <ul role="list" className="divide-y  divide-gray-200 dark:divide-white pr-8 pl-8">
                         <ScrollShadow className="w-[420px] h-[28rem] pr-6">
                             {listSales?.map((product, index) =>
-
                                 <section key={index}>
                                     <Divider orientation="horizontal" />
                                     <SaleListItem product={product} />
