@@ -8,8 +8,9 @@ import { generateProductCode } from '@/utils/barcode'
 import Barcosde from '@/components/barcode'
 import useProductFormStore from './store'
 import useInventoryStore from '../../store'
+import useSalesStore from '@/app/(layout-app)/sales/store'
 
-const SectionProduct = ({ title, children, showDivider }) => {
+export const SectionProduct = ({ title, children, showDivider }) => {
     return (
         <section className="mt-3 space-y-2">
             { showDivider ? <Divider/> : null}
@@ -21,7 +22,7 @@ const SectionProduct = ({ title, children, showDivider }) => {
     )
 }
 
-const SelectComponent = ({ title, type, placeholder, options, ...rest }) => {
+export const SelectComponent = ({ title, type, placeholder, options, ...rest }) => {
     return (
         <Select
             isRequired
@@ -35,7 +36,7 @@ const SelectComponent = ({ title, type, placeholder, options, ...rest }) => {
             {...rest}
 
         >
-            {options.map(({ id, label }) => (
+            {options?.filter((item) => item?.id !== -1).map(({ id, label }) => (
                 <SelectItem key={id} value={label}>
                     {label}
                 </SelectItem>
@@ -44,7 +45,7 @@ const SelectComponent = ({ title, type, placeholder, options, ...rest }) => {
     )
 }
 
-const InputComponent = ({ title, type, placeholder, isPrice, isBarCode, ...rest }) => {
+export const InputComponent = ({ title, type, placeholder, isPrice, isBarCode, ...rest }) => {
     return (
         <Input
             autoFocus={!!isBarCode}
@@ -81,6 +82,9 @@ export default function CreateProduct () {
         if (isOpen) {
             getStockTypes()
             getCategories()
+            useSalesStore.getState()?.disabledRedirectSales()
+        } else {
+            useSalesStore.getState()?.enabledRedirectSales()
         }
     }, [isOpen])
 
@@ -105,7 +109,7 @@ export default function CreateProduct () {
     return (
         <section>
             <header className="flex justify-end">
-                <Button onClick={onOpen}>Crear nuevo producto</Button>
+                <Button className='bg-primary-400 dark:bg-primary-400' color='primary' onClick={onOpen}>Crear nuevo producto</Button>
             </header>
             <Modal size={'2xl'}
                 isOpen={isOpen}
@@ -132,6 +136,7 @@ export default function CreateProduct () {
                                     </div>
                                     <div className="flex flex-1 items-start flex-col w-full gap-4">
                                         <InputComponent
+                                            isRequired
                                             isBarCode={true}
                                             type="text"
                                             title="Codigo de barra"

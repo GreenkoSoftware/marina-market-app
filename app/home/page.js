@@ -3,6 +3,7 @@ import MainTittleCard from '@/components/ui/MainCard'
 import React from 'react'
 import { motion } from 'framer-motion'
 import Auth from '../auth'
+import UserAvatar from '../../components/ui/UserAvatar'
 
 export default function Home () {
     return (
@@ -41,6 +42,19 @@ export default function Home () {
                             />
                         </motion.div>
                     </section>
+                    <div className='flex  sm:flex-row-reverse sm:items-end sm:m-0 m-5'>
+                        <motion.div
+                            initial={{ opacity: 0, scale: 0.5 }}
+                            animate={{ opacity: 1, scale: 1 }}
+                            transition={{
+                                duration: 0.6,
+                                delay: 0.2,
+                                ease: [0, 0.71, 0.2, 1.01]
+                            }}
+                        >
+                            <UserAvatar />
+                        </motion.div>
+                    </div>
                 </main>
             </div>
         </section>

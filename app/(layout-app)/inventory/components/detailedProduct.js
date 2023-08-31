@@ -42,15 +42,15 @@ export default function DetailedProduct ({ targeProduct, isOpen, onClose, setTar
                                         <TableBody>
                                             <TableRow key="1">
                                                 <TableCell><p className="text-primary-500 dark:text-primary-200 font-bold mt-[1rem]">{ 'Nombre'}</p></TableCell>
-                                                <TableCell><Input type="email" variant={'underlined'} label={ targeProduct?.title} /></TableCell>
+                                                <TableCell><Input type="email" variant={'underlined'} defaultValue={ targeProduct?.title} /></TableCell>
                                             </TableRow>
-                                            <TableRow key="1">
+                                            <TableRow key="2">
                                                 <TableCell><p className="text-primary-500 dark:text-primary-200 font-bold  mt-[1rem]"> { 'Stock'}</p></TableCell>
-                                                <TableCell><Input type="email" variant={'underlined'} label={ targeProduct?.stock} /></TableCell>
+                                                <TableCell><Input type="email" variant={'underlined'} defaultValue={ targeProduct?.stock} /></TableCell>
                                             </TableRow>
-                                            <TableRow key="1">
+                                            <TableRow key="3">
                                                 <TableCell><p className="text-primary-500 dark:text-primary-200 font-bold  mt-[1rem]"> { 'Precio'}</p></TableCell>
-                                                <TableCell><Input type="email" variant={'underlined'} label={ targeProduct?.price} /></TableCell>
+                                                <TableCell><Input type="email" variant={'underlined'} defaultValue={ targeProduct?.price} /></TableCell>
                                             </TableRow>
                                         </TableBody>
                                     </Table>
@@ -92,11 +92,11 @@ export default function DetailedProduct ({ targeProduct, isOpen, onClose, setTar
                                                 <TableCell><p className="text-primary-500 dark:text-primary-200 font-bold">{ 'Nombre'}</p></TableCell>
                                                 <TableCell><p className="text-primary-500 dark:text-primary-200"> { targeProduct?.title}</p></TableCell>
                                             </TableRow>
-                                            <TableRow key="1">
+                                            <TableRow key="2">
                                                 <TableCell><p className="text-primary-500 dark:text-primary-200 font-bold"> { 'Stock'}</p></TableCell>
                                                 <TableCell><p className="text-primary-500 dark:text-primary-200"> { targeProduct?.stock}</p></TableCell>
                                             </TableRow>
-                                            <TableRow key="1">
+                                            <TableRow key="3">
                                                 <TableCell><p className="text-primary-500 dark:text-primary-200 font-bold"> { 'Precio'}</p></TableCell>
                                                 <TableCell><p className="text-primary-500 dark:text-primary-200"> { targeProduct?.price}</p></TableCell>
                                             </TableRow>

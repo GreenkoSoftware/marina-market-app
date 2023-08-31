@@ -5,10 +5,11 @@ import TableProducs from './card'
 import { useEffect } from 'react'
 import useSalesStore from '../sales/store'
 
-export default async function Inventory () {
+export default function Inventory () {
     useEffect(() => {
         console.log('Inventory')
         useSalesStore.getState()?.disabledScanner()
+        useSalesStore.getState()?.enabledRedirectSales()
     }, [])
 
     return (

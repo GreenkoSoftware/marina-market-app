@@ -5,20 +5,31 @@ import { Tabs, Tab, useDisclosure, ScrollShadow } from '@nextui-org/react'
 import DetailedProduct from './detailedProduct'
 import useSalesStore from '../store'
 import useInventoryStore from '../../inventory/store'
-export default function tableProducts () {
+export default function tableProducts (props) {
+    const { searchInput } = props
     const { isOpen, onClose } = useDisclosure()
     const [targeProduct, setTargetProduct] = useState(null)
     const [selected, setSelected] = useState(1)
     const [listInventory, setListInventory] = useState([])
     const { listCategories, listInventory: list, getCategories, getListInventory } = useInventoryStore()
-
+    const [filteredList, setFilteredList] = useState([])
     const { listSales, addFromNewSales, setTotalPrice } = useSalesStore()
-
+    const [sectionSearch, setSectionSearch] = useState(false)
     useEffect(() => {
         if (selected) {
-            setListInventory(list.filter((item) => item.productCategoryId === parseInt(selected)))
+            setFilteredList(list)
+            if (parseInt(selected) === -1 || searchInput?.length > 0) {
+                setSectionSearch(true)
+                setListInventory(list)
+            } else {
+                setSectionSearch(false)
+                setListInventory(list.filter((item) => item.productCategoryId === parseInt(selected)))
+            }
         }
-    }, [selected, list])
+        /*  if (selected) {
+            setListInventory(list.filter((item) => item.productCategoryId === parseInt(selected)))
+        } */
+    }, [selected, searchInput, list])
 
     useEffect(() => {
         if (targeProduct) {
@@ -44,10 +55,23 @@ export default function tableProducts () {
         getCategories()
         getListInventory()
     }, [])
-
+    useEffect(() => {
+        // Create copy of item list
+        if (searchInput) {
+            let updatedList = [...list]
+            // Include all elements which includes the search query
+            updatedList = updatedList.filter((item) => {
+                return item?.meta?.toLowerCase().indexOf(searchInput?.toLowerCase()) !== -1
+            })
+            // Trigger render with updated values
+            setFilteredList(updatedList)
+        } else if (searchInput === '') {
+            setFilteredList([...list])
+        }
+    }, [searchInput])
     return (
-        <section className=''>
-            <section className="z-10 h-[3rem] w-[290px] top-[52px] rounded-t-[12px] bg-secondary-50 dark:bg-secondary-450">
+        <section className='max-h-[54rem] w-full'>
+            <section className="z-10 h-[3rem] w-[390px] top-[52px] rounded-t-[12px] bg-secondary-50 dark:bg-secondary-450">
                 <Tabs
                     disabledKeys={['reports']}
                     aria-label="Options"
@@ -64,12 +88,21 @@ export default function tableProducts () {
                     )}
                 </Tabs>
             </section>
-            <section className="p-[2rem]  shadow-md hover:shadow-lg  rounded-tl-[0px]  bg-secondary-50 dark:bg-secondary-450 rounded-[14px]">
-                <ScrollShadow className="h-[38rem] w-[44rem] p-1">
+            <section className="p-[2rem] max-h-[48rem] w-full  shadow-md hover:shadow-lg  rounded-tl-[0px]  bg-secondary-50 dark:bg-secondary-450 rounded-[14px]">
+                <ScrollShadow className="h-[48rem] w-full">
                     <div className="gap-4 grid grid-cols-2 md:grid-cols-5">
-                        {listInventory.map((item, index) => (
+                        {/*   {listInventory.map((item, index) => (
                             <CardUi className key={index} item={item} index={index} isFromSales={true} setTargetProduct={setTargetProduct}/>
-                        ))}
+                        ))} */}
+                        { sectionSearch
+                            ? filteredList?.map((item, index) => (
+                                <CardUi className key={index} item={item} index={index} isFromSales={true} setTargetProduct={setTargetProduct}/>
+                            ))
+                            : listInventory.map((item, index) => (
+                                <CardUi className key={index} item={item} index={index} isFromSales={true} setTargetProduct={setTargetProduct}/>
+                            ))
+
+                        }
                     </div>
                 </ScrollShadow>
             </section>
