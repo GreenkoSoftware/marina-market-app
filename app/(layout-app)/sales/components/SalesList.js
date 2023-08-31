@@ -42,7 +42,7 @@ export default function SaleList ({ setPayment, payment }) {
                 }
                 <div className="flow-root max-h-[44rem] w-full">
                     <ul role="list" className="divide-y  divide-gray-200 dark:divide-white pr-8 pl-8">
-                        <ScrollShadow className="w-[420px] h-[28rem] pr-6">
+                        <ScrollShadow className="w-[420px] h-[32rem] pr-6">
                             {listSales?.map((product, index) =>
                                 <section key={index}>
                                     <Divider orientation="horizontal" />
