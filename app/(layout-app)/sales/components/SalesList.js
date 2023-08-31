@@ -1,24 +1,44 @@
 /* eslint-disable no-unused-vars */
 'use client'
 import React, { useEffect, useState } from 'react'
-import SaleListItem from './SalesListItem'
-import { Divider, ScrollShadow, Button } from '@nextui-org/react'
-import SearchBar from './SearchBar'
+import SaleListItem from '../../../../components/ui/SalesListItem'
+import { Divider, ScrollShadow, Button, Input } from '@nextui-org/react'
+import SearchBar from '../../../../components/ui/SearchBar'
 import useSalesStore from '@/app/(layout-app)/sales/store'
 import { motion } from 'framer-motion'
 
 export default function SaleList ({ setPayment, payment }) {
-    const { listSales, totalPrice } = useSalesStore()
+    const { listSales, totalPrice, units, setUnits, clearList } = useSalesStore()
+    const [inputValue, setInputValue] = useState(1)
+
+    useEffect(() => {
+        setInputValue(units)
+    }, [units])
 
     return (
         <section className='flex flex-col rounded-[12px] h-[48rem] ' >
             <div className="h-full w-full flex-initial max-w-md rounded-[12px] bg-white border border-gray-200 dark:border-secondary-450 shadow   dark:bg-secondary-450">
-                <section >
+                <section className='flex flex-row'>
                     <SearchBar></SearchBar>
+                    <Input
+                        className='pr-6 mt-3'
+                        type="number"
+                        label="Unidades"
+                        value={inputValue}
+                        placeholder={1}
+                        labelPlacement="inside"
+                        onValueChange={(value) => { setUnits(value) }}>
+                    </Input>
                 </section>
-                <div className="flex items-center justify-between mb-4 px-8">
-                    <h5 className="text-2xl font-bold leading-none text-gray-900 dark:text-white pt-2">Productos</h5>
-                </div>
+                {listSales.length > 0
+                    ? <div className="flex items-center justify-between mb-4 h-[4rem] px-6">
+                        <h5 className="text-2xl font-bold leading-none text-gray-900 dark:text-white pt-2">Productos</h5>
+
+                        <Button className='w-[2rem]' color="danger" variant="bordered" onClick={() => (clearList())}>
+                        cancelar
+                        </Button></div>
+                    : <></>
+                }
                 <div className="flow-root max-h-[44rem] w-full">
                     <ul role="list" className="divide-y  divide-gray-200 dark:divide-white pr-8 pl-8">
                         <ScrollShadow className="w-[420px] h-[28rem] pr-6">

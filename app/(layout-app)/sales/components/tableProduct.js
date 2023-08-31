@@ -5,14 +5,14 @@ import { Tabs, Tab, useDisclosure, ScrollShadow } from '@nextui-org/react'
 import DetailedProduct from './detailedProduct'
 import useSalesStore from '../store'
 import useInventoryStore from '../../inventory/store'
+
 export default function tableProducts () {
     const { isOpen, onClose } = useDisclosure()
     const [targeProduct, setTargetProduct] = useState(null)
     const [selected, setSelected] = useState(1)
     const [listInventory, setListInventory] = useState([])
     const { listCategories, listInventory: list, getCategories, getListInventory } = useInventoryStore()
-
-    const { listSales, addFromNewSales, setTotalPrice } = useSalesStore()
+    const { listSales, addFromNewSales, setTotalPrice, units, setUnits } = useSalesStore()
 
     useEffect(() => {
         if (selected) {
@@ -23,7 +23,7 @@ export default function tableProducts () {
     useEffect(() => {
         if (targeProduct) {
             // agregar a la lista de venstas
-            addFromNewSales(listSales, targeProduct, setTargetProduct)
+            addFromNewSales(listSales, targeProduct, setTargetProduct, units, setUnits)
         }
     }, [targeProduct])
 

@@ -1,5 +1,5 @@
 'use client'
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import { Button } from '@nextui-org/react'
 import PaymentButton from '@/components/ui/PaymentButton'
 import { CashIcon } from '@/components/ui/CashIcon'
@@ -10,6 +10,33 @@ import { BillIcon } from '@/components/ui/BillIcon'
 
 export default function PayPage (props) {
     const { setPayment } = props
+    const [isSelectedBill, setIsSelectedBill] = useState(true)
+    const [isSelectedTicket, setIsSelectedTicket] = useState(false)
+    const [isSelectedInvoice, setIsSelectedInvoice] = useState(false)
+    /*  const [isSelectedCash, setIsSelectedCash] = useState(false)
+    const [isSelectedCredit, setIsSelectedCredit] = useState(false) */
+
+    useEffect(() => {
+        if (isSelectedBill) {
+            setIsSelectedTicket(false)
+            setIsSelectedInvoice(false)
+        }
+    }, [isSelectedBill])
+
+    useEffect(() => {
+        if (isSelectedTicket) {
+            setIsSelectedBill(false)
+            setIsSelectedInvoice(false)
+        }
+    }, [isSelectedTicket])
+
+    useEffect(() => {
+        if (isSelectedInvoice) {
+            setIsSelectedBill(false)
+            setIsSelectedTicket(false)
+        }
+    }, [isSelectedInvoice])
+
     return (
         <section className='animation-fade-in'>
             <section className="z-10 h-[3rem] w-[80px] rounded-t-[12px] bg-secondary-50 dark:bg-secondary-450">
@@ -20,7 +47,7 @@ export default function PayPage (props) {
                     <h5 className="text-4xl font-bold leading-none text-gray-900 dark:text-white flex-initial">Seleccione el medio de pago</h5>
                     <div className='flex flex-col items-center'>
                         <div className='flex flex-row  gap-16 mt-10 item-center'>
-                            <PaymentButton icon = { <CashIcon/>} title={'EFECTIVO'}/>
+                            <PaymentButton icon = { <CashIcon/>} title={'EFECTIVO'} onOpen={true}/>
                             <PaymentButton icon = { <CreditIcon/>} title={'CREDITO/DEBITO'}/>
                         </div>
                     </div>
@@ -29,9 +56,9 @@ export default function PayPage (props) {
                     <h5 className="text-4xl font-bold leading-none text-gray-900 dark:text-white">Seleccione Boleta, factura o Ticket</h5>
                     <div className='flex flex-col items-center'>
                         <div className='flex flex-row mt-10 gap-12 items-center '>
-                            <PaymentButton icon = {<InvoiceIcon/>} title={'FACTURA'}/>
-                            <PaymentButton icon = {<BillIcon/>} title={'BOLETA'}/>
-                            <PaymentButton icon = {<TicketIcon/>} title={'BOLETA'}/>
+                            <PaymentButton icon = {<BillIcon/>} title={'BOLETA'} isSelected={isSelectedBill} setIsSelected = {setIsSelectedBill} />
+                            <PaymentButton icon = {<InvoiceIcon/>} title={'FACTURA'} isSelected={isSelectedInvoice} setIsSelected = {setIsSelectedInvoice}/>
+                            <PaymentButton icon = {<TicketIcon/>} title={'TICKET'} isSelected={isSelectedTicket} setIsSelected = {setIsSelectedTicket}/>
                         </div>
                     </div>
                 </div>
