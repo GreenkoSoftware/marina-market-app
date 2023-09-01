@@ -13,8 +13,9 @@ export default function tableProducts (props) {
     const [listInventory, setListInventory] = useState([])
     const { listCategories, listInventory: list, getCategories, getListInventory } = useInventoryStore()
     const [filteredList, setFilteredList] = useState([])
-    const { listSales, addFromNewSales, setTotalPrice } = useSalesStore()
     const [sectionSearch, setSectionSearch] = useState(false)
+    const { listSales, addFromNewSales, setTotalPrice, units, setUnits } = useSalesStore()
+
     useEffect(() => {
         if (selected) {
             setFilteredList(list)
@@ -34,7 +35,7 @@ export default function tableProducts (props) {
     useEffect(() => {
         if (targeProduct) {
             // agregar a la lista de venstas
-            addFromNewSales(listSales, targeProduct, setTargetProduct)
+            addFromNewSales(listSales, targeProduct, setTargetProduct, units, setUnits)
         }
     }, [targeProduct])
 
@@ -88,8 +89,8 @@ export default function tableProducts (props) {
                     )}
                 </Tabs>
             </section>
-            <section className="p-[2rem] max-h-[48rem] w-full  shadow-md hover:shadow-lg  rounded-tl-[0px]  bg-secondary-50 dark:bg-secondary-450 rounded-[14px]">
-                <ScrollShadow className="h-[48rem] w-full">
+            <section className="p-[2rem] max-h-[56rem] w-full  shadow-md hover:shadow-lg  rounded-tl-[0px]  bg-secondary-50 dark:bg-secondary-450 rounded-[14px]">
+                <ScrollShadow className="h-[54rem] w-full">
                     <div className="gap-4 grid grid-cols-2 md:grid-cols-5">
                         {/*   {listInventory.map((item, index) => (
                             <CardUi className key={index} item={item} index={index} isFromSales={true} setTargetProduct={setTargetProduct}/>
