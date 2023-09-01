@@ -7,7 +7,7 @@ export default function SaleListItem (props) {
     const { product, quantity } = productDetail
     const { id, name, code, netPrice: price } = product
     return (
-        <li className="py-3 sm:py-4">
+        <li className="py-3 sm:py-4 animation-fade-in">
             <div className="flex items-center space-x-4">
                 <div className="flex-1 min-w-0">
                     <p className="text-xl font-medium text-gray-900 truncate dark:text-white">

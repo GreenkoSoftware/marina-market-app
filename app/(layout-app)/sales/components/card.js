@@ -44,7 +44,6 @@ export default function Card () {
                     className="pt-3 pl-3"
                 >
                     {(item) => (
-
                         <Tab key={item.id} size={'lg'} title={item.label}>
                         </Tab>
                     )}
