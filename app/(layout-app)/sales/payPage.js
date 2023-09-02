@@ -13,8 +13,6 @@ export default function PayPage (props) {
     const [isSelectedBill, setIsSelectedBill] = useState(true)
     const [isSelectedTicket, setIsSelectedTicket] = useState(false)
     const [isSelectedInvoice, setIsSelectedInvoice] = useState(false)
-    /*  const [isSelectedCash, setIsSelectedCash] = useState(false)
-    const [isSelectedCredit, setIsSelectedCredit] = useState(false) */
 
     useEffect(() => {
         if (isSelectedBill) {
@@ -38,11 +36,11 @@ export default function PayPage (props) {
     }, [isSelectedInvoice])
 
     return (
-        <section className='animation-fade-in w-full'>
-            <section className="z-10 h-[3rem] w-[80px] rounded-t-[12px] bg-secondary-50 dark:bg-secondary-450">
+        <section className='animation-fade-in h-full w-full'>
+            <section className="z-10 h-[6%] w-[7rem] top-[52px] rounded-t-[12px] bg-secondary-50 dark:bg-secondary-450">
                 <Button size="lg" className="flex flex-col items-center h-full w-full " isIconOnly variant="ligth" aria-label="" onClick={() => { setPayment(false) } }>volver</Button>
             </section>
-            <section className="h-[53rem] w-full top-[52px] rounded-tr-[12px] bg-secondary-50 dark:bg-secondary-450 flex flex-col">
+            <section className='flex flex-col h-3/4  sm:h-[93%] items-center px-5 py-[1rem] shadow-md hover:shadow-lg  rounded-tl-[0px]  bg-secondary-50 dark:bg-secondary-450 rounded-[14px]'>
                 <div className='flex flex-col  w-full h-full mt-16 items-center'>
                     <h5 className="text-4xl font-bold leading-none text-gray-900 dark:text-white flex-initial">Seleccione el medio de pago</h5>
                     <div className='flex flex-col items-center'>
@@ -63,7 +61,6 @@ export default function PayPage (props) {
                     </div>
                 </div>
             </section>
-
         </section>
     )
 }

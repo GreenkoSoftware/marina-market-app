@@ -22,8 +22,8 @@ export default function LayoutApp ({ children }) {
                 <header className="sticky z-20 bg-primary-200 dark:bg-secondary-500 top-0 h-[4rem]">
                     <Header/>
                 </header>
-                <div className="flex-1 flex flex-col sm:flex-row  pt-[1rem]">
-                    <main className="flex-1 mx-[1rem] xl:mx-[6rem] xlg:mx-[10rem]">
+                <div className="flex-1 flex flex-row  pt-[1rem]">
+                    <main className="flex-1 mx-[1rem] xl:mx-[6rem] xlg:mx-[6rem]">
                         {children}
                     </main>
                 </div>

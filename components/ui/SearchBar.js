@@ -6,7 +6,7 @@ import useSalesStore from '@/app/(layout-app)/sales/store'
 export default function SearchBar (props) {
     const { onChange } = props
     return (
-        <div className="w-[96rem] h-[80px] px-6 rounded-t-[12px] flex justify-center items-center text-white bg-secondary-50 dark:bg-secondary-450">
+        <div className="w-full h-[80px] px-2 rounded-t-[12px] flex justify-center items-center text-white bg-secondary-50 dark:bg-secondary-450">
             <Input
                 label="Busqueda"
                 isClearable
@@ -25,7 +25,7 @@ export default function SearchBar (props) {
                     ],
                     innerWrapper: 'bg-transparent'
                 }}
-                placeholder="Toca para buscar un producto..."
+                placeholder="Buscar un producto..."
                 onChange={onChange}
                 startContent={
                     <SearchIcon className="text-black/50 dark:text-white/90 text-slate-400 pointer-events-none flex-shrink-0" />
