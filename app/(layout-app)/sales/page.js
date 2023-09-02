@@ -12,9 +12,9 @@ export default function Sales () {
     return (
         <section className='h-full'>
             <Auth/>
-            <div className='h-full'>
+            <section className='h-full'>
                 <SalesMenu/>
-            </div>
+            </section>
         </section>
     )
 }

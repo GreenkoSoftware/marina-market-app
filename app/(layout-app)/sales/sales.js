@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 'use client'
 import React, { useState } from 'react'
 import SaleList from '@/app/(layout-app)/sales/components/SalesList'
@@ -7,16 +8,18 @@ const SalesMenu = () => {
     const [payment, setPayment] = useState(null)
     const [searchInput, setSearchInput] = useState(null)
     return (
-        <section className='h-full w-full flex flex-col '>
-            <section className='flex flex-row items-end gap-5 h-full w-full'>
-                {payment
-                    ? <PayPage setPayment={setPayment}/>
-                    : <TableInventory setSearchInput={setSearchInput} searchInput={searchInput} />
-                }
-                <div className='flex'>
+        <section className='h-full w-full flex md:flex-col'>
+            <div className="flex h-full md:flex-wrap">
+                <div className="w-full md:w-[70%] ">
+                    {payment
+                        ? <PayPage setPayment={setPayment}/>
+                        : <TableInventory setSearchInput={setSearchInput} searchInput={searchInput} />
+                    }
+                </div>
+                <div className="w-full md:w-[30%]">
                     <SaleList setPayment={setPayment} setSearchInput={setSearchInput}/>
                 </div>
-            </section>
+            </div>
         </section>
     )
 }
