@@ -6,7 +6,7 @@ import useSalesStore from '@/app/(layout-app)/sales/store'
 export default function SearchBar (props) {
     const { onChange } = props
     return (
-        <div className="w-auto h-[80px] px-6 rounded-t-[12px] flex justify-center items-center  text-white bg-secondary-50 dark:bg-secondary-450">
+        <div className="w-[96rem] h-[80px] px-6 rounded-t-[12px] flex justify-center items-center text-white bg-secondary-50 dark:bg-secondary-450">
             <Input
                 label="Busqueda"
                 isClearable
