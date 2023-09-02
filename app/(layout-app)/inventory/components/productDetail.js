@@ -1,10 +1,11 @@
-import React, { useEffect, useMemo, useState } from 'react'
-import { Input, Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Button, Table, TableHeader, TableColumn, TableBody, TableRow, TableCell } from '@nextui-org/react'
+import React, { useEffect, useState } from 'react'
+import { Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Button } from '@nextui-org/react'
 import { InputComponent, SectionProduct, SelectComponent } from './NewProduct/createProduct'
 import ProductImage from './NewProduct/productImage'
 import useInventoryStore from '../store'
 import Image from 'next/image'
 import { ConvertBytesToImage } from '@/utils/image'
+import { DeleteIcon } from '@/components/ui/DeleteIcon'
 
 export default function ProductDetail ({ targeProduct, isOpen, onClose, setTargetProduct }) {
     const [edit, setEdit] = useState(false)
@@ -80,7 +81,7 @@ export default function ProductDetail ({ targeProduct, isOpen, onClose, setTarge
                                             options={categoryOptions}
                                             // defaultValue={targeProduct?.}
                                             onSelectionChange={(value) => { console.log({ field: 'category_id', value: value?.currentKey }) }}
-                                            disabled={!edit}
+                                            isDisabled={!edit}
                                         />
                                         <SelectComponent
                                             isRequired
@@ -90,7 +91,7 @@ export default function ProductDetail ({ targeProduct, isOpen, onClose, setTarge
                                             options={stockTypeOptions}
                                             // defaultValue={targeProduct?.}
                                             onSelectionChange={(value) => { console.log({ field: 'stock_type_id', value: value?.currentKey }) }}
-                                            disabled={!edit}
+                                            isDisabled={!edit}
                                         />
                                     </div>
                                 </SectionProduct>
@@ -158,6 +159,9 @@ export default function ProductDetail ({ targeProduct, isOpen, onClose, setTarge
                                 </Button>
                             </ModalFooter>
                             : <ModalFooter>
+                                <Button color="danger" variant="bordered" startContent={<DeleteIcon/>}>
+                            Eliminar
+                                </Button>
                                 <Button className =" bg-blue-500 text-primary-50"
                                     onClick={() => {
                                         setEdit(true)
