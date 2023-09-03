@@ -26,7 +26,6 @@ export const SelectComponent = ({ title, type, placeholder, options, ...rest }) 
     return (
         <Select
             isRequired
-            // defaultSelectedKeys={['cat']}
             className="max-w-xs"
             type={type}
             variant={'underlined'}
@@ -100,8 +99,11 @@ export default function CreateProduct () {
         }
     }, [complete, error])
 
-    const handleInputChange = ({ field, value }) => {
-        const newFormValues = { ...data, [field]: !isNaN(value) ? parseFloat(value) : value }
+    const handleInputChange = ({ field, value, isSalePrice }) => {
+        const newFormValues = { ...data, [field]: !isNaN(value) ? parseInt(value) : value }
+        if (isSalePrice) {
+            newFormValues.net_price = newFormValues?.sale_price / 1.19
+        }
         console.log(newFormValues)
         setFormData(newFormValues)
     }
@@ -181,10 +183,10 @@ export default function CreateProduct () {
                                     />
                                     <InputComponent
                                         type="number"
-                                        title="Precio neto"
+                                        title="Precio venta"
                                         placeholder="0"
                                         isPrice
-                                        onValueChange={(value) => { handleInputChange({ field: 'net_price', value }) }}
+                                        onValueChange={(value) => { handleInputChange({ field: 'sale_price', value, isSalePrice: true }) }}
 
                                     />
                                 </div>

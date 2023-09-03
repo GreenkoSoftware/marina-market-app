@@ -24,7 +24,7 @@ export default function Card (props) {
                 </CardBody>
                 <CardFooter className="text-small justify-between">
                     <b>{item?.name}</b>
-                    <p className="text-default-500">{item?.netPrice * 1.19}</p>
+                    <p className="text-default-500">{item?.price}</p>
                 </CardFooter>
             </CardUI>
             : <CardUI shadow="sm" className='w-full animation-fade-in' key={index} isPressable onPress={() => { setTargetProduct(item) }}>
@@ -45,7 +45,7 @@ export default function Card (props) {
                 </CardBody>
                 <CardFooter className="text-small justify-between">
                     <b>{item?.name}</b>
-                    <p className="text-default-500">{item?.netPrice * 1.19}</p>
+                    <p className="text-default-500">{item?.price}</p>
                 </CardFooter>
             </CardUI>
     )

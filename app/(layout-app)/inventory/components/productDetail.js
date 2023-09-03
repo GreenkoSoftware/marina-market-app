@@ -6,6 +6,7 @@ import useInventoryStore from '../store'
 import Image from 'next/image'
 import { ConvertBytesToImage } from '@/utils/image'
 import { DeleteIcon } from '@/components/ui/DeleteIcon'
+import { deleteProduct } from '@/services/products'
 
 export default function ProductDetail ({ targeProduct, isOpen, onClose, setTargetProduct }) {
     const [edit, setEdit] = useState(false)
@@ -17,6 +18,15 @@ export default function ProductDetail ({ targeProduct, isOpen, onClose, setTarge
         setCategoryOptions(listCategories)
         setStockTypeOptions(listStockTypes)
     }, [listCategories, listStockTypes])
+
+    const handleDeleteProduct = () => {
+        const productId = targeProduct?.id
+        deleteProduct({ id: productId }).then(
+            (response) => {
+                console.log(response)
+            }
+        )
+    }
 
     return (
         <>
@@ -77,7 +87,7 @@ export default function ProductDetail ({ targeProduct, isOpen, onClose, setTarge
                                             isRequired
                                             title="Categoria"
                                             placeholder="Seleccione"
-                                            // defaultSelectedKeys={['']}
+                                            defaultSelectedKeys={[targeProduct?.productCategoryId?.toString()]}
                                             options={categoryOptions}
                                             // defaultValue={targeProduct?.}
                                             onSelectionChange={(value) => { console.log({ field: 'category_id', value: value?.currentKey }) }}
@@ -87,7 +97,7 @@ export default function ProductDetail ({ targeProduct, isOpen, onClose, setTarge
                                             isRequired
                                             title="Tipo de stock"
                                             placeholder="Seleccione"
-                                            // defaultSelectedKeys={['']}
+                                            defaultSelectedKeys={[targeProduct?.stockTypeId?.toString()]}
                                             options={stockTypeOptions}
                                             // defaultValue={targeProduct?.}
                                             onSelectionChange={(value) => { console.log({ field: 'stock_type_id', value: value?.currentKey }) }}
@@ -102,17 +112,17 @@ export default function ProductDetail ({ targeProduct, isOpen, onClose, setTarge
                                             title="Precio costo"
                                             placeholder="0"
                                             isPrice
-                                            defaultValue={targeProduct?.price}
+                                            defaultValue={targeProduct?.costPrice}
                                             onValueChange={(value) => { console.log({ field: 'cost_price', value }) }}
                                             disabled={!edit}
                                         />
                                         <InputComponent
                                             type="number"
-                                            title="Precio neto"
+                                            title="Precio venta"
                                             placeholder="0"
                                             isPrice
                                             defaultValue={targeProduct?.price}
-                                            onValueChange={(value) => { console.log({ field: 'net_price', value }) }}
+                                            onValueChange={(value) => { console.log({ field: 'sale_price', value }) }}
                                             disabled={!edit}
                                         />
                                     </div>
@@ -148,25 +158,27 @@ export default function ProductDetail ({ targeProduct, isOpen, onClose, setTarge
                                     onClose()
                                 }
                                 }>
-                            Guardar
+                                    {'Guardar'}
                                 </Button>
                                 <Button color="danger" variant="light"
                                     onClick={() => {
                                         setEdit(false)
                                     }}
                                 >
-                            Cancelar
+                                    {'Cancelar'}
                                 </Button>
                             </ModalFooter>
                             : <ModalFooter>
-                                <Button color="danger" variant="bordered" startContent={<DeleteIcon/>}>
-                            Eliminar
+                                <Button color="danger" variant="bordered"
+                                    startContent={<DeleteIcon/>}
+                                    onClick={handleDeleteProduct}>
+                                    {'Eliminar'}
                                 </Button>
                                 <Button className =" bg-blue-500 text-primary-50"
                                     onClick={() => {
                                         setEdit(true)
                                     }}>
-                            Editar
+                                    {'Editar'}
                                 </Button>
                                 <Button color="danger" variant="light"
                                     onClick={() => {
@@ -175,7 +187,7 @@ export default function ProductDetail ({ targeProduct, isOpen, onClose, setTarge
                                         onClose()
                                     }}
                                 >
-                            Cerrar
+                                    {'Cerrar'}
                                 </Button>
                             </ModalFooter>
                         }
