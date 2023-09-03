@@ -16,9 +16,9 @@ export default function Card () {
     const [sectionSearch, setSectionSearch] = useState(false)
     const [searchInput, setSearchInput] = useState(null)
 
-    const { listCategories, listInventory: list, getCategories, getListInventory } = useInventoryStore(
-        ({ listCategories, listInventory, getCategories, getListInventory }) => (
-            { listCategories, listInventory, getCategories, getListInventory }))
+    const { listCategories, listInventory: list, getCategories, getStockTypes, getListInventory } = useInventoryStore(
+        ({ listCategories, listInventory, getCategories, getStockTypes, getListInventory }) => (
+            { listCategories, listInventory, getCategories, getStockTypes, getListInventory }))
     const onChangeValue = (event) => {
         setSearchInput(event.target.value)
     }
@@ -66,6 +66,7 @@ export default function Card () {
     useEffect(() => {
         /* Add in the future refreshToken in this useEffect */
         getCategories()
+        getStockTypes()
         getListInventory()
     }, [])
     return (
