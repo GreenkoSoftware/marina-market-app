@@ -13,3 +13,7 @@ export const PRODUCT_API_URL = BASE_MARKET_API_URL + '/product'
 export const CATEGORIES_API_URL = BASE_MARKET_API_URL + '/product/categories'
 // Get type of stock
 export const TYPE_STOCK_API_URL = BASE_MARKET_API_URL + '/product/type-stock'
+// Get type of payment
+export const TYPE_PAYMENT_API_URL = BASE_MARKET_API_URL + '/payment'
+// Get type of voucher
+export const TYPE_VOUCHER_API_URL = BASE_MARKET_API_URL + '/voucher'

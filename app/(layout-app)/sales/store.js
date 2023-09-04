@@ -1,8 +1,11 @@
 /* eslint-disable camelcase */
 import { create } from 'zustand'
-
+import { TYPE_PAYMENT_API_URL, TYPE_VOUCHER_API_URL } from '@/settings/constants'
+import { fetchGet } from '@/services/sales'
 const useSalesStore = create(
     (set) => ({
+        loading: false,
+        error: null,
         totalPrice: 0,
         listSales: [],
         scannerEnabled: false,
@@ -32,8 +35,61 @@ const useSalesStore = create(
         clearList: () => {
             set({ listSales: [] })
         },
-        loading: false,
-        error: null
+        /* Added method pay and voucher, ticket,etc */
+        methodPay: null,
+        typeVoucher: null,
+        payment: [],
+        voucher: [],
+        loadingPayment: false,
+        loadingVoucher: false,
+        getPaymentType: () => {
+            set({ loadingPayment: true, error: null })
+            try {
+                fetchGet(TYPE_PAYMENT_API_URL).then(result => {
+                    if (result?.code === 200) {
+                        set({
+                            payment: result?.data?.reduce((acc, { ID, name }) => {
+                                return [...acc,
+                                    {
+                                        id: ID,
+                                        name
+                                    }
+                                ]
+                            }, []),
+                            loadingPayment: false
+                        })
+                    } else {
+                        return null
+                    }
+                })
+            } catch {
+                set({ loadingPayment: false })
+            }
+        },
+        getVoucherType: () => {
+            set({ loadingVoucher: true, error: null })
+            try {
+                fetchGet(TYPE_VOUCHER_API_URL).then(result => {
+                    if (result?.code === 200) {
+                        set({
+                            voucher: result?.data?.reduce((acc, { ID, name }) => {
+                                return [...acc,
+                                    {
+                                        id: ID,
+                                        name
+                                    }
+                                ]
+                            }, []),
+                            loadingVoucher: false
+                        })
+                    } else {
+                        return null
+                    }
+                })
+            } catch {
+                set({ loadingVoucher: false })
+            }
+        }
     }),
     {
         name: 'sales'
@@ -42,6 +98,3 @@ const useSalesStore = create(
 )
 
 export default useSalesStore
-/*
-code,cost_price, image, name, net_price, product_category_id, stock_type_id
-*/
