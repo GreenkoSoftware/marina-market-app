@@ -9,6 +9,7 @@ const useInventoryStore = create(
         listStockTypes: [],
         setListInventory: () => set((state) => ({ listInventory: state })),
         loading: false,
+        loadingCategories: false,
         error: null,
         getListInventory: () => {
             set({ loading: true, error: null })
@@ -32,7 +33,8 @@ const useInventoryStore = create(
                                         meta: name + ' ' + code
                                     }
                                 ]
-                            }, [])
+                            }, []),
+                            loading: false
                         })
                     } else {
                         return null
@@ -43,7 +45,7 @@ const useInventoryStore = create(
             }
         },
         getCategories: () => {
-            set({ loading: true, error: null })
+            set({ loadingCategories: true, error: null })
             try {
                 fetchGetCategories().then(result => {
                     if (result?.code === 200) {
@@ -51,13 +53,13 @@ const useInventoryStore = create(
                             return [...acc, { id: value?.ID, label: value?.name }]
                         }, [])
                         data.push({ id: -1, label: 'search' })
-                        set({ listCategories: data })
+                        set({ listCategories: data, loadingCategories: false })
                     } else {
                         return null
                     }
                 })
             } catch {
-                set({ loading: false })
+                set({ loadingCategories: false })
             }
         },
         getStockTypes: () => {
