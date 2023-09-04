@@ -11,10 +11,11 @@ import { BillIcon } from '@/components/ui/BillIcon'
 import useSalesStore from './store'
 export default function PayPage (props) {
     /* Change state to go back to sales table product */
-    const { setPayment } = props
+    const {
+        setPayment, paymentTarget, setPaymentTarget,
+        voucherTarget, setVoucherTarget
+    } = props
     /* Use states */
-    const [paymentTarget, setPaymentTarget] = useState(null)
-    const [voucherTarget, setVoucherTarget] = useState(1)
     /* Store sales to get type payment and voucher */
     const {
         getPaymentType, getVoucherType, payment,
@@ -40,7 +41,10 @@ export default function PayPage (props) {
     return (
         <section className='animation-fade-in h-full w-full'>
             <section className="z-10 h-[6%] w-[7rem] top-[52px] rounded-t-[12px] bg-secondary-50 dark:bg-secondary-450">
-                <Button size="lg" className="flex flex-col items-center h-full w-full " isIconOnly variant="ligth" aria-label="" onClick={() => { setPayment(false) } }>volver</Button>
+                <Button size="lg" className="flex flex-col items-center h-full w-full " isIconOnly variant="ligth" aria-label="" onClick={() => {
+                    setPaymentTarget(null)
+                    setPayment(false)
+                } }>volver</Button>
             </section>
             <section className='flex flex-col h-3/4  sm:h-[93%] items-center px-5 py-[1rem] shadow-md hover:shadow-lg  rounded-tl-[0px]  bg-secondary-50 dark:bg-secondary-450 rounded-[14px]'>
                 <div className='flex flex-col  w-full h-full mt-16 items-center'>
@@ -77,7 +81,7 @@ export default function PayPage (props) {
                 <div className='flex flex-col w-full h-full items-center'>
                     <h5 className="text-4xl font-bold leading-none text-gray-900 dark:text-white">Seleccione Boleta, factura o Ticket</h5>
                     <div className='flex flex-col items-center'>
-                        <div className='flex flex-row mt-10 gap-12 items-center '>
+                        <div className='flex flex-row mt-10 space-x-10  items-center '>
 
                             { loadingVoucher
                                 ? <section className='flex flex-row space-x-10'>

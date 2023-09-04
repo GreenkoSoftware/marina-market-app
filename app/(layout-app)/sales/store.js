@@ -36,8 +36,10 @@ const useSalesStore = create(
             set({ listSales: [] })
         },
         /* Added method pay and voucher, ticket,etc */
-        methodPay: null,
-        typeVoucher: null,
+        paymentTarget: null,
+        voucherTarget: 1,
+        setPaymentTarget: (value) => set({ paymentTarget: value }),
+        setVoucherTarget: (value) => set({ voucherTarget: value }),
         payment: [],
         voucher: [],
         loadingPayment: false,
