@@ -17,7 +17,7 @@ const useInventoryStore = create(
                 fetchGetproducts().then(result => {
                     if (result?.code === 200) {
                         set({
-                            listInventory: result?.data?.reduce((acc, { ID, code, cost_price, image, name, net_price, product_categories_id, stock_types_id, product_stock }) => {
+                            listInventory: result?.data?.reduce((acc, { ID, code, cost_price, image, name, net_price, sale_price, product_categories_id, stock_types_id, product_stock }) => {
                                 return [...acc,
                                     {
                                         id: ID,
@@ -26,6 +26,7 @@ const useInventoryStore = create(
                                         image,
                                         name,
                                         netPrice: net_price,
+                                        price: sale_price,
                                         productCategoryId: product_categories_id,
                                         stockTypeId: stock_types_id,
                                         stock: product_stock?.stock,
@@ -83,6 +84,10 @@ const useInventoryStore = create(
         getProductByCode: (products, searchCode) => {
             const result = products?.find(({ code }) => code === searchCode)
             return result || undefined
+        },
+        getTypeById: (types, typeId) => {
+            const result = types?.find(({ id }) => id === typeId)
+            return result?.label || undefined
         },
         clearState: () => {
             set({ error: null, loading: false, listInventory: [], listCategories: [], listStockTypes: [] })

@@ -5,13 +5,13 @@ import DeleteButton from './DeleteButton'
 export default function SaleListItem (props) {
     const { product: productDetail } = props
     const { product, quantity } = productDetail
-    const { id, name, code, netPrice: price } = product
+    const { id, name, code, price } = product
     return (
         <li className="py-3 sm:py-4 animation-fade-in">
             <div className="flex items-center space-x-4">
                 <div className="flex-1 min-w-0">
                     <p className="text-xl font-medium text-gray-900 truncate dark:text-white">
-                        {name}
+                        {name?.toUpperCase()}
                     </p>
                     <p className="text-sm text-gray-500 truncate dark:text-gray-400">
                         {code}
