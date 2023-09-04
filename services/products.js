@@ -68,24 +68,26 @@ export const updateProduct = async (
     {
         id,
         name,
-        costPrice,
-        netPrice,
+        cost_price,
+        sale_price,
+        net_price,
         image,
         code,
-        productCategoryId,
-        stockTypeId
+        category_id,
+        stock_type_id
     }) => {
     try {
         const queryParams = new URLSearchParams(
             {
                 id: id || '',
                 name: name || '',
-                cost_price: costPrice || '',
-                net_price: netPrice || '',
+                cost_price: cost_price || '',
+                sale_price: sale_price || '',
+                net_price: net_price || '',
                 image: image || '',
                 code: code || '',
-                product_category_id: productCategoryId || '',
-                stock_type_id: stockTypeId || ''
+                product_category_id: category_id || '',
+                stock_type_id: stock_type_id || ''
             })
         return await fetch(`${PRODUCT_API_URL}?${queryParams}`,
             {
