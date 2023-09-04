@@ -18,7 +18,6 @@ export default function Card (props) {
                         height="100"
                         alt={item?.name}
                         className="w-full object-cover h-[7rem]  bg-slate-100 dark:bg-white"
-                        // src={'https://confidentefinanciero.com/wp-content/uploads/2023/04/Facturacion-electronica-restaurantes-scaled.jpg'}
                         src={item?.image?.length ? ConvertBytesToImage({ imageBytes: item?.image }) : DefaultImageMarinaMarket()}
                     />
                 </CardBody>
@@ -39,7 +38,6 @@ export default function Card (props) {
                         height="100"
                         alt={item?.name}
                         className="w-full object-cover h-[10rem]  bg-slate-100 dark:bg-white shadow-md rounded-2xl"
-                        // src={'https://confidentefinanciero.com/wp-content/uploads/2023/04/Facturacion-electronica-restaurantes-scaled.jpg'}
                         src={item?.image?.length ? ConvertBytesToImage({ imageBytes: item?.image }) : DefaultImageMarinaMarket()}
                     />
                 </CardBody>

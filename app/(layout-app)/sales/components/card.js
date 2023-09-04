@@ -19,6 +19,7 @@ export default function Card () {
             setListInventory(list.filter((item) => item.productCategoryId === parseInt(selected)))
         }
     }, [selected, list])
+
     useEffect(() => {
         if (targeProduct) {
             onOpen()

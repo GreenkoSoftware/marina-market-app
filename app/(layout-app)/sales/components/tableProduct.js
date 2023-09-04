@@ -5,11 +5,14 @@ import { Tabs, Tab, useDisclosure, ScrollShadow } from '@nextui-org/react'
 import DetailedProduct from './detailedProduct'
 import useSalesStore from '../store'
 import useInventoryStore from '../../inventory/store'
+import WeighingScaleModal from './weighingScaleModal'
 export default function tableProducts (props) {
     const { searchInput } = props
-    const { isOpen, onClose } = useDisclosure()
+    const { isOpen, onClose, onOpen } = useDisclosure()
     const [targeProduct, setTargetProduct] = useState(null)
     const [selected, setSelected] = useState(1)
+    const [isAcepted, setIsAcepted] = useState()
+    const [selectedKL, setSelectedKL] = useState()
     const [listInventory, setListInventory] = useState([])
     const { listCategories, listInventory: list, getCategories, getListInventory } = useInventoryStore()
     const [filteredList, setFilteredList] = useState([])
@@ -27,26 +30,40 @@ export default function tableProducts (props) {
                 setListInventory(list.filter((item) => item.productCategoryId === parseInt(selected)))
             }
         }
-        /*  if (selected) {
-            setListInventory(list.filter((item) => item.productCategoryId === parseInt(selected)))
-        } */
     }, [selected, searchInput, list])
 
     useEffect(() => {
         if (targeProduct) {
-            // agregar a la lista de venstas
-            addFromNewSales(listSales, targeProduct, setTargetProduct, units, setUnits)
+            if (targeProduct.stockTypeId === 1) {
+                setSelectedKL(Object.assign({}, targeProduct))
+            } else {
+                addFromNewSales(listSales, targeProduct, setTargetProduct, units, setUnits)
+            }
         }
     }, [targeProduct])
+
+    useEffect(() => {
+        if (targeProduct != null) { onOpen() }
+    }, [selectedKL])
+
+    useEffect(() => {
+        if (isAcepted) {
+            addFromNewSales(listSales, selectedKL, setTargetProduct, units, setUnits)
+            setIsAcepted(false)
+        }
+    }, [isAcepted])
 
     useEffect(() => {
         if (listSales?.length >= 0) {
             let currentTotal = 0
             listSales?.forEach((item) => {
-                currentTotal += item.product?.price * item.quantity
+                if (item?.product?.stockTypeId !== 1) {
+                    currentTotal += item.product?.price * item.quantity
+                } else {
+                    currentTotal += item.product?.price
+                }
                 // TODO: agregar logica de ofertas
             })
-
             setTotalPrice(currentTotal)
         }
     }, [listSales])
@@ -92,9 +109,6 @@ export default function tableProducts (props) {
             <section className='flex flex-col h-3/4  sm:h-[93%] items-center px-5 py-[1rem] shadow-md hover:shadow-lg  rounded-tl-[0px]  bg-secondary-50 dark:bg-secondary-450 rounded-[14px]'>
                 <ScrollShadow className="w-full pb-4">
                     <div className="gap-4 grid grid-cols-2 md:grid-cols-5 p-1">
-                        {/*   {listInventory.map((item, index) => (
-                            <CardUi className key={index} item={item} index={index} isFromSales={true} setTargetProduct={setTargetProduct}/>
-                        ))} */}
                         { sectionSearch
                             ? filteredList?.map((item, index) => (
                                 <CardUi className key={index} item={item} index={index} isFromSales={true} setTargetProduct={setTargetProduct}/>
@@ -107,7 +121,8 @@ export default function tableProducts (props) {
                     </div>
                 </ScrollShadow>
             </section>
-            <DetailedProduct targeProduct={targeProduct} isOpen={isOpen} onClose={onClose} setTargetProduct={setTargetProduct}/>
+            <DetailedProduct targeProduct={targeProduct} setTargetProduct={setTargetProduct} />
+            <WeighingScaleModal isOpen={isOpen} onClose={onClose} product={selectedKL} value={4.20} setIsAcepted = {setIsAcepted} setUnits={setUnits}/>
         </section>
     )
 }
