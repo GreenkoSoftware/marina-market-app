@@ -1,6 +1,6 @@
 /* eslint-disable camelcase */
 import { create } from 'zustand'
-import { fetchGetproducts, fetchGetCategories, fetchGetTypeStocks } from '@/services/products'
+import { fetchGetproducts, fetchGetCategories, fetchGetTypeStocks, fetchGetOffers, fetchGetOfferById } from '@/services/products'
 
 const useInventoryStore = create(
     (set) => ({
@@ -88,6 +88,42 @@ const useInventoryStore = create(
         getTypeById: (types, typeId) => {
             const result = types?.find(({ id }) => id === typeId)
             return result?.label || undefined
+        },
+        getOffers: () => {
+            // set({ loading: true, error: null })
+            try {
+                fetchGetOffers().then(result => {
+                    if (result?.code === 200) {
+                        /*  set({
+                            listStockTypes: result?.data?.reduce((acc, value) => {
+                                return [...acc, { id: value?.ID, label: value?.name }]
+                            }, [])
+                        }) */
+                    } else {
+                        return null
+                    }
+                })
+            } catch {
+                // set({ loading: false })
+            }
+        },
+        getOfferById: (id) => {
+            // set({ loading: true, error: null })
+            try {
+                fetchGetOfferById(id).then(result => {
+                    if (result?.code === 200) {
+                        /*  set({
+                            listStockTypes: result?.data?.reduce((acc, value) => {
+                                return [...acc, { id: value?.ID, label: value?.name }]
+                            }, [])
+                        }) */
+                    } else {
+                        return null
+                    }
+                })
+            } catch {
+                // set({ loading: false })
+            }
         },
         clearState: () => {
             set({ error: null, loading: false, listInventory: [], listCategories: [], listStockTypes: [] })

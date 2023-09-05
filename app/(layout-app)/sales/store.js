@@ -2,6 +2,7 @@
 import { create } from 'zustand'
 import { TYPE_PAYMENT_API_URL, TYPE_VOUCHER_API_URL } from '@/settings/constants'
 import { fetchGet } from '@/services/sales'
+import { fetchGetOfferById, fetchGetOffers } from '@/services/products'
 const useSalesStore = create(
     (set) => ({
         loading: false,
@@ -19,14 +20,32 @@ const useSalesStore = create(
         setUnits: (value) => set({ units: value }),
         addFromNewSales: (listSales, product, setTargetProduct, units, setUnits) => {
             const searhProduct = listSales?.find((item) => { return item?.product?.id === product?.id })
-            if (!searhProduct) {
-                set({ listSales: [...listSales, { product, quantity: units }] })
-                setUnits(1)
-            } else {
-                const newList = listSales?.filter((item) => item?.product?.id !== product?.id)
-                set({ listSales: [...newList, { product, quantity: searhProduct?.quantity + 1 }] })
-            }
-            if (setTargetProduct) { setTargetProduct(null) }
+            fetchGetOfferById(product?.id).then(result => {
+                if (result?.code === 200) {
+                    const productFind = result?.data?.find((element) => element?.product_id === product?.id)
+                    const productReMap = { ...product, price: productFind?.unit_price ?? product?.price }
+
+                    if (!searhProduct) {
+                        /* get offert from product */
+                        set({ listSales: [...listSales, { product: productReMap, quantity: units }] })
+                        setUnits(1)
+                    } else {
+                        const newList = listSales?.filter((item) => item?.product?.id !== productReMap?.id)
+                        set({ listSales: [...newList, { product: productReMap, quantity: searhProduct?.quantity + 1 }] })
+                    }
+                    if (setTargetProduct) { setTargetProduct(null) }
+                } else {
+                    if (!searhProduct) {
+                        /* get offert from product */
+                        set({ listSales: [...listSales, { product, quantity: units }] })
+                        setUnits(1)
+                    } else {
+                        const newList = listSales?.filter((item) => item?.product?.id !== product?.id)
+                        set({ listSales: [...newList, { product, quantity: searhProduct?.quantity + 1 }] })
+                    }
+                    if (setTargetProduct) { setTargetProduct(null) }
+                }
+            })
         },
         removeProduct: (listSales, productId) => {
             const newList = listSales?.filter((item) => item?.product?.id !== productId)
@@ -42,8 +61,10 @@ const useSalesStore = create(
         setVoucherTarget: (value) => set({ voucherTarget: value }),
         payment: [],
         voucher: [],
+        offers: [],
         loadingPayment: false,
         loadingVoucher: false,
+        loadingOffers: false,
         getPaymentType: () => {
             set({ loadingPayment: true, error: null })
             try {
@@ -90,6 +111,42 @@ const useSalesStore = create(
                 })
             } catch {
                 set({ loadingVoucher: false })
+            }
+        },
+        getOfferById: (id) => {
+            // set({ loading: true, error: null })
+            try {
+                fetchGetOfferById(id).then(result => {
+                    if (result?.code === 200) {
+                        /*  set({
+                            listStockTypes: result?.data?.reduce((acc, value) => {
+                                return [...acc, { id: value?.ID, label: value?.name }]
+                            }, [])
+                        }) */
+                    } else {
+                        return null
+                    }
+                })
+            } catch {
+                // set({ loading: false })
+            }
+        },
+        getOffers: () => {
+            set({ loadingOffers: true, error: null })
+            try {
+                fetchGetOffers().then(result => {
+                    if (result?.code === 200) {
+                        set({
+                            offers: result?.data?.reduce((acc, value) => {
+                                return [...acc, { id: value?.ID, label: value?.name }]
+                            }, [])
+                        })
+                    } else {
+                        return null
+                    }
+                })
+            } catch {
+                set({ loadingOffers: false })
             }
         }
     }),
