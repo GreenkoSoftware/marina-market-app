@@ -12,6 +12,7 @@ const useAuthStore = create(
             email: null,
             loading: false,
             error: null,
+            idUser: null,
             setToken: () => set((state) => ({ token: state })),
             setEmail: () => set((state) => ({ email: state })),
             setError: () => set((state) => ({ error: state })),
@@ -25,7 +26,7 @@ const useAuthStore = create(
                         }
                     ).then(({ user, statusCode, statusText, error, message }) => {
                         if (user.token) {
-                            const { name, lastName, userType, token } = user
+                            const { name, lastName, userType, token, idUser } = user
                             set({
                                 name,
                                 lastName,
@@ -33,6 +34,7 @@ const useAuthStore = create(
                                 email,
                                 token,
                                 isAdmin: userType === 'admin',
+                                idUser,
                                 error: null
                             })
                             if (userType === 'admin') set({ isAdmin: true })
@@ -54,7 +56,8 @@ const useAuthStore = create(
                     token: null,
                     email: null,
                     loading: false,
-                    error: null
+                    error: null,
+                    idUser: null
                 })
             }
         }),

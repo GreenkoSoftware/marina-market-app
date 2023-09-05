@@ -1,14 +1,52 @@
 'use client'
-import React from 'react'
+/* eslint-disable */
+import React,{useState,useEffect} from 'react'
 import { Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Button, Card, CardBody, Image } from '@nextui-org/react'
 import { ConvertBytesToImage, DefaultImageMarinaMarket } from '@/utils/image'
-
+import useWebSocket from 'react-use-websocket'
+import useAuthStore from '@/stores/user'
+import { getIdUser } from '@/services/user'
 const onSubmitHandler = (product, value, setIsAcepted, setUnits) => {
     product.price = Math.round(product?.price * value)
     setUnits(value)
     setIsAcepted(true)
 }
-export default function WeighingScaleModal ({ isOpen, onClose, product, value, setIsAcepted, setUnits }) {
+
+export default function WeighingScaleModal ({ isOpen, onClose, product, setIsAcepted, setUnits }) {
+    const [handShake,setHandShake] = useState(false)
+    const [ url, setUrl ] = useState(null)
+    const[value,setValue] = useState(null)
+    const {
+        sendJsonMessage,
+        lastMessage,
+        lastJsonMessage,
+        readyState,
+        getWebSocket
+    } = useWebSocket(url, {
+        onOpen: () => {
+            setHandShake(true)
+        },
+        // Will attempt to reconnect on all close events, such as server shutting down
+        shouldReconnect: (closeEvent) => true
+    })
+
+    /* Last message ws from fleet status */
+    useEffect(() => {
+        if (lastMessage) {
+            const message = lastMessage?.data.substring(3,8)
+            const data =parseFloat(message)
+            setValue(data)
+        }
+      }, [lastMessage])  
+/* Connection to get  markers on Map */
+  useEffect(() => {
+    if (readyState === 1) {
+        console.log('estamos conectados')
+    }
+  }, [handShake])
+    useEffect(()=>{
+        setUrl('ws://localhost:8080/food-scale/' + getIdUser())
+    },[])
     return (
         <>
             <Modal backdrop="blur" isOpen={isOpen} onClose={onClose} >
