@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 'use client'
 import React, { useEffect, useState } from 'react'
 import CardUi from '@/components/ui/Card'
@@ -16,10 +17,10 @@ export default function tableProducts (props) {
     const [isAcepted, setIsAcepted] = useState()
     const [selectedKL, setSelectedKL] = useState()
     const [listInventory, setListInventory] = useState([])
-    const { listCategories, listInventory: list, getCategories, getListInventory, loading, loadingCategories } = useInventoryStore()
+    const { listCategories, listInventory: list, getCategories, getListInventory, loading, loadingCategories } = useInventoryStore(({ listCategories, listInventory: list, getCategories, getListInventory, loading, loadingCategories }) => ({ listCategories, listInventory: list, getCategories, getListInventory, loading, loadingCategories }))
     const [filteredList, setFilteredList] = useState([])
     const [sectionSearch, setSectionSearch] = useState(false)
-    const { listSales, addFromNewSales, setTotalPrice, units, setUnits } = useSalesStore()
+    const { listSales, addFromNewSales, setTotalPrice, units, setUnits, getOffers, offers } = useSalesStore()
     const listEmpty = new Array(20).fill(null)
     useEffect(() => {
         if (selected) {
@@ -74,6 +75,7 @@ export default function tableProducts (props) {
         /* Add in the future refreshToken in this useEffect */
         getCategories()
         getListInventory()
+        getOffers()
     }, [])
     useEffect(() => {
         // Create copy of item list
@@ -91,7 +93,7 @@ export default function tableProducts (props) {
     }, [searchInput])
 
     return (
-        <section className=" h-full w-full">
+        <section className='animation-fade-in h-full w-full'>
             <section className="z-10 h-[6%] w-[280px] top-[52px] rounded-t-[12px] bg-secondary-50 dark:bg-secondary-450">
                 {loadingCategories
 
