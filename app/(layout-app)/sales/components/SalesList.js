@@ -6,10 +6,16 @@ import { Divider, ScrollShadow, Button, Input } from '@nextui-org/react'
 import SearchBar from '../../../../components/ui/SearchBar'
 import useSalesStore from '@/app/(layout-app)/sales/store'
 import { motion } from 'framer-motion'
+import useInventoryStore from '../../inventory/store'
 
 export default function SaleList (props) {
-    const { setPayment, payment, setSearchInput } = props
+    const {
+        setPayment, payment, setSearchInput,
+        paymentTarget,
+        voucherTarget, setGoPay
+    } = props
     const { listSales, totalPrice, units, setUnits, clearList } = useSalesStore()
+    const { loading } = useInventoryStore()
     const [inputValue, setInputValue] = useState(1)
 
     useEffect(() => {
@@ -49,7 +55,7 @@ export default function SaleList (props) {
                             </Button>
                         </div>
 
-                        : <h5 className="animation-fade-in m-5 text-2xl font-bold leading-none text-gray-900 dark:text-white">Escanee un producto para comenzar la venta...</h5>
+                        : <h5 className="animation-fade-in m-5 text-2xl font-bold leading-none text-gray-900 dark:text-white">{loading ? 'Espere un momento...' : 'Escanee un producto para comenzar la venta...'}</h5>
                     }
                 </section>
 
@@ -72,7 +78,7 @@ export default function SaleList (props) {
             <section className='w-full'>
                 {totalPrice
                     ? <Button color="success" variant="shadow" className='text-white mt-3 h-[5rem] w-full font-bold text-2xl'
-                        onClick={() => { setPayment(true) }}>
+                        onClick={() => { paymentTarget && voucherTarget ? setGoPay(true) : setPayment(true) }}>
                         <div className="text-2xl font-bol flex flex-row gap-4 items-center">
                             <motion.div
                                 initial={{ opacity: 0, scale: 0.5 }}
@@ -82,7 +88,7 @@ export default function SaleList (props) {
                                     delay: 0.2,
                                     ease: [0, 0.71, 0.2, 1.01]
                                 }}>
-                                <a>TOTAL  $ {totalPrice }</a>
+                                {paymentTarget && voucherTarget ? 'PAGAR  $ ' : 'TOTAL  $ '}{Math.floor((totalPrice / 10)) * 10}
                             </motion.div>
                         </div>
 

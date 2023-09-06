@@ -19,7 +19,7 @@ export default function LayoutApp ({ children }) {
                     ease: [0, 0.71, 0.2, 1.01]
                 }}>
 
-                <header className="sticky z-20 bg-primary-200 dark:bg-secondary-500 top-0 h-[4rem]">
+                <header className="sticky z-20 bg-primary-200 dark:bg-secondary-500 top-0 h-[5rem]">
                     <Header/>
                 </header>
                 <div className="flex-1 flex flex-row  pt-[1rem]">

@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 'use client'
 import React, { useEffect, useState } from 'react'
 import CardUi from '@/components/ui/Card'
@@ -16,10 +17,10 @@ export default function tableProducts (props) {
     const [isAcepted, setIsAcepted] = useState()
     const [selectedKL, setSelectedKL] = useState()
     const [listInventory, setListInventory] = useState([])
-    const { listCategories, listInventory: list, getCategories, getListInventory, loading, loadingCategories } = useInventoryStore()
+    const { listCategories, listInventory: list, getCategories, getListInventory, loading, loadingCategories } = useInventoryStore(({ listCategories, listInventory: list, getCategories, getListInventory, loading, loadingCategories }) => ({ listCategories, listInventory: list, getCategories, getListInventory, loading, loadingCategories }))
     const [filteredList, setFilteredList] = useState([])
     const [sectionSearch, setSectionSearch] = useState(false)
-    const { listSales, addFromNewSales, setTotalPrice, units, setUnits } = useSalesStore()
+    const { listSales, addFromNewSales, setTotalPrice, units, setUnits, getOffers, offers } = useSalesStore()
     const listEmpty = new Array(20).fill(null)
     useEffect(() => {
         if (selected) {
@@ -36,11 +37,8 @@ export default function tableProducts (props) {
 
     useEffect(() => {
         if (targeProduct) {
-            if (targeProduct.stockTypeId === 1) {
-                setSelectedKL(Object.assign({}, targeProduct))
-            } else {
-                addFromNewSales(listSales, targeProduct, setTargetProduct, units, setUnits)
-            }
+            // agregar a la lista de venstas
+            addFromNewSales(listSales, targeProduct, setTargetProduct, units, setUnits, offers)
         }
     }, [targeProduct])
 
@@ -59,11 +57,7 @@ export default function tableProducts (props) {
         if (listSales?.length >= 0) {
             let currentTotal = 0
             listSales?.forEach((item) => {
-                if (item?.product?.stockTypeId !== 1) {
-                    currentTotal += item.product?.price * item.quantity
-                } else {
-                    currentTotal += item.product?.price
-                }
+                currentTotal += item?.discount ? item.product?.price * item.quantity - item?.discount : item.product?.price * item.quantity
                 // TODO: agregar logica de ofertas
             })
             setTotalPrice(currentTotal)
@@ -74,6 +68,7 @@ export default function tableProducts (props) {
         /* Add in the future refreshToken in this useEffect */
         getCategories()
         getListInventory()
+        getOffers()
     }, [])
     useEffect(() => {
         // Create copy of item list
@@ -91,7 +86,7 @@ export default function tableProducts (props) {
     }, [searchInput])
 
     return (
-        <section className=" h-full w-full">
+        <section className='animation-fade-in h-full w-full'>
             <section className="z-10 h-[6%] w-[280px] top-[52px] rounded-t-[12px] bg-secondary-50 dark:bg-secondary-450">
                 {loadingCategories
 
@@ -131,7 +126,7 @@ export default function tableProducts (props) {
                 </ScrollShadow>
             </section>
             <DetailedProduct targeProduct={targeProduct} setTargetProduct={setTargetProduct} />
-            <WeighingScaleModal isOpen={isOpen} onClose={onClose} product={selectedKL} value={4.20} setIsAcepted = {setIsAcepted} setUnits={setUnits}/>
+            <WeighingScaleModal isOpen={isOpen} onClose={onClose} product={selectedKL} value={4.20} setIsAcepted = {setIsAcepted} setUnits={setUnits} setTargetProduct={setTargetProduct}/>
         </section>
     )
 }

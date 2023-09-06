@@ -9,6 +9,7 @@ import { SearchIcon } from '@/components/ui/SearchIcon'
 import useSalesStore from '../sales/store'
 import ProductDetail from './components/productDetail'
 import LoadingCard from '@/components/ui/Loading'
+import CreateOffer from './components/NewOffer/createOffer'
 export default function Card () {
     const { isOpen, onClose, onOpen } = useDisclosure()
     const [targeProduct, setTargetProduct] = useState(null)
@@ -97,6 +98,7 @@ export default function Card () {
                 </div>
                 <div className="flex space-x-2">
                     {/* <ScannerDetection/> */}
+                    <CreateOffer/>
                     <CreateProduct/>
                 </div>
             </section>
