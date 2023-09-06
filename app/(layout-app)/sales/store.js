@@ -18,34 +18,20 @@ const useSalesStore = create(
         enabledRedirectSales: (value) => set({ enabledRedirect: true }),
         disabledRedirectSales: (value) => set({ enabledRedirect: false }),
         setUnits: (value) => set({ units: value }),
-        addFromNewSales: (listSales, product, setTargetProduct, units, setUnits) => {
+        addFromNewSales: (listSales, product, setTargetProduct, units, setUnits, offers) => {
             const searhProduct = listSales?.find((item) => { return item?.product?.id === product?.id })
-            fetchGetOfferById(product?.id).then(result => {
-                if (result?.code === 200) {
-                    const productFind = result?.data?.find((element) => element?.product_id === product?.id)
-                    const productReMap = { ...product, price: productFind?.unit_price ?? product?.price }
-
-                    if (!searhProduct) {
-                        /* get offert from product */
-                        set({ listSales: [...listSales, { product: productReMap, quantity: units }] })
-                        setUnits(1)
-                    } else {
-                        const newList = listSales?.filter((item) => item?.product?.id !== productReMap?.id)
-                        set({ listSales: [...newList, { product: productReMap, quantity: searhProduct?.quantity + 1 }] })
-                    }
-                    if (setTargetProduct) { setTargetProduct(null) }
-                } else {
-                    if (!searhProduct) {
-                        /* get offert from product */
-                        set({ listSales: [...listSales, { product, quantity: units }] })
-                        setUnits(1)
-                    } else {
-                        const newList = listSales?.filter((item) => item?.product?.id !== product?.id)
-                        set({ listSales: [...newList, { product, quantity: searhProduct?.quantity + 1 }] })
-                    }
-                    if (setTargetProduct) { setTargetProduct(null) }
-                }
-            })
+            // const offersProduct = offers?.find((item) => { return item?.productId === product?.id })
+            /* Encontrar si se encuentra una oferta de dicho producto */
+            /*  const quantityOld = searhProduct?.quantity ?? 1
+            if(offersProduct && offersProduct){}  */
+            if (!searhProduct) {
+                set({ listSales: [...listSales, { product, quantity: units }] })
+                setUnits(1)
+            } else {
+                const newList = listSales?.filter((item) => item?.product?.id !== product?.id)
+                set({ listSales: [...newList, { product, quantity: searhProduct?.quantity + 1 }] })
+            }
+            if (setTargetProduct) { setTargetProduct(null) }
         },
         removeProduct: (listSales, productId) => {
             const newList = listSales?.filter((item) => item?.product?.id !== productId)
@@ -113,6 +99,24 @@ const useSalesStore = create(
                 set({ loadingVoucher: false })
             }
         },
+        getOffers: () => {
+            set({ loadingOffers: true, error: null })
+            try {
+                fetchGetOffers().then(result => {
+                    if (result?.code === 200) {
+                        set({
+                            offers: result?.data?.reduce((acc, value) => {
+                                return [...acc, { id: value?.ID, quantity: value?.quantity, unitPrice: value?.unit_price, productId: value?.product_id }]
+                            }, [])
+                        })
+                    } else {
+                        return null
+                    }
+                })
+            } catch {
+                set({ loadingOffers: false })
+            }
+        },
         getOfferById: (id) => {
             // set({ loading: true, error: null })
             try {
@@ -129,24 +133,6 @@ const useSalesStore = create(
                 })
             } catch {
                 // set({ loading: false })
-            }
-        },
-        getOffers: () => {
-            set({ loadingOffers: true, error: null })
-            try {
-                fetchGetOffers().then(result => {
-                    if (result?.code === 200) {
-                        set({
-                            offers: result?.data?.reduce((acc, value) => {
-                                return [...acc, { id: value?.ID, label: value?.name }]
-                            }, [])
-                        })
-                    } else {
-                        return null
-                    }
-                })
-            } catch {
-                set({ loadingOffers: false })
             }
         }
     }),
