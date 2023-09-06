@@ -65,14 +65,14 @@ export const InputComponent = ({ title, type, placeholder, isPrice, isBarCode, .
 }
 
 export default function CreateProduct () {
-    /*  const productName = 'COCA-COLA'
-    const productCode = generateProductCode(productName) */
-
     const { isOpen, onClose, onOpen } = useDisclosure()
     const [scanProduct, setScanProduct] = useState(false)
 
     const [categoryOptions, setCategoryOptions] = useState([])
     const [stockTypeOptions, setStockTypeOptions] = useState([])
+
+    const [barcodeValue, setBarcodeValue] = useState(null)
+    const [isBarcodeGenerated, setIsBarcodeGenerated] = useState(false)
 
     const { data, setFormData, requestCreateProduct, loading, error, setError, complete, hasRequeredValues, clearStore } = useProductFormStore()
     const { listCategories, listStockTypes, getCategories, getStockTypes, getListInventory } = useInventoryStore()
@@ -84,6 +84,7 @@ export default function CreateProduct () {
             useSalesStore.getState()?.disabledRedirectSales()
         } else {
             useSalesStore.getState()?.enabledRedirectSales()
+            setBarcodeValue(null)
         }
     }, [isOpen])
 
@@ -100,6 +101,12 @@ export default function CreateProduct () {
         }
     }, [complete, error])
 
+    useEffect(() => {
+        if (barcodeValue) {
+            handleInputChange({ field: 'barcode', value: barcodeValue })
+        }
+    }, [barcodeValue])
+
     const handleInputChange = ({ field, value, isSalePrice }) => {
         const newFormValues = { ...data, [field]: !isNaN(value) ? parseInt(value) : value }
         if (isSalePrice) {
@@ -107,6 +114,12 @@ export default function CreateProduct () {
         }
         console.log(newFormValues)
         setFormData(newFormValues)
+    }
+
+    const handleGenerateCode = () => {
+        const productCode = generateProductCode('name')
+        setBarcodeValue(productCode)
+        setIsBarcodeGenerated(true)
     }
 
     return (
@@ -141,10 +154,36 @@ export default function CreateProduct () {
                                         <InputComponent
                                             isRequired
                                             isBarCode={true}
+                                            value={barcodeValue}
                                             type="text"
                                             title="Codigo de barra"
-                                            onValueChange={(value) => { handleInputChange({ field: 'barcode', value }) }}
+                                            // onValueChange={(value) => { handleInputChange({ field: 'barcode', value }) }}
+                                            onValueChange={(value) => {
+                                                setBarcodeValue(value)
+                                            }}
                                         />
+                                        {
+                                            isBarcodeGenerated
+                                                ? <div>
+
+                                                    <Button className =" bg-red-500 text-primary-50"
+                                                        onClick={() => {
+                                                            setIsBarcodeGenerated(false)
+                                                            setBarcodeValue('')
+                                                        }}
+                                                    >
+                                                        {'Eliminar código'}
+                                                    </Button>
+                                                </div>
+                                                : <div>
+                                                    <Button className =" bg-green-500 text-primary-50"
+                                                        onClick={() => { handleGenerateCode() }}
+                                                    >
+                                                        {'Generar código'}
+                                                    </Button>
+
+                                                </div>
+                                        }
                                         <InputComponent
                                             type="text"
                                             title="Nombre"
