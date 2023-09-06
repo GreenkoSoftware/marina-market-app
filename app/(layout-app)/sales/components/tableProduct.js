@@ -45,7 +45,7 @@ export default function tableProducts (props) {
         if (listSales?.length >= 0) {
             let currentTotal = 0
             listSales?.forEach((item) => {
-                currentTotal += item.product?.price * item.quantity
+                currentTotal += item?.discount ? item.product?.price * item.quantity - item?.discount : item.product?.price * item.quantity
                 // TODO: agregar logica de ofertas
             })
 

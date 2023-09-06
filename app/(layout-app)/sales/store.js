@@ -22,18 +22,26 @@ const useSalesStore = create(
         addFromNewSales: (listSales, product, setTargetProduct, units, setUnits, offers) => {
             const searhProduct = listSales?.find((item) => { return item?.product?.id === product?.id })
             const offersProduct = offers?.find((item) => { return item?.productId === product?.id })
-            /* Encontrar si se encuentra una oferta de dicho producto */
-            /* Si ya existe el topde de la cantidad en la oferta del producto, se deberia agregar el mismo
-            producto en la lista de venta
-            */
-            const quantity = searhProduct?.quantity ? searhProduct?.quantity + 1 : 1
-            const priceUpdate = offersProduct && quantity === offersProduct?.quantity ? offersProduct?.unitPrice : product?.price
-            const productUpdate = { ...product, price: priceUpdate }
-            if (!searhProduct) {
-                set({ listSales: [...listSales, { product: productUpdate, quantity }] })
+            if (offersProduct) {
+                // agregar el arreglo de las ofertas en el list sales
+                if (searhProduct) {
+                    const quantitySale = searhProduct?.quantity + 1
+                    const offersOfProduct = Math.trunc(quantitySale / offersProduct.quantity)
+                    const newList = listSales?.filter((item) => item?.product?.id !== product?.id)
+                    const total = ((product?.price * offersProduct?.quantity) - (offersProduct?.quantity * offersProduct?.unitPrice)) * offersOfProduct
+                    set({ listSales: [...newList, { product, quantity: searhProduct?.quantity + 1, offers: offersOfProduct, discount: offersOfProduct > 0 ? total : 0 }] })
+                } else {
+                    const quantitySale = 1
+                    const offersOfProduct = Math.trunc(quantitySale / offersProduct.unitPrice)
+                    set({ listSales: [...listSales, { product, quantity: 1, offers: offersOfProduct, discount: offersOfProduct > 0 ? (offersProduct.quantity * offersProduct.unitPrice) * offersOfProduct : 0 }] })
+                }
             } else {
-                const newList = listSales?.filter((item) => item?.product?.id !== product?.id)
-                set({ listSales: [...newList, { product: productUpdate, quantity }] })
+                if (!searhProduct) {
+                    set({ listSales: [...listSales, { product, quantity: 1 }] })
+                } else {
+                    const newList = listSales?.filter((item) => item?.product?.id !== product?.id)
+                    set({ listSales: [...newList, { product, quantity: searhProduct?.quantity + 1 }] })
+                }
             }
             if (setTargetProduct) { setTargetProduct(null) }
         },
@@ -147,3 +155,11 @@ const useSalesStore = create(
 )
 
 export default useSalesStore
+
+/* Encontrar si se encuentra una oferta de dicho producto */
+/* Si ya existe el topde de la cantidad en la oferta del producto, se deberia agregar el mismo
+            producto en la lista de venta
+            */
+/*             const quantity = searhProduct?.quantity ? searhProduct?.quantity + 1 : 1
+            const priceUpdate = offersProduct && quantity === offersProduct?.quantity ? offersProduct?.unitPrice : product?.price
+            const productUpdate = { ...product, price: priceUpdate } */
