@@ -1,7 +1,8 @@
+/* eslint-disable no-unused-vars */
 /* eslint-disable camelcase */
 import { create } from 'zustand'
-import { TYPE_PAYMENT_API_URL, TYPE_VOUCHER_API_URL } from '@/settings/constants'
-import { fetchGet } from '@/services/sales'
+import { TYPE_PAYMENT_API_URL, TYPE_VOUCHER_API_URL, SALE_TICKET_CREATE } from '@/settings/constants'
+import { fetchGet, fetchPost } from '@/services/sales'
 import { fetchGetOfferById, fetchGetOffers } from '@/services/products'
 const useSalesStore = create(
     (set) => ({
@@ -20,16 +21,27 @@ const useSalesStore = create(
         setUnits: (value) => set({ units: value }),
         addFromNewSales: (listSales, product, setTargetProduct, units, setUnits, offers) => {
             const searhProduct = listSales?.find((item) => { return item?.product?.id === product?.id })
-            // const offersProduct = offers?.find((item) => { return item?.productId === product?.id })
-            /* Encontrar si se encuentra una oferta de dicho producto */
-            /*  const quantityOld = searhProduct?.quantity ?? 1
-            if(offersProduct && offersProduct){}  */
-            if (!searhProduct) {
-                set({ listSales: [...listSales, { product, quantity: units }] })
-                setUnits(1)
+            const offersProduct = offers?.find((item) => { return item?.productId === product?.id })
+            if (offersProduct) {
+                // agregar el arreglo de las ofertas en el list sales
+                if (searhProduct) {
+                    const quantitySale = searhProduct?.quantity + 1
+                    const offersOfProduct = Math.trunc(quantitySale / offersProduct.quantity)
+                    const newList = listSales?.filter((item) => item?.product?.id !== product?.id)
+                    const total = ((product?.price * offersProduct?.quantity) - (offersProduct?.quantity * offersProduct?.unitPrice)) * offersOfProduct
+                    set({ listSales: [...newList, { product, quantity: searhProduct?.quantity + 1, offers: offersOfProduct, discount: offersOfProduct > 0 ? total : 0, total: product?.price * quantitySale }] })
+                } else {
+                    const quantitySale = 1
+                    const offersOfProduct = Math.trunc(quantitySale / offersProduct.unitPrice)
+                    set({ listSales: [...listSales, { product, quantity: 1, offers: offersOfProduct, discount: offersOfProduct > 0 ? (offersProduct.quantity * offersProduct.unitPrice) * offersOfProduct : 0, total: product?.price * quantitySale }] })
+                }
             } else {
-                const newList = listSales?.filter((item) => item?.product?.id !== product?.id)
-                set({ listSales: [...newList, { product, quantity: searhProduct?.quantity + 1 }] })
+                if (!searhProduct) {
+                    set({ listSales: [...listSales, { product, quantity: 1, discount: 0, total: product?.price * 1 }] })
+                } else {
+                    const newList = listSales?.filter((item) => item?.product?.id !== product?.id)
+                    set({ listSales: [...newList, { product, quantity: searhProduct?.quantity + 1, discount: 0, total: product?.price * searhProduct?.quantity + 1 }] })
+                }
             }
             if (setTargetProduct) { setTargetProduct(null) }
         },
@@ -117,16 +129,28 @@ const useSalesStore = create(
                 set({ loadingOffers: false })
             }
         },
-        getOfferById: (id) => {
+        /* Create sale */
+        createSale: (paymentTarget, voucherTarget, listSales) => {
+            const body = {
+                sales_receipt: listSales?.map((sale) => {
+                    return {
+                        product_id: sale?.product?.id,
+                        quantity: sale?.quantity,
+                        total_price: sale?.total
+                    }
+                }),
+                payment_type_id: paymentTarget,
+                voucher_type_id: voucherTarget
+            }
             // set({ loading: true, error: null })
             try {
-                fetchGetOfferById(id).then(result => {
+                fetchPost(SALE_TICKET_CREATE, body).then(result => {
                     if (result?.code === 200) {
                         /*  set({
-                            listStockTypes: result?.data?.reduce((acc, value) => {
-                                return [...acc, { id: value?.ID, label: value?.name }]
-                            }, [])
-                        }) */
+                                    listStockTypes: result?.data?.reduce((acc, value) => {
+                                        return [...acc, { id: value?.ID, label: value?.name }]
+                                    }, [])
+                                }) */
                     } else {
                         return null
                     }
@@ -143,3 +167,11 @@ const useSalesStore = create(
 )
 
 export default useSalesStore
+
+/* Encontrar si se encuentra una oferta de dicho producto */
+/* Si ya existe el topde de la cantidad en la oferta del producto, se deberia agregar el mismo
+            producto en la lista de venta
+            */
+/*             const quantity = searhProduct?.quantity ? searhProduct?.quantity + 1 : 1
+            const priceUpdate = offersProduct && quantity === offersProduct?.quantity ? offersProduct?.unitPrice : product?.price
+            const productUpdate = { ...product, price: priceUpdate } */

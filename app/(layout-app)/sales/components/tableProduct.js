@@ -37,11 +37,8 @@ export default function tableProducts (props) {
 
     useEffect(() => {
         if (targeProduct) {
-            if (targeProduct.stockTypeId === 1) {
-                setSelectedKL(Object.assign({}, targeProduct))
-            } else {
-                addFromNewSales(listSales, targeProduct, setTargetProduct, units, setUnits)
-            }
+            // agregar a la lista de venstas
+            addFromNewSales(listSales, targeProduct, setTargetProduct, units, setUnits, offers)
         }
     }, [targeProduct])
 
@@ -60,11 +57,7 @@ export default function tableProducts (props) {
         if (listSales?.length >= 0) {
             let currentTotal = 0
             listSales?.forEach((item) => {
-                if (item?.product?.stockTypeId !== 1) {
-                    currentTotal += item.product?.price * item.quantity
-                } else {
-                    currentTotal += item.product?.price
-                }
+                currentTotal += item?.discount ? item.product?.price * item.quantity - item?.discount : item.product?.price * item.quantity
                 // TODO: agregar logica de ofertas
             })
             setTotalPrice(currentTotal)

@@ -12,6 +12,8 @@ const SalesMenu = () => {
     const { isOpen, onClose, onOpen } = useDisclosure()
     const [searchInput, setSearchInput] = useState(null)
     const [goPay, setGoPay] = useState(false)
+    const [payDetailed, setPayDetailed] = useState(null)
+    const { totalPrice, clearList, listSales, createSale } = useSalesStore(({ totalPrice, clearList, listSales, createSale }) => ({ totalPrice, clearList, listSales, createSale }))
     const {
         paymentTarget, setPaymentTarget,
         voucherTarget, setVoucherTarget
@@ -42,7 +44,18 @@ const SalesMenu = () => {
                 <div className="w-full md:w-[30%]">
                     <SaleList payment={payment} setPayment={setPayment} setSearchInput={setSearchInput} paymentTarget={paymentTarget} voucherTarget={voucherTarget} setGoPay={setGoPay}/>
                 </div>
-                <PayDetailed isOpen={isOpen} onClose={onClose} onOpen={onOpen}/>
+                <PayDetailed isOpen={isOpen}
+                    onClose={onClose} onOpen={onOpen}
+                    totalPay={totalPrice} setGoPay={setGoPay}
+                    setPayDetailed={setPayDetailed}
+                    payDetailed={payDetailed}
+                    clearList={clearList}
+                    listSales={listSales}
+                    createSale={createSale}
+                    paymentTarget={paymentTarget}
+                    voucherTarget={voucherTarget}
+
+                />
             </div>
         </section>
     )

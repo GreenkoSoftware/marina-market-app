@@ -21,3 +21,6 @@ export const TYPE_VOUCHER_API_URL = BASE_MARKET_API_URL + '/voucher'
 
 // Get offer
 export const PRODUCT_OFFER = BASE_MARKET_API_URL + '/product/offer'
+
+// Creat list
+export const SALE_TICKET_CREATE = BASE_MARKET_API_URL + '/sale-ticket/create'
