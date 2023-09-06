@@ -1,8 +1,8 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable camelcase */
 import { create } from 'zustand'
-import { TYPE_PAYMENT_API_URL, TYPE_VOUCHER_API_URL } from '@/settings/constants'
-import { fetchGet } from '@/services/sales'
+import { TYPE_PAYMENT_API_URL, TYPE_VOUCHER_API_URL, SALE_TICKET_CREATE } from '@/settings/constants'
+import { fetchGet, fetchPost } from '@/services/sales'
 import { fetchGetOfferById, fetchGetOffers } from '@/services/products'
 const useSalesStore = create(
     (set) => ({
@@ -29,18 +29,18 @@ const useSalesStore = create(
                     const offersOfProduct = Math.trunc(quantitySale / offersProduct.quantity)
                     const newList = listSales?.filter((item) => item?.product?.id !== product?.id)
                     const total = ((product?.price * offersProduct?.quantity) - (offersProduct?.quantity * offersProduct?.unitPrice)) * offersOfProduct
-                    set({ listSales: [...newList, { product, quantity: searhProduct?.quantity + 1, offers: offersOfProduct, discount: offersOfProduct > 0 ? total : 0 }] })
+                    set({ listSales: [...newList, { product, quantity: searhProduct?.quantity + 1, offers: offersOfProduct, discount: offersOfProduct > 0 ? total : 0, total: product?.price * quantitySale }] })
                 } else {
                     const quantitySale = 1
                     const offersOfProduct = Math.trunc(quantitySale / offersProduct.unitPrice)
-                    set({ listSales: [...listSales, { product, quantity: 1, offers: offersOfProduct, discount: offersOfProduct > 0 ? (offersProduct.quantity * offersProduct.unitPrice) * offersOfProduct : 0 }] })
+                    set({ listSales: [...listSales, { product, quantity: 1, offers: offersOfProduct, discount: offersOfProduct > 0 ? (offersProduct.quantity * offersProduct.unitPrice) * offersOfProduct : 0, total: product?.price * quantitySale }] })
                 }
             } else {
                 if (!searhProduct) {
-                    set({ listSales: [...listSales, { product, quantity: 1 }] })
+                    set({ listSales: [...listSales, { product, quantity: 1, discount: 0, total: product?.price * 1 }] })
                 } else {
                     const newList = listSales?.filter((item) => item?.product?.id !== product?.id)
-                    set({ listSales: [...newList, { product, quantity: searhProduct?.quantity + 1 }] })
+                    set({ listSales: [...newList, { product, quantity: searhProduct?.quantity + 1, discount: 0, total: product?.price * searhProduct?.quantity + 1 }] })
                 }
             }
             if (setTargetProduct) { setTargetProduct(null) }
@@ -129,16 +129,28 @@ const useSalesStore = create(
                 set({ loadingOffers: false })
             }
         },
-        getOfferById: (id) => {
+        /* Create sale */
+        createSale: (paymentTarget, voucherTarget, listSales) => {
+            const body = {
+                sales_receipt: listSales?.map((sale) => {
+                    return {
+                        product_id: sale?.product?.id,
+                        quantity: sale?.quantity,
+                        total_price: sale?.total
+                    }
+                }),
+                payment_type_id: paymentTarget,
+                voucher_type_id: voucherTarget
+            }
             // set({ loading: true, error: null })
             try {
-                fetchGetOfferById(id).then(result => {
+                fetchPost(SALE_TICKET_CREATE, body).then(result => {
                     if (result?.code === 200) {
                         /*  set({
-                            listStockTypes: result?.data?.reduce((acc, value) => {
-                                return [...acc, { id: value?.ID, label: value?.name }]
-                            }, [])
-                        }) */
+                                    listStockTypes: result?.data?.reduce((acc, value) => {
+                                        return [...acc, { id: value?.ID, label: value?.name }]
+                                    }, [])
+                                }) */
                     } else {
                         return null
                     }
