@@ -29,6 +29,7 @@ export default function ProductDetail ({ targeProduct, isOpen, onClose, setTarge
     const [productData, setProductData] = useState(defaultState)
     const [newProductData, setNewProductData] = useState(defaultState)
     const [loadingEdit, setLoadingEdit] = useState(false)
+    const [loadingDelete, setLoadingDelete] = useState(false)
 
     useEffect(() => {
         setCategoryOptions(listCategories)
@@ -62,10 +63,15 @@ export default function ProductDetail ({ targeProduct, isOpen, onClose, setTarge
     }, [targeProduct, edit])
 
     const handleDeleteProduct = () => {
+        setLoadingDelete(true)
         const productId = targeProduct?.id
         deleteProduct({ id: productId }).then(
             (response) => {
                 console.log(response)
+                setTargetProduct(null)
+                setLoadingDelete(false)
+                getListInventory()
+                onClose()
             }
         )
     }
@@ -236,8 +242,9 @@ export default function ProductDetail ({ targeProduct, isOpen, onClose, setTarge
                             : <ModalFooter>
                                 <Button color="danger" variant="bordered"
                                     startContent={<DeleteIcon/>}
-                                    onClick={handleDeleteProduct}>
-                                    {'Eliminar'}
+                                    onClick={handleDeleteProduct}
+                                    isLoading={loadingDelete}>
+                                    {loadingDelete ? 'Eliminando' : 'Eliminar'}
                                 </Button>
                                 <Button className =" bg-blue-500 text-primary-50"
                                     onClick={() => {
