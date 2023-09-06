@@ -14,7 +14,7 @@ const onSubmitHandler = (product, value, setIsAcepted, setUnits) => {
     setIsAcepted(true)
 }
 
-export default function WeighingScaleModal ({ isOpen, onClose, product, setIsAcepted, setUnits }) {
+export default function WeighingScaleModal ({ isOpen, onClose, product, setIsAcepted, setUnits, setTargetProduct }) {
     const [handShake,setHandShake] = useState(false)
     const [ url, setUrl ] = useState(null)
     const {setIsConnected} = hubScale()
@@ -60,55 +60,63 @@ export default function WeighingScaleModal ({ isOpen, onClose, product, setIsAce
     useEffect(()=>{
         setUrl('ws://localhost:8080/food-scale/' + getIdUser())
     },[])
+    
+    useEffect(()=>{
+        if(!isOpen){
+            setTargetProduct(null)
+        }
+    },[isOpen])
     return (
         <>
-            <Modal backdrop="blur" isOpen={isOpen} onClose={onClose} >
+            <Modal backdrop="blur" isOpen={isOpen} onClose={onClose} size={'2xl'}>
                 <ModalContent className=''>
                     {(onClose) => (
                         <>
-                            <ModalHeader className="flex flex-col gap-1  text-primary-500 dark:text-primary-200">Pesa de productos</ModalHeader>
+                            <ModalHeader className="flex flex-col gap-1  text-primary-500 dark:text-primary-200 ">Pesa de productos</ModalHeader>
                             <ModalBody>
                                 <Card
                                     isBlurred
-                                    className="border-none bg-background/60 dark:bg-default-100/50 w-full"
+                                    className="border-none w-full"
                                     shadow="sm"
                                 >
                                     <CardBody>
-                                        <div className="flex flex-row gap-10 items-center justify-center">
-                                            <div className="relative col-span-6 md:col-span-4">
-                                                <h3 className="text-2xl font-semibold text-foreground/90">{product?.name.toUpperCase()}</h3>
-                                                <p className="text-small text-foreground/80">{product?.code}</p>
+                                        <div className="flex flex-row gap-10 items-center justify-center content-between">
+                                            <div className="col-span-6 md:col-span-4 dark:bg-default-100/50 bg-default-100/70 rounded-xl">
                                                 <Image
                                                     shadow="none"
                                                     radius="lg"
                                                     width="100"
                                                     height="100"
                                                     alt={product?.name}
-                                                    className="w-full object-cover h-[7rem] mt-2 bg-slate-100 dark:bg-white"
+                                                    className="w-full object-cover h-[10rem] bg-slate-100 dark:bg-white"
                                                     src={product?.image?.length ? ConvertBytesToImage({ imageBytes: product?.image }) : DefaultImageMarinaMarket()}
                                                 />
+                                                <div className='m-5'>
+                                                    <h3 className="text-2xl font-semibold text-foreground/90">{product?.name.toUpperCase()}</h3>
+                                                    <p className="text-small text-foreground/80">{product?.code}</p>
+                                                    <div className='flex felx-row gap-5'>
+                                                            <h1 className="text-lg font-medium">PRECIO KILO</h1>
+                                                            <h1 className="text-lg text-lime-500 ">${product?.netPrice}</h1>
+                                                        </div>
+                                                </div>
                                             </div>
 
-                                            <div className="flex flex-col col-span-6 md:col-span-8">
-                                                <div className="flex justify-between items-start">
-                                                    <div className="flex flex-col gap-0">
-                                                        <div className='flex justify-between gap-2'>
+                                            <div className="flex flex-col col-span-6 md:col-span-8 h-full">
+                                                <div className="flex  items-start h-full">
+                                                    <div className="flex flex-col gap-5 h-full">
+                                                        <div className='flex flex-col  gap-2 h-full'>
                                                             <h1 className="text-large font-medium mt-2">PESO</h1>
-                                                            <div className='flex flex-row gap-1'>
-                                                                <h1 className="text-large text-teal-500 font-medium mt-2">{value}</h1>
-                                                                <h1 className="text-xs text-zinc-400 font-medium mt-4">kg</h1>
+                                                            <div className='flex flex-row gap-1 justify-center items-end'>
+                                                                <h1 className="text-8xl text-teal-500 font-medium ">{value}</h1>
+                                                                <h1 className="text-lg text-zinc-400 font-medium ">KG</h1>
                                                             </div>
                                                         </div>
-                                                        <div className='flex felx-row gap-5'>
-                                                            <h1 className="text-sm font-medium mt-2">PRECIO POR KILO</h1>
-                                                            <h1 className="text-lg text-lime-500 font-medium mt-2">${product?.netPrice}</h1>
-                                                        </div>
-                                                        <div className='flex felx-row gap-5 mt-8'>
-                                                            <Button color="success" variant="bordered" className='w-full'>
-                                                                <h1 className="text-large font-medium ">TOTAL</h1>
-                                                                <h1 className="text-large font-xl">$ {Math.floor((product?.netPrice * value) / 10) *10}</h1>
-                                                            </Button>
-                                                        </div>
+                                                        
+                                                     
+                                                            <div className='flex flex-row w-full gap-4 items-center px-5 py-3 border-3 mt-6 rounded-xl border-green-500'>
+                                                                <h1 className="text-4xl  text-green-500 font-bold">TOTAL</h1>
+                                                                <h1 className="text-4xl font-xl font-bold text-green-500">$ {Math.floor((product?.netPrice * value) / 10) *10}</h1>
+                                                            </div>
                                                     </div>
                                                 </div>
                                             </div>
