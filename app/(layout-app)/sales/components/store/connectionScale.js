@@ -4,9 +4,8 @@ import { create } from 'zustand'
 const hubScale = create(
     (set) => ({
         connect: null,
-        connection: () => {
-
-        }
+        isConnected: null,
+        setIsConnected: (value) => set({ isConnected: value })
     }),
     {
         name: 'hub'

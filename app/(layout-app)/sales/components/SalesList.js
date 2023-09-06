@@ -88,7 +88,7 @@ export default function SaleList (props) {
                                     delay: 0.2,
                                     ease: [0, 0.71, 0.2, 1.01]
                                 }}>
-                                {paymentTarget && voucherTarget ? 'PAGAR  $ ' : 'TOTAL  $ '}{totalPrice}
+                                {paymentTarget && voucherTarget ? 'PAGAR  $ ' : 'TOTAL  $ '}{Math.floor((totalPrice / 10)) * 10}
                             </motion.div>
                         </div>
 

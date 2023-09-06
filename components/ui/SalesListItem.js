@@ -22,7 +22,7 @@ export default function SaleListItem (props) {
                         <div>{quantity}</div>
                         {stockTypeId === 1 ? <div>kg x </div> : <div>x</div>}
 
-                        <div>{price}</div>
+                        <div>{Math.ceil(price)}</div>
                         <div>CLP</div>
                         <DeleteButton productId={id}/>
                     </div>

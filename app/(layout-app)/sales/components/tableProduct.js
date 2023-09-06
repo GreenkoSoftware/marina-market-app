@@ -133,7 +133,7 @@ export default function tableProducts (props) {
                 </ScrollShadow>
             </section>
             <DetailedProduct targeProduct={targeProduct} setTargetProduct={setTargetProduct} />
-            <WeighingScaleModal isOpen={isOpen} onClose={onClose} product={selectedKL} value={4.20} setIsAcepted = {setIsAcepted} setUnits={setUnits}/>
+            <WeighingScaleModal isOpen={isOpen} onClose={onClose} product={selectedKL} value={4.20} setIsAcepted = {setIsAcepted} setUnits={setUnits} setTargetProduct={setTargetProduct}/>
         </section>
     )
 }
