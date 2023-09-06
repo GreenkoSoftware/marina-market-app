@@ -1,5 +1,5 @@
 /* eslint-disable camelcase */
-import { PRODUCT_API_URL, CATEGORIES_API_URL, TYPE_STOCK_API_URL } from '@/settings/constants'
+import { PRODUCT_API_URL, CATEGORIES_API_URL, TYPE_STOCK_API_URL, PRODUCT_OFFER } from '@/settings/constants'
 import { getToken } from '@/services/user'
 export const fetchGetproducts = async () => {
     try {
@@ -25,6 +25,47 @@ export const fetchGetproducts = async () => {
 export const fetchGetCategories = async () => {
     try {
         return await fetch(CATEGORIES_API_URL,
+            {
+                method: 'get',
+                headers: new Headers({
+                    Authorization: 'Bearer ' + getToken(),
+                    'Content-Type': 'application/x-www-form-urlencoded'
+                })
+            }).then(response => {
+            try {
+                return response.json()
+            } catch {
+                return null
+            }
+        })
+    } catch {
+        return null
+    }
+}
+
+export const fetchGetOffers = async () => {
+    try {
+        return await fetch(PRODUCT_OFFER,
+            {
+                method: 'get',
+                headers: new Headers({
+                    Authorization: 'Bearer ' + getToken(),
+                    'Content-Type': 'application/x-www-form-urlencoded'
+                })
+            }).then(response => {
+            try {
+                return response.json()
+            } catch {
+                return null
+            }
+        })
+    } catch {
+        return null
+    }
+}
+export const fetchGetOfferById = async (id) => {
+    try {
+        return await fetch(PRODUCT_OFFER + '/' + id,
             {
                 method: 'get',
                 headers: new Headers({

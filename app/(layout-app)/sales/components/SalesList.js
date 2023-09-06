@@ -8,7 +8,11 @@ import useSalesStore from '@/app/(layout-app)/sales/store'
 import { motion } from 'framer-motion'
 
 export default function SaleList (props) {
-    const { setPayment, payment, setSearchInput } = props
+    const {
+        setPayment, payment, setSearchInput,
+        paymentTarget,
+        voucherTarget, setGoPay
+    } = props
     const { listSales, totalPrice, units, setUnits, clearList } = useSalesStore()
     const [inputValue, setInputValue] = useState(1)
 
@@ -67,7 +71,7 @@ export default function SaleList (props) {
             <section className='w-full'>
                 {totalPrice
                     ? <Button color="success" variant="shadow" className='text-white mt-3 h-[5rem] w-full font-bold text-2xl'
-                        onClick={() => { setPayment(true) }}>
+                        onClick={() => { paymentTarget && voucherTarget ? setGoPay(true) : setPayment(true) }}>
                         <div className="text-2xl font-bol flex flex-row gap-4 items-center">
                             <motion.div
                                 initial={{ opacity: 0, scale: 0.5 }}
@@ -77,7 +81,7 @@ export default function SaleList (props) {
                                     delay: 0.2,
                                     ease: [0, 0.71, 0.2, 1.01]
                                 }}>
-                                <a>TOTAL  $ {totalPrice }</a>
+                                {paymentTarget && voucherTarget ? 'PAGAR  $ ' : 'TOTAL  $ '}{totalPrice}
                             </motion.div>
                         </div>
 
@@ -87,49 +91,3 @@ export default function SaleList (props) {
         </section>
     )
 }
-/*
-{listSales.length > 0
-                    ? <div className="flex items-center justify-between mb-4 h-[4rem] px-6">
-                        <h5 className=" animation-fade-in text-2xl font-bold leading-none text-gray-900 dark:text-white pt-2">Productos</h5>
-                        <Button className='w-[2rem] animation-fade-in' color="danger" variant="bordered" onClick={() => (clearList())}>
-                        cancelar
-                        </Button></div>
-
-                    : <h5 className=" animation-fade-in m-5 text-2xl font-bold leading-none text-gray-900 dark:text-white pt-2">Escanee un producto para comenzar la venta...</h5>
-                }
-                <div className="flow-root max-h-[44rem] w-full">
-                    <ul role="list" className="divide-y  divide-gray-200 dark:divide-white pr-8 pl-8">
-                        <ScrollShadow className="w-[420px] h-[32rem] pr-6">
-                            {listSales?.map((product, index) =>
-                                <section key={index}>
-                                    <Divider orientation="horizontal" />
-                                    <SaleListItem product={product} />
-                                    <Divider orientation="horizontal" />
-                                </section>
-                            )}
-                        </ScrollShadow>
-
-                    </ul>
-                </div>
-            </div>
-
-            {totalPrice
-                ? <Button color="success" variant="shadow" className='text-white mt-3 h-[8rem] w-auto font-bold text-2xl'
-                    onClick={() => { setPayment(true) }}>
-                    <div className="text-2xl font-bol flex flex-row gap-4 items-center">
-                        <motion.div
-                            initial={{ opacity: 0, scale: 0.5 }}
-                            animate={{ opacity: 1, scale: 1 }}
-                            transition={{
-                                duration: 0.6,
-                                delay: 0.2,
-                                ease: [0, 0.71, 0.2, 1.01]
-                            }}>
-                            <a>TOTAL  $ {totalPrice }</a>
-                        </motion.div>
-                    </div>
-
-                </Button>
-                : <></>}
-
-*/
