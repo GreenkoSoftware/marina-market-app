@@ -26,7 +26,7 @@ export default function ScaleStatus ({ scaleStatus }) {
                     ? <Popover placement="top-end" offset={25} color="success" showArrow={true} isOpen={isOpen}>
                         <PopoverTrigger>
                             <Badge color="success" content={''} size = "lg" shape="circle">
-                                <FaWeight size={30} />
+                                <FaWeight size={35} />
                             </Badge>
                         </PopoverTrigger>
                         <PopoverContent color="danger">
