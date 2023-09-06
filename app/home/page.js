@@ -1,11 +1,19 @@
 'use client'
 import MainTittleCard from '@/components/ui/MainCard'
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { motion } from 'framer-motion'
 import Auth from '../auth'
 import UserAvatar from '../../components/ui/UserAvatar'
+import { isMobileDevice } from '@/utils/agent'
 
 export default function Home () {
+    const [salesDisabled, setSalesDisabled] = useState(true)
+    useEffect(() => {
+        if (navigator) {
+            const isMobile = isMobileDevice()
+            setSalesDisabled(isMobile)
+        }
+    }, [])
     return (
         <section className="h-full w-full flex-1 flex flex-col bg-primary-300 dark:bg-secondary-500">
             <Auth/>
@@ -22,6 +30,7 @@ export default function Home () {
                             }}
                             className="gap-5 grid grid-cols-3 grid-rows-[auto_minmax(auto,_1fr)_auto] ">
                             <MainTittleCard
+                                disabled={salesDisabled}
                                 route ="/sales"
                                 title="Ventas"
                                 imgSrc="https://confidentefinanciero.com/wp-content/uploads/2023/04/Facturacion-electronica-restaurantes-scaled.jpg"

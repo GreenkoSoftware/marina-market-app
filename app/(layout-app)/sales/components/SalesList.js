@@ -6,6 +6,7 @@ import { Divider, ScrollShadow, Button, Input } from '@nextui-org/react'
 import SearchBar from '../../../../components/ui/SearchBar'
 import useSalesStore from '@/app/(layout-app)/sales/store'
 import { motion } from 'framer-motion'
+import useInventoryStore from '../../inventory/store'
 
 export default function SaleList (props) {
     const {
@@ -14,6 +15,7 @@ export default function SaleList (props) {
         voucherTarget, setGoPay
     } = props
     const { listSales, totalPrice, units, setUnits, clearList } = useSalesStore()
+    const { loading } = useInventoryStore()
     const [inputValue, setInputValue] = useState(1)
 
     useEffect(() => {
@@ -48,7 +50,7 @@ export default function SaleList (props) {
                             </Button>
                         </div>
 
-                        : <h5 className="animation-fade-in m-5 text-2xl font-bold leading-none text-gray-900 dark:text-white">Escanee un producto para comenzar la venta...</h5>
+                        : <h5 className="animation-fade-in m-5 text-2xl font-bold leading-none text-gray-900 dark:text-white">{loading ? 'Espere un momento...' : 'Escanee un producto para comenzar la venta...'}</h5>
                     }
                 </section>
 
