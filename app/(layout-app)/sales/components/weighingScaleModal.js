@@ -3,9 +3,11 @@
 import React,{useState,useEffect} from 'react'
 import { Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Button, Card, CardBody, Image } from '@nextui-org/react'
 import { ConvertBytesToImage, DefaultImageMarinaMarket } from '@/utils/image'
-import useWebSocket from 'react-use-websocket'
+import useWebSocket, { ReadyState } from 'react-use-websocket'
 import useAuthStore from '@/stores/user'
 import { getIdUser } from '@/services/user'
+import hubScale from './store/connectionScale'
+
 const onSubmitHandler = (product, value, setIsAcepted, setUnits) => {
     product.price = Math.round(product?.price * value)
     setUnits(value)
@@ -15,6 +17,7 @@ const onSubmitHandler = (product, value, setIsAcepted, setUnits) => {
 export default function WeighingScaleModal ({ isOpen, onClose, product, setIsAcepted, setUnits }) {
     const [handShake,setHandShake] = useState(false)
     const [ url, setUrl ] = useState(null)
+    const {setIsConnected} = hubScale()
     const[value,setValue] = useState(null)
     const {
         sendJsonMessage,
@@ -33,17 +36,27 @@ export default function WeighingScaleModal ({ isOpen, onClose, product, setIsAce
     /* Last message ws from fleet status */
     useEffect(() => {
         if (lastMessage) {
-            const message = lastMessage?.data.substring(3,8)
+            const message = lastMessage?.data.substring(0,5)
             const data =parseFloat(message)
             setValue(data)
         }
       }, [lastMessage])  
-/* Connection to get  markers on Map */
-  useEffect(() => {
-    if (readyState === 1) {
-        console.log('estamos conectados')
+
+  useEffect(()=>{
+    console.log(connectionStatus)
+    if(connectionStatus === 'Closed'){
+        setIsConnected(false)
+    }else if(connectionStatus === 'Open'){
+        setIsConnected(true)
     }
-  }, [handShake])
+  },[readyState])
+  const connectionStatus = {
+    [ReadyState.CONNECTING]: 'Connecting',
+    [ReadyState.OPEN]: 'Open',
+    [ReadyState.CLOSING]: 'Closing',
+    [ReadyState.CLOSED]: 'Closed',
+    [ReadyState.UNINSTANTIATED]: 'Uninstantiated',
+  }[readyState];
     useEffect(()=>{
         setUrl('ws://localhost:8080/food-scale/' + getIdUser())
     },[])
@@ -93,7 +106,7 @@ export default function WeighingScaleModal ({ isOpen, onClose, product, setIsAce
                                                         <div className='flex felx-row gap-5 mt-8'>
                                                             <Button color="success" variant="bordered" className='w-full'>
                                                                 <h1 className="text-large font-medium ">TOTAL</h1>
-                                                                <h1 className="text-large font-xl">$ {product?.netPrice * value}</h1>
+                                                                <h1 className="text-large font-xl">$ {Math.floor((product?.netPrice * value) / 10) *10}</h1>
                                                             </Button>
                                                         </div>
                                                     </div>

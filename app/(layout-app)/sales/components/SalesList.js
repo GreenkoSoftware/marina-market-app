@@ -82,7 +82,7 @@ export default function SaleList (props) {
                                     delay: 0.2,
                                     ease: [0, 0.71, 0.2, 1.01]
                                 }}>
-                                <a>TOTAL  $ {totalPrice }</a>
+                                <a>TOTAL  $ {Math.floor((totalPrice / 10)) * 10 }</a>
                             </motion.div>
                         </div>
 
