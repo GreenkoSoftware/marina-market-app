@@ -1,6 +1,6 @@
 /* eslint-disable camelcase */
 import { create } from 'zustand'
-import { fetchGetproducts, fetchGetCategories, fetchGetTypeStocks, fetchGetOffers, fetchGetOfferById } from '@/services/products'
+import { fetchGetproducts, fetchGetCategories, fetchGetTypeStocks } from '@/services/products'
 
 const useInventoryStore = create(
     (set) => ({
