@@ -74,7 +74,9 @@ export const updateProduct = async (
         image,
         code,
         category_id,
-        stock_type_id
+        stock_type_id,
+        stock,
+        stock_min
     }) => {
     try {
         const queryParams = new URLSearchParams(
@@ -87,7 +89,9 @@ export const updateProduct = async (
                 image: image || '',
                 code: code || '',
                 product_category_id: category_id || '',
-                stock_type_id: stock_type_id || ''
+                stock_type_id: stock_type_id || '',
+                stock: stock || '',
+                stock_min: stock_min || ''
             })
         return await fetch(`${PRODUCT_API_URL}?${queryParams}`,
             {
@@ -133,11 +137,12 @@ export const deleteProduct = async ({ id }) => {
         const queryParams = new URLSearchParams({ id })
         return await fetch(`${PRODUCT_API_URL}?${queryParams}`,
             {
-                method: 'delete',
+                method: 'DELETE',
                 headers: new Headers({
                     Authorization: 'Bearer ' + getToken()
                 }),
-                cache: 'no-cache'
+                cache: 'no-store',
+                mode: 'cors'
             }).then(response => {
             try {
                 return response.json()

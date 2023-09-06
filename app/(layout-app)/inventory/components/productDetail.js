@@ -9,7 +9,7 @@ import { DeleteIcon } from '@/components/ui/DeleteIcon'
 import { deleteProduct, updateProduct } from '@/services/products'
 
 export default function ProductDetail ({ targeProduct, isOpen, onClose, setTargetProduct }) {
-    const { listCategories, listStockTypes } = useInventoryStore()
+    const { listCategories, listStockTypes, getListInventory } = useInventoryStore()
     const [edit, setEdit] = useState(false)
     const [categoryOptions, setCategoryOptions] = useState([])
     const [stockTypeOptions, setStockTypeOptions] = useState([])
@@ -28,6 +28,7 @@ export default function ProductDetail ({ targeProduct, isOpen, onClose, setTarge
     }
     const [productData, setProductData] = useState(defaultState)
     const [newProductData, setNewProductData] = useState(defaultState)
+    const [loadingEdit, setLoadingEdit] = useState(false)
 
     useEffect(() => {
         setCategoryOptions(listCategories)
@@ -70,16 +71,22 @@ export default function ProductDetail ({ targeProduct, isOpen, onClose, setTarge
     }
 
     const handleUpdateProduct = () => {
+        setLoadingEdit(true)
         const productId = targeProduct?.id
         try {
             updateProduct({ id: productId, ...newProductData }).then(
                 (response) => {
                     console.log(response)
+                    setLoadingEdit(false)
+                    setEdit(false)
+                    setTargetProduct(null)
+                    onClose()
+                    getListInventory()
                 }
             )
         } catch (err) {
             console.log(err)
-        } finally {
+            setLoadingEdit(false)
             setEdit(false)
             setTargetProduct(null)
             onClose()
@@ -216,8 +223,9 @@ export default function ProductDetail ({ targeProduct, isOpen, onClose, setTarge
 
                             ? <ModalFooter>
                                 <Button className =" bg-green-500 text-primary-50"
-                                    onClick={handleUpdateProduct}>
-                                    {'Guardar'}
+                                    onClick={handleUpdateProduct}
+                                    isLoading={loadingEdit}>
+                                    {loadingEdit ? 'Guardando' : 'Guardar'}
                                 </Button>
                                 <Button color="danger" variant="light"
                                     onClick={handleCancelUpdateProduct}

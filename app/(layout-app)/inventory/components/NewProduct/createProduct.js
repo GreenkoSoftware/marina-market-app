@@ -75,7 +75,7 @@ export default function CreateProduct () {
     const [stockTypeOptions, setStockTypeOptions] = useState([])
 
     const { data, setFormData, requestCreateProduct, loading, error, setError, complete, hasRequeredValues, clearStore } = useProductFormStore()
-    const { listCategories, listStockTypes, getCategories, getStockTypes } = useInventoryStore()
+    const { listCategories, listStockTypes, getCategories, getStockTypes, getListInventory } = useInventoryStore()
 
     useEffect(() => {
         if (isOpen) {
@@ -96,6 +96,7 @@ export default function CreateProduct () {
         if (complete && !error) {
             clearStore()
             onClose()
+            getListInventory()
         }
     }, [complete, error])
 
