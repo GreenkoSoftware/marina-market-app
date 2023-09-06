@@ -37,7 +37,7 @@ export default function tableProducts (props) {
     useEffect(() => {
         if (targeProduct) {
             // agregar a la lista de venstas
-            addFromNewSales(listSales, targeProduct, setTargetProduct, units, setUnits)
+            addFromNewSales(listSales, targeProduct, setTargetProduct, units, setUnits, offers)
         }
     }, [targeProduct])
 

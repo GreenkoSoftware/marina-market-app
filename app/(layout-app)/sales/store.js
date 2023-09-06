@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 /* eslint-disable camelcase */
 import { create } from 'zustand'
 import { TYPE_PAYMENT_API_URL, TYPE_VOUCHER_API_URL } from '@/settings/constants'
@@ -20,16 +21,19 @@ const useSalesStore = create(
         setUnits: (value) => set({ units: value }),
         addFromNewSales: (listSales, product, setTargetProduct, units, setUnits, offers) => {
             const searhProduct = listSales?.find((item) => { return item?.product?.id === product?.id })
-            // const offersProduct = offers?.find((item) => { return item?.productId === product?.id })
+            const offersProduct = offers?.find((item) => { return item?.productId === product?.id })
             /* Encontrar si se encuentra una oferta de dicho producto */
-            /*  const quantityOld = searhProduct?.quantity ?? 1
-            if(offersProduct && offersProduct){}  */
+            /* Si ya existe el topde de la cantidad en la oferta del producto, se deberia agregar el mismo
+            producto en la lista de venta
+            */
+            const quantity = searhProduct?.quantity ? searhProduct?.quantity + 1 : 1
+            const priceUpdate = offersProduct && quantity === offersProduct?.quantity ? offersProduct?.unitPrice : product?.price
+            const productUpdate = { ...product, price: priceUpdate }
             if (!searhProduct) {
-                set({ listSales: [...listSales, { product, quantity: units }] })
-                setUnits(1)
+                set({ listSales: [...listSales, { product: productUpdate, quantity }] })
             } else {
                 const newList = listSales?.filter((item) => item?.product?.id !== product?.id)
-                set({ listSales: [...newList, { product, quantity: searhProduct?.quantity + 1 }] })
+                set({ listSales: [...newList, { product: productUpdate, quantity }] })
             }
             if (setTargetProduct) { setTargetProduct(null) }
         },
