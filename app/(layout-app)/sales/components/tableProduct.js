@@ -22,6 +22,7 @@ export default function tableProducts (props) {
     const [sectionSearch, setSectionSearch] = useState(false)
     const { listSales, addFromNewSales, setTotalPrice, units, setUnits, getOffers, offers } = useSalesStore()
     const listEmpty = new Array(20).fill(null)
+
     useEffect(() => {
         if (selected) {
             setFilteredList(list)

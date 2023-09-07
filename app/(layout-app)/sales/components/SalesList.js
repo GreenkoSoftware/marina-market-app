@@ -2,7 +2,7 @@
 'use client'
 import React, { useEffect, useState } from 'react'
 import SaleListItem from '../../../../components/ui/SalesListItem'
-import { Divider, ScrollShadow, Button, Input } from '@nextui-org/react'
+import { Divider, ScrollShadow, Button, Input, Skeleton } from '@nextui-org/react'
 import SearchBar from '../../../../components/ui/SearchBar'
 import useSalesStore from '@/app/(layout-app)/sales/store'
 import { motion } from 'framer-motion'
@@ -17,7 +17,6 @@ export default function SaleList (props) {
     const { listSales, totalPrice, units, setUnits, clearList } = useSalesStore()
     const { loading } = useInventoryStore()
     const [inputValue, setInputValue] = useState(1)
-
     useEffect(() => {
         setInputValue(units)
     }, [units])
@@ -61,15 +60,35 @@ export default function SaleList (props) {
 
                 <section className="flow-root px-3 max-h-[44rem]">
                     <ul className="divide-y divide-gray-200 dark:divide-white">
-                        <ScrollShadow className="w-full h-[31rem] pr-1 ">
-                            {listSales?.map((product, index) =>
-                                <section key={index}>
-                                    <Divider orientation="horizontal" />
-                                    <SaleListItem product={product} />
-                                    <Divider orientation="horizontal" />
-                                </section>
-                            )}
-                        </ScrollShadow>
+                        {loading
+                            ? <section className="pt-3 pl-3 pr-3 ">
+                                <div className="max-w-full w-full flex items-center gap-3">
+                                    <div className="w-full flex flex-col gap-5">
+                                        <Skeleton className="h-7 w-full rounded-lg"/>
+                                        <Skeleton className="h-7 w-full rounded-lg"/>
+                                        <Skeleton className="h-7 w-full rounded-lg"/>
+                                        <Skeleton className="h-7 w-full rounded-lg"/>
+                                        <Skeleton className="h-7 w-full rounded-lg"/>
+                                        <Skeleton className="h-7 w-full rounded-lg"/>
+                                        <Skeleton className="h-7 w-full rounded-lg"/>
+                                        <Skeleton className="h-7 w-full rounded-lg"/>
+                                        <Skeleton className="h-7 w-full rounded-lg"/>
+                                        <Skeleton className="h-7 w-full rounded-lg"/>
+                                        <Skeleton className="h-7 w-full rounded-lg"/>
+                                    </div>
+                                </div>
+                            </section>
+
+                            : <ScrollShadow className="w-full h-[31rem] pr-1 ">
+                                {listSales?.map((product, index) =>
+                                    <section key={index}>
+                                        <Divider orientation="horizontal" />
+                                        <SaleListItem product={product} />
+                                        <Divider orientation="horizontal" />
+                                    </section>
+                                )}
+                            </ScrollShadow>
+                        }
 
                     </ul>
                 </section>
