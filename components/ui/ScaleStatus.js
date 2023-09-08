@@ -35,6 +35,7 @@ export default function ScaleStatus ({ scaleStatus }) {
             : <div className="">
                 <div className="text-small font-bold">Pesa desconectada</div>
                 <div className="text-tiny">Por favor abrir el archivo scale-connector en escritorio.</div>
+                <div className="text-tiny">Si el error persiste, contactar a soporte@grinko.cl</div>
             </div>
     }
 

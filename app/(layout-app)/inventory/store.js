@@ -51,7 +51,7 @@ const useInventoryStore = create(
                 fetchGetCategories().then(result => {
                     if (result?.code === 200) {
                         const data = result?.data?.reduce((acc, value) => {
-                            return [...acc, { id: value?.ID, label: value?.name }]
+                            return [...acc, { id: value?.ID, label: value?.name.toUpperCase() }]
                         }, [])
                         set({ listCategories: data, loadingCategories: false })
                     } else {
