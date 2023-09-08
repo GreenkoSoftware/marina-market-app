@@ -92,7 +92,7 @@ export default function SaleList (props) {
 
                             : <ScrollShadow className="w-full h-[31rem] pr-1 ">
                                 {listSales?.map((product, index) =>
-                                    <section key={index}>
+                                    <section key={index} id={product?.product?.code}>
                                         <Divider orientation="horizontal" />
                                         <SaleListItem product={product} />
                                         <Divider orientation="horizontal" />
@@ -129,7 +129,7 @@ export default function SaleList (props) {
                                     delay: 0.2,
                                     ease: [0, 0.71, 0.2, 1.01]
                                 }}>
-                                {loadingSale ? 'Cargando pago ... ' : paymentTarget && voucherTarget ? 'PAGAR  $ ' : 'TOTAL  $ '}{totalPrice}
+                                {loadingSale ? 'Cargando pago ... ' : paymentTarget && voucherTarget ? 'PAGAR  ' : 'TOTAL '}{ totalPrice}
                                 {}
                             </motion.div>
                         </div>

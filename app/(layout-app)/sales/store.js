@@ -4,6 +4,7 @@ import { create } from 'zustand'
 import { TYPE_PAYMENT_API_URL, TYPE_VOUCHER_API_URL, SALE_TICKET_CREATE } from '@/settings/constants'
 import { fetchGet, fetchPost } from '@/services/sales'
 import { fetchGetOfferById, fetchGetOffers } from '@/services/products'
+import { formatter } from '@/utils/number'
 const useSalesStore = create(
     (set) => ({
         loading: false,
@@ -15,7 +16,7 @@ const useSalesStore = create(
         units: 1,
         enabledScanner: (value) => set({ scannerEnabled: true, enabledRedirect: false }),
         disabledScanner: (value) => set({ scannerEnabled: false }),
-        setTotalPrice: (value) => set({ totalPrice: value }),
+        setTotalPrice: (value) => set({ totalPrice: formatter.format(value) }),
         enabledRedirectSales: (value) => set({ enabledRedirect: true }),
         disabledRedirectSales: (value) => set({ enabledRedirect: false }),
         setUnits: (value) => set({ units: parseInt(value) }),
@@ -33,7 +34,8 @@ const useSalesStore = create(
                 } else {
                     const quantitySale = units
                     const offersOfProduct = Math.trunc(quantitySale / offersProduct.quantity)
-                    set({ listSales: [...listSales, { product, quantity: units, offers: offersOfProduct, discount: offersOfProduct > 0 ? (offersProduct.quantity * offersProduct.unitPrice) * offersOfProduct : 0, total: product?.price * quantitySale }] })
+                    const total = ((product?.price * offersProduct?.quantity) - (offersProduct?.quantity * offersProduct?.unitPrice)) * offersOfProduct
+                    set({ listSales: [...listSales, { product, quantity: units, offers: offersOfProduct, discount: offersOfProduct > 0 ? total : 0, total: product?.price * quantitySale }] })
                 }
             } else {
                 if (!searhProduct) {
@@ -45,6 +47,7 @@ const useSalesStore = create(
             }
             setUnits(1)
             if (setTargetProduct) {
+                setKeyFocus(product?.code)
                 setTargetProduct(null)
                 setSelectedKL(null)
             }
