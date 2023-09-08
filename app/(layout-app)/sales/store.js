@@ -28,12 +28,12 @@ const useSalesStore = create(
                     const quantitySale = searhProduct?.quantity + 1
                     const offersOfProduct = Math.trunc(quantitySale / offersProduct.quantity)
                     const newList = listSales?.filter((item) => item?.product?.id !== product?.id)
-                    const total = ((product?.price * offersProduct?.quantity) - (offersProduct?.quantity * offersProduct?.unitPrice)) * offersOfProduct
-                    set({ listSales: [...newList, { product, quantity: searhProduct?.quantity + 1, offers: offersOfProduct, discount: offersOfProduct > 0 ? total : 0, total: product?.price * quantitySale }] })
+                    const total = ((product?.price * offersProduct?.quantity) - (offersProduct.quantity * offersProduct.unitPrice)) * offersOfProduct
+                    set({ listSales: [...newList, { product, quantity: quantitySale, offers: offersOfProduct, discount: offersOfProduct > 0 ? total : 0, total: product?.price * quantitySale }] })
                 } else {
                     const quantitySale = 1
-                    const offersOfProduct = Math.trunc(quantitySale / offersProduct.unitPrice)
-                    set({ listSales: [...listSales, { product, quantity: 1, offers: offersOfProduct, discount: offersOfProduct > 0 ? (offersProduct.quantity * offersProduct.unitPrice) * offersOfProduct : 0, total: product?.price * quantitySale }] })
+                    const offersOfProduct = Math.trunc(quantitySale / offersProduct.quantity)
+                    set({ listSales: [...listSales, { product, quantity: quantitySale, offers: offersOfProduct, discount: offersOfProduct > 0 ? (offersProduct.quantity * offersProduct.unitPrice) * offersOfProduct : 0, total: product?.price * quantitySale }] })
                 }
             } else {
                 if (!searhProduct) {

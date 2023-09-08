@@ -24,6 +24,11 @@ export default function SaleList (props) {
 
     const onChange = (event) => {
         setSearchInput(event.target.value)
+        console.log(event.target.value)
+    }
+
+    const onClear = () => {
+        setSearchInput('')
     }
 
     const handleButton = () => {
@@ -32,10 +37,10 @@ export default function SaleList (props) {
     }
 
     return (
-        <section className='flex flex-col items-center h-full w-full px-3 pt-[3rem] pb-[0.5rem]'>
+        <section className='flex flex-col items-center h-full w-full px-3 pt-[3rem] '>
             <section className='w-full h-full rounded-[14px] bg-primary-50 border border-gray-200 dark:border-secondary-450 shadow  dark:bg-secondary-450 '>
                 <section className='flex flex-row px-1'>
-                    <SearchBar onChange={onChange}/>
+                    <SearchBar onChange={onChange} onClear={onClear}/>
                     <Input
                         className='w-auto mt-3 px-2'
                         type="number"
@@ -61,9 +66,9 @@ export default function SaleList (props) {
 
                 <section className="flow-root px-3 max-h-[44rem]">
                     <ul className="divide-y divide-gray-200 dark:divide-white">
-                        <ScrollShadow className="w-full h-[31rem] pr-1 ">
+                        <ScrollShadow isEnabled={false} className="w-full h-[31rem] pr-1 snap-y snap-mandatory">
                             {listSales?.map((product, index) =>
-                                <section key={index}>
+                                <section key={index} className='snap-start '>
                                     <Divider orientation="horizontal" />
                                     <SaleListItem product={product} />
                                     <Divider orientation="horizontal" />

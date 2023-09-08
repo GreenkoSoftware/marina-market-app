@@ -41,7 +41,7 @@ export default function ScaleStatus ({ scaleStatus }) {
     return (
         <div className="flex items-center gap-4" onClick={() => setIsOpen(!isOpen)}>
             <div className="flex items-center gap-3">
-                <Popover placement="top-end" offset={25} color={color} showArrow={true} isOpen={isOpen}>
+                <Popover placement="top-end" offset={25} color={color} showArrow={true} onClose={() => setIsOpen(false)} isOpen={isOpen}>
                     <PopoverTrigger>
                         <Badge color={color} content={''} size = "lg" shape="circle">
                             <FaWeight size={35} />

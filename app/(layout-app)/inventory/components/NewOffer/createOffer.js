@@ -62,6 +62,7 @@ export default function CreateOffer () {
     const [searchInput, setSearchInput] = useState('')
     const [filteredList, setFilteredList] = useState([])
     const [selectedProduct, setSelectedProduct] = useState(null)
+    const [messageSearch, setMessageSearch] = useState('')
 
     const { data, setFormData, requestCreateOffer, loading, error, setError, complete, hasRequeredValues, clearStore } = useOfferFormStore()
     const { listInventory } = useInventoryStore()
@@ -71,21 +72,34 @@ export default function CreateOffer () {
             useSalesStore.getState()?.disabledRedirectSales()
         } else {
             useSalesStore.getState()?.enabledRedirectSales()
+            setFilteredList([])
+            setSelectedProduct(null)
+            setSearchInput(null)
         }
     }, [isOpen])
 
     useEffect(() => {
         // Create copy of item list
-        if (searchInput) {
+        const searchSize = searchInput?.length || 0
+        if (searchSize >= 3) {
             let updatedList = [...listInventory]
-            // Include all elements which includes the search query
             updatedList = updatedList.filter((item) => {
-                return item?.meta?.toLowerCase().indexOf(searchInput?.toLowerCase()) !== -1
+                return item?.meta?.toLowerCase().includes(searchInput?.toLowerCase())
+                // return item?.meta?.toLowerCase().indexOf(searchInput?.toLowerCase()) !== -1
             })
-            // Trigger render with updated values
+
+            if (!updatedList?.length) {
+                setMessageSearch('Ups.. no lo hemos podido encontrar, intenta buscar otro producto.')
+            } else {
+                setMessageSearch(null)
+            }
             setFilteredList(updatedList)
-        } else if (searchInput === '') {
-            setFilteredList([...listInventory])
+        } else if (searchSize >= 1) {
+            setFilteredList([])
+            setMessageSearch('Escribe al menos 3 carácteres para realizar una búsqueda.')
+        } else {
+            setFilteredList([])
+            setMessageSearch('Realiza una búsqueda.')
         }
     }, [searchInput, listInventory])
 
@@ -179,6 +193,8 @@ export default function CreateOffer () {
                                                 }
                                             />
                                         </div>
+
+                                        {messageSearch ? <h1>{messageSearch}</h1> : null}
 
                                         <ScrollShadow isEnabled={false} className="w-full h-[30rem] flex flex-col items-center snap-y snap-mandatory ">
                                             {/* <section className='flex flex-col items-center justify-center gap-2'> */}
