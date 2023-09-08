@@ -108,7 +108,6 @@ export default function Card () {
                                         )
                                     )
                                     : null}
-                                <Tab key={-1} size={'lg'} title={<MagnifyingGlassIcon className='w-5 h-5'/>}/>
                             </Tabs>}
 
                     </div>
