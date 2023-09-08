@@ -17,6 +17,8 @@ export default function Card () {
     const [listInventory, setListInventory] = useState([])
     const [sectionSearch, setSectionSearch] = useState(false)
     const [searchInput, setSearchInput] = useState(null)
+    const [messageSearch, setMessageSearch] = useState('')
+
     const listEmpty = new Array(20).fill(null)
     const { listCategories, listInventory: list, getCategories, getStockTypes, getListInventory, loadingCategories, loading } = useInventoryStore(
         ({ listCategories, listInventory, getCategories, getStockTypes, getListInventory, loadingCategories, loading }) => (
@@ -51,17 +53,26 @@ export default function Card () {
     }, [isOpen])
 
     useEffect(() => {
-        // Create copy of item list
-        if (searchInput) {
+        const searchSize = searchInput?.length || 0
+        if (searchSize >= 3) {
             let updatedList = [...list]
             // Include all elements which includes the search query
             updatedList = updatedList.filter((item) => {
                 return item?.meta?.toLowerCase().indexOf(searchInput?.toLowerCase()) !== -1
             })
             // Trigger render with updated values
+            if (!updatedList?.length) {
+                setMessageSearch('Ups.. no lo hemos podido encontrar, intenta buscar otro producto.')
+            } else {
+                setMessageSearch(null)
+            }
             setFilteredList(updatedList)
-        } else if (searchInput === '') {
-            setFilteredList([...list])
+        } else if (searchSize >= 1) {
+            setFilteredList([])
+            setMessageSearch('Escribe al menos 3 carácteres para realizar una búsqueda.')
+        } else {
+            setFilteredList([])
+            setMessageSearch('Realiza una búsqueda.')
         }
     }, [searchInput])
     useEffect(() => {
@@ -116,7 +127,7 @@ export default function Card () {
                     ? <ScrollShadow className="w-full pb-4">
                         <div className="gap-4 grid grid-cols-2 md:grid-cols-5 p-1">{listEmpty?.map((item, key) => (<LoadingCard key={key}/>))}</div> </ScrollShadow>
                     : sectionSearch
-                        ? <section style={{ scrollbarGutter: 'stable' }} className='max-h-[44rem] w-full overflow-y-auto flex flex-wrap snap-y snap-mandatory content-start'>
+                        ? <section className='h-full w-full'>
                             <Input
                                 label="Busqueda"
                                 isClearable
@@ -142,19 +153,21 @@ export default function Card () {
                                     <SearchIcon className="text-black/50 dark:text-white/90 text-slate-400 pointer-events-none flex-shrink-0" />
                                 }
                             />
-                            {filteredList?.map((item, index) => (
-                                <div key={'productSearch' + index} className='w-1/2 sm:w-1/3 md:w-1/4 lg:w-1/5 xl:w-1/6 xlg:w-[12.5%] snap-start shrink-0'>
-                                    <div className='mx-1 my-1'>
-                                        <CardUi item={item} setTargetProduct={setTargetProduct}/>
+                            <section style={{ scrollbarGutter: 'stable' }} className='max-h-[38rem] w-full overflow-y-auto flex flex-wrap snap-y snap-mandatory content-start'>
+                                {filteredList?.map((item, index) => (
+                                    <div key={'productSearch' + index} className='w-1/2 sm:w-1/3 md:w-1/4 lg:w-1/5 xl:w-1/6 xlg:w-[12.5%] snap-start shrink-0'>
+                                        <div className='mx-1 my-1'>
+                                            <CardUi item={item} setTargetProduct={setTargetProduct}/>
+                                        </div>
                                     </div>
-                                </div>
-                            ))}
-                            {!listInventory?.length
-                                ? <div>No hay productos</div>
-                                : (!filteredList.length && searchInput?.length > 0)
-                                    ? <div>Sin resultados</div>
-                                    : null
-                            }
+                                ))}
+                                {!listInventory?.length
+                                    ? <div>No hay productos</div>
+                                    : (!filteredList.length && messageSearch)
+                                        ? <div>{messageSearch}</div>
+                                        : null
+                                }
+                            </section>
                         </section>
                         : <section style={{ scrollbarGutter: 'stable' }} className='max-h-[44rem] w-full overflow-y-auto flex flex-wrap snap-y snap-mandatory content-start'>
                             {listInventory?.map((item, index) => (
