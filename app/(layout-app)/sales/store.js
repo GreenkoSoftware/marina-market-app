@@ -43,6 +43,7 @@ const useSalesStore = create(
                     set({ listSales: [...newList, { product, quantity: searhProduct?.quantity + units, discount: 0, total: product?.price * searhProduct?.quantity + 1 }] })
                 }
             }
+            setUnits(1)
             if (setTargetProduct) { setTargetProduct(null) }
         },
         removeProduct: (listSales, productId) => {
