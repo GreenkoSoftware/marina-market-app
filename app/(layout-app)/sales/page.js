@@ -1,7 +1,7 @@
 'use client'
 import Auth from '@/app/auth'
 import SalesMenu from './sales'
-import { useEffect, useState } from 'react'
+import { useEffect } from 'react'
 import useSalesStore from './store'
 import { isMobileDevice } from '@/utils/agent'
 import { useRouter } from 'next/navigation'

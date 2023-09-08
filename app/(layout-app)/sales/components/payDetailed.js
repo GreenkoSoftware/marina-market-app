@@ -1,10 +1,36 @@
 /* eslint-disable no-unused-vars */
 import React, { useEffect, useState } from 'react'
 import { Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Button, Input } from '@nextui-org/react'
-
-export default function PayDetailed ({ isOpen, onClose, setGoPay, totalPay, payDetailed, setPayDetailed, listSales, createSale, paymentTarget, voucherTarget }) {
+import toast, { Toaster } from 'react-hot-toast'
+export default function PayDetailed ({ loadingSale, setPayment, isOpen, onClose, setGoPay, totalPay, payDetailed, setPayDetailed, listSales, createSale, paymentTarget, voucherTarget, clearList }) {
+    const notify = (text) => toast(text)
     return (
         <>
+            <Toaster
+                position="top-center"
+                reverseOrder={false}
+                gutter={8}
+                containerClassName=""
+                containerStyle={{}}
+                className={' bg-primary-50 text-primary-500 dark:bg-primary-200 dark:text-primary-500'}
+                toastOptions={{
+                    // Define default options
+                    className: '',
+                    duration: 10000,
+                    // style: {
+                    //    background: '#363636',
+                    //    color: '#fff'
+                    // },
+
+                    // Default options for specific types
+                    success: {
+                        duration: 3000,
+                        theme: {
+                            primary: 'green',
+                            secondary: 'black'
+                        }
+                    }
+                }} />
             <div className="flex flex-wrap gap-3">
             </div>
             <Modal size={'2xl'}
@@ -48,19 +74,24 @@ export default function PayDetailed ({ isOpen, onClose, setGoPay, totalPay, payD
                     <ModalFooter>
 
                         <Button className =" bg-green-500 text-primary-50"
-                            onClick={() => {
-                                onClose()
-                                setGoPay(false)
-                                createSale(paymentTarget, voucherTarget, listSales)
-                            }}
-                            isLoading={false}>
-                            Pagar
+                            onClick={
+                                (totalPay - payDetailed) <= 0
+                                    ? () => {
+                                        setPayDetailed(null)
+                                        createSale(paymentTarget, voucherTarget, listSales, notify, setPayment, onClose, setGoPay, clearList)
+                                    }
+                                    : () => {
+                                        setPayDetailed(null)
+                                    }
+                            }
+                            isLoading={loadingSale}>
+                            {((totalPay - payDetailed) <= 0 ? 'Pagar' : 'Verificar pago')}
                         </Button>
                         <Button color="danger" variant="flat"
                             onClick={() => {
+                                setPayDetailed(null)
                                 onClose()
                                 setGoPay(false)
-                                // clearStore()
                             }}
                         >
                             Cancelar

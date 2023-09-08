@@ -157,7 +157,7 @@ export default function CreateOffer () {
                                                 radius="lg"
                                                 value={searchInput}
                                                 onClear={() => setSearchInput('')}
-                                                onChange={(e) => setSearchInput(event.target.value)}
+                                                onChange={(e) => setSearchInput(e.target.value)}
                                                 onFocusChange={(value) =>
                                                     value
                                                         ? useSalesStore.getState()?.disabledRedirectSales()

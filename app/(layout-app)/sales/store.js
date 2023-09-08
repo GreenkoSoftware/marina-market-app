@@ -18,29 +18,29 @@ const useSalesStore = create(
         setTotalPrice: (value) => set({ totalPrice: value }),
         enabledRedirectSales: (value) => set({ enabledRedirect: true }),
         disabledRedirectSales: (value) => set({ enabledRedirect: false }),
-        setUnits: (value) => set({ units: value }),
+        setUnits: (value) => set({ units: parseInt(value) }),
         addFromNewSales: (listSales, product, setTargetProduct, units, setUnits, offers) => {
             const searhProduct = listSales?.find((item) => { return item?.product?.id === product?.id })
             const offersProduct = offers?.find((item) => { return item?.productId === product?.id })
             if (offersProduct) {
                 // agregar el arreglo de las ofertas en el list sales
                 if (searhProduct) {
-                    const quantitySale = searhProduct?.quantity + 1
+                    const quantitySale = searhProduct?.quantity + units
                     const offersOfProduct = Math.trunc(quantitySale / offersProduct.quantity)
                     const newList = listSales?.filter((item) => item?.product?.id !== product?.id)
                     const total = ((product?.price * offersProduct?.quantity) - (offersProduct?.quantity * offersProduct?.unitPrice)) * offersOfProduct
-                    set({ listSales: [...newList, { product, quantity: searhProduct?.quantity + 1, offers: offersOfProduct, discount: offersOfProduct > 0 ? total : 0, total: product?.price * quantitySale }] })
+                    set({ listSales: [...newList, { product, quantity: searhProduct?.quantity + units, offers: offersOfProduct, discount: offersOfProduct > 0 ? total : 0, total: product?.price * quantitySale }] })
                 } else {
-                    const quantitySale = 1
+                    const quantitySale = units
                     const offersOfProduct = Math.trunc(quantitySale / offersProduct.unitPrice)
-                    set({ listSales: [...listSales, { product, quantity: 1, offers: offersOfProduct, discount: offersOfProduct > 0 ? (offersProduct.quantity * offersProduct.unitPrice) * offersOfProduct : 0, total: product?.price * quantitySale }] })
+                    set({ listSales: [...listSales, { product, quantity: units, offers: offersOfProduct, discount: offersOfProduct > 0 ? (offersProduct.quantity * offersProduct.unitPrice) * offersOfProduct : 0, total: product?.price * quantitySale }] })
                 }
             } else {
                 if (!searhProduct) {
-                    set({ listSales: [...listSales, { product, quantity: 1, discount: 0, total: product?.price * 1 }] })
+                    set({ listSales: [...listSales, { product, quantity: units, discount: 0, total: product?.price * 1 }] })
                 } else {
                     const newList = listSales?.filter((item) => item?.product?.id !== product?.id)
-                    set({ listSales: [...newList, { product, quantity: searhProduct?.quantity + 1, discount: 0, total: product?.price * searhProduct?.quantity + 1 }] })
+                    set({ listSales: [...newList, { product, quantity: searhProduct?.quantity + units, discount: 0, total: product?.price * searhProduct?.quantity + 1 }] })
                 }
             }
             if (setTargetProduct) { setTargetProduct(null) }
@@ -50,7 +50,7 @@ const useSalesStore = create(
             set({ listSales: newList })
         },
         clearList: () => {
-            set({ listSales: [] })
+            set({ listSales: [], totalPrice: 0 })
         },
         /* Added method pay and voucher, ticket,etc */
         paymentTarget: null,
@@ -63,6 +63,7 @@ const useSalesStore = create(
         loadingPayment: false,
         loadingVoucher: false,
         loadingOffers: false,
+        loadingSale: false,
         getPaymentType: () => {
             set({ loadingPayment: true, error: null })
             try {
@@ -130,7 +131,7 @@ const useSalesStore = create(
             }
         },
         /* Create sale */
-        createSale: (paymentTarget, voucherTarget, listSales) => {
+        createSale: (paymentTarget, voucherTarget, listSales, notify, setPayment, onClose, setGoPay, clearList) => {
             const body = {
                 sales_receipt: listSales?.map((sale) => {
                     return {
@@ -142,21 +143,22 @@ const useSalesStore = create(
                 payment_type_id: paymentTarget,
                 voucher_type_id: voucherTarget
             }
-            // set({ loading: true, error: null })
+            set({ loadingSale: true, error: null })
             try {
                 fetchPost(SALE_TICKET_CREATE, body).then(result => {
+                    set({ loadingSale: false })
                     if (result?.code === 200) {
-                        /*  set({
-                                    listStockTypes: result?.data?.reduce((acc, value) => {
-                                        return [...acc, { id: value?.ID, label: value?.name }]
-                                    }, [])
-                                }) */
+                        notify('✅ Pago con éxito')
+                        setPayment(false)
+                        onClose()
+                        setGoPay(false)
+                        clearList()
                     } else {
-                        return null
+                        notify('❌ Problemas con el pago, intente efectuar el pago nuevamente')
                     }
                 })
             } catch {
-                // set({ loading: false })
+                set({ loadingSale: false })
             }
         }
     }),
