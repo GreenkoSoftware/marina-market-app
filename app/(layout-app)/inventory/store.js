@@ -53,7 +53,6 @@ const useInventoryStore = create(
                         const data = result?.data?.reduce((acc, value) => {
                             return [...acc, { id: value?.ID, label: value?.name }]
                         }, [])
-                        data.push({ id: -1, label: 'search' })
                         set({ listCategories: data, loadingCategories: false })
                     } else {
                         return null

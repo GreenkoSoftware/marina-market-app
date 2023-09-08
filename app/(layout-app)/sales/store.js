@@ -32,7 +32,7 @@ const useSalesStore = create(
                     set({ listSales: [...newList, { product, quantity: searhProduct?.quantity + units, offers: offersOfProduct, discount: offersOfProduct > 0 ? total : 0, total: product?.price * quantitySale }] })
                 } else {
                     const quantitySale = units
-                    const offersOfProduct = Math.trunc(quantitySale / offersProduct.unitPrice)
+                    const offersOfProduct = Math.trunc(quantitySale / offersProduct.quantity)
                     set({ listSales: [...listSales, { product, quantity: units, offers: offersOfProduct, discount: offersOfProduct > 0 ? (offersProduct.quantity * offersProduct.unitPrice) * offersOfProduct : 0, total: product?.price * quantitySale }] })
                 }
             } else {
