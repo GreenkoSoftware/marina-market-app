@@ -2,6 +2,7 @@
 import React, { useEffect, useState } from 'react'
 import { Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Button, Input } from '@nextui-org/react'
 import toast, { Toaster } from 'react-hot-toast'
+import { formatter } from '@/utils/number'
 export default function PayDetailed ({ loadingSale, setPayment, isOpen, onClose, setGoPay, totalPay, payDetailed, setPayDetailed, listSales, createSale, paymentTarget, voucherTarget, clearList }) {
     const notify = (text) => toast(text)
     return (
@@ -65,8 +66,8 @@ export default function PayDetailed ({ loadingSale, setPayment, isOpen, onClose,
                                 className='text-2xl'
                                 onValueChange={(value) => { setPayDetailed(value) }}
                             />
-                            <h1 className='text-2xl'>{'Pago Total: $' + totalPay}</h1>
-                            <h1 className='text-2xl'>{((totalPay - payDetailed) < 0 ? 'Vuelto: $' : 'Faltan: $') + (totalPay - payDetailed) }</h1>
+                            <h1 className='text-2xl'>{'Pago Total: ' + formatter.format(totalPay) }</h1>
+                            <h1 className='text-2xl'>{((totalPay - payDetailed) < 0 ? 'Vuelto: ' : 'Faltan: ') + formatter.format(totalPay - payDetailed < 0 ? -(totalPay - payDetailed) : (totalPay - payDetailed)) }</h1>
 
                         </div>
 
