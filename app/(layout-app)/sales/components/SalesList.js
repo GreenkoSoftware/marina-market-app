@@ -12,7 +12,8 @@ export default function SaleList (props) {
     const {
         setPayment, payment, setSearchInput,
         paymentTarget,
-        voucherTarget, setGoPay
+        voucherTarget, setGoPay, keyFocus, setKeyFocus,
+        setPageTarget, loadingSale
     } = props
     const { listSales, totalPrice, units, setUnits, clearList } = useSalesStore()
     const { loading } = useInventoryStore()
@@ -34,7 +35,12 @@ export default function SaleList (props) {
         clearList()
         setPayment(false)
     }
-
+    useEffect(() => {
+        if (keyFocus) {
+            const focusMapElement = document.getElementById(keyFocus)
+            focusMapElement?.scrollIntoView({ behavior: 'smooth', block: 'start' })
+        }
+    }, [keyFocus])
     return (
         <section className='flex flex-col items-center h-full w-full px-3 pt-[3rem] '>
             <section className='w-full h-full rounded-[14px] bg-primary-50 border border-gray-200 dark:border-secondary-450 shadow  dark:bg-secondary-450 '>
@@ -102,7 +108,18 @@ export default function SaleList (props) {
             <section className='w-full'>
                 {totalPrice
                     ? <Button color="success" variant="shadow" className='text-white mt-3 h-[5rem] w-full font-bold text-2xl'
-                        onClick={() => { paymentTarget && voucherTarget ? setGoPay(true) : setPayment(true) }}>
+                        onClick={() => {
+                            if (!payment) {
+                                setPayment(true)
+                            } else if (paymentTarget === 1 && voucherTarget) {
+                                setGoPay(true)
+                            } else if (paymentTarget === 2 && voucherTarget) {
+                                // Create sale
+                                setPageTarget(true)
+                            } else {
+                                setGoPay(false)
+                            }
+                        } }>
                         <div className="text-2xl font-bol flex flex-row gap-4 items-center">
                             <motion.div
                                 initial={{ opacity: 0, scale: 0.5 }}
@@ -112,7 +129,8 @@ export default function SaleList (props) {
                                     delay: 0.2,
                                     ease: [0, 0.71, 0.2, 1.01]
                                 }}>
-                                {paymentTarget && voucherTarget ? 'PAGAR  $ ' : 'TOTAL  $ '}{Math.floor((totalPrice / 10)) * 10}
+                                {loadingSale ? 'Cargando pago ... ' : paymentTarget && voucherTarget ? 'PAGAR  $ ' : 'TOTAL  $ '}{totalPrice}
+                                {}
                             </motion.div>
                         </div>
 

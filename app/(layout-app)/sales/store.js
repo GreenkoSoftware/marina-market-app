@@ -19,7 +19,7 @@ const useSalesStore = create(
         enabledRedirectSales: (value) => set({ enabledRedirect: true }),
         disabledRedirectSales: (value) => set({ enabledRedirect: false }),
         setUnits: (value) => set({ units: parseInt(value) }),
-        addFromNewSales: (listSales, product, setTargetProduct, units, setUnits, offers) => {
+        addFromNewSales: (listSales, product, setTargetProduct, units, setUnits, offers, setKeyFocus, setSelectedKL) => {
             const searhProduct = listSales?.find((item) => { return item?.product?.id === product?.id })
             const offersProduct = offers?.find((item) => { return item?.productId === product?.id })
             if (offersProduct) {
@@ -44,7 +44,10 @@ const useSalesStore = create(
                 }
             }
             setUnits(1)
-            if (setTargetProduct) { setTargetProduct(null) }
+            if (setTargetProduct) {
+                setTargetProduct(null)
+                setSelectedKL(null)
+            }
         },
         removeProduct: (listSales, productId) => {
             const newList = listSales?.filter((item) => item?.product?.id !== productId)
@@ -132,7 +135,7 @@ const useSalesStore = create(
             }
         },
         /* Create sale */
-        createSale: (paymentTarget, voucherTarget, listSales, notify, setPayment, onClose, setGoPay, clearList) => {
+        createSale: (paymentTarget, voucherTarget, listSales, notify, setPayment, onClose, setGoPay, clearList, setPageTarget, pageTarget) => {
             const body = {
                 sales_receipt: listSales?.map((sale) => {
                     return {
@@ -147,15 +150,29 @@ const useSalesStore = create(
             set({ loadingSale: true, error: null })
             try {
                 fetchPost(SALE_TICKET_CREATE, body).then(result => {
+                    setPageTarget(false)
                     set({ loadingSale: false })
                     if (result?.code === 200) {
-                        notify('✅ Pago con éxito')
+                        if (pageTarget) {
+                            notify('✅ Pago con tarjeta con éxito')
+                        } else {
+                            notify('✅ Pago con éxito')
+                        }
+
                         setPayment(false)
                         onClose()
                         setGoPay(false)
                         clearList()
                     } else {
-                        notify('❌ Problemas con el pago, intente efectuar el pago nuevamente')
+                        if (pageTarget) {
+                            notify('❌ Problemas con el pago con la tarjeta')
+                        } else {
+                            notify('❌ Problemas con el pago, intente efectuar el pago nuevamente')
+                        }
+
+                        onClose()
+                        setGoPay(false)
+                        setPageTarget(null)
                     }
                 })
             } catch {
