@@ -97,7 +97,7 @@ export default function tableProducts (props) {
 
                     : <Tabs
                         aria-label="Options"
-                        items={listCategories?.filter((category) => category?.id !== -1)}
+                        items={listCategories?.slice(0, 3)}
                         selectedKey={selected}
                         onSelectionChange={setSelected}
                         variant={'light'}

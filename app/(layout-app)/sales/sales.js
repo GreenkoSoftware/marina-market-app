@@ -13,7 +13,9 @@ const SalesMenu = () => {
     const [searchInput, setSearchInput] = useState(null)
     const [goPay, setGoPay] = useState(false)
     const [payDetailed, setPayDetailed] = useState(null)
-    const { totalPrice, clearList, listSales, createSale } = useSalesStore(({ totalPrice, clearList, listSales, createSale }) => ({ totalPrice, clearList, listSales, createSale }))
+    const { totalPrice, clearList, listSales, createSale, loadingSale } = useSalesStore((
+        { totalPrice, clearList, listSales, createSale, loadingSale }) => (
+        { totalPrice, clearList, listSales, createSale, loadingSale }))
     const {
         paymentTarget, setPaymentTarget,
         voucherTarget, setVoucherTarget
@@ -54,6 +56,8 @@ const SalesMenu = () => {
                     createSale={createSale}
                     paymentTarget={paymentTarget}
                     voucherTarget={voucherTarget}
+                    setPayment={setPayment}
+                    loadingSale={loadingSale}
 
                 />
             </div>
