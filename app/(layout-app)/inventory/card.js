@@ -74,7 +74,7 @@ export default function Card () {
         <section className='h-full flex flex-col'>
             <section className="flex items-start justify-between z-10">
                 <section className='flex flex-row rounded-t-[12px] space-x-5 bg-secondary-50 dark:bg-secondary-450 pr-5 pt-1 items-center'>
-                    <div style={{ scrollbarGutter: 'stable' }} className='h-[3rem]  w-[400px] top-[0px] overflow-x-auto flex items-center  pb-2'>
+                    <div style={{ scrollbarGutter: 'stable' }} className='h-[3rem]  w-[400px] top-[0px] overflow-x-auto overflow-hidden flex items-center  pb-2'>
                         {loadingCategories
 
                             ? <section className="pt-3 pl-3 pr-3 ">
