@@ -1,7 +1,7 @@
 'use client'
 import React, { useEffect, useState } from 'react'
 import CardUi from '@/components/ui/Card'
-import { Tabs, Tab, useDisclosure, Input, Skeleton, ScrollShadow } from '@nextui-org/react'
+import { Tabs, Tab, useDisclosure, Input, Skeleton, ScrollShadow, Button } from '@nextui-org/react'
 import useInventoryStore from './store'
 import CreateProduct from './components/NewProduct/createProduct'
 import { MagnifyingGlassIcon } from '@heroicons/react/24/solid'
@@ -27,7 +27,6 @@ export default function Card () {
     const [filteredList, setFilteredList] = useState([])
     useEffect(() => {
         if (selected) {
-            setFilteredList(list)
             if (parseInt(selected) === -1) {
                 setSectionSearch(true)
                 setListInventory(list)
@@ -74,28 +73,38 @@ export default function Card () {
     return (
         <section className='h-full flex flex-col'>
             <section className="flex items-start justify-between z-10">
-                <div className='h-[3rem]  w-[300px] top-[0px] rounded-t-[12px] bg-secondary-50 dark:bg-secondary-450'>
-                    {loadingCategories
+                <section className='flex flex-row rounded-t-[12px] space-x-5 bg-secondary-50 dark:bg-secondary-450 pr-5 pt-1 items-center'>
+                    <div style={{ scrollbarGutter: 'stable' }} className='h-[3rem]  w-[400px] top-[0px] overflow-x-auto overflow-hidden flex items-center  pb-2'>
+                        {loadingCategories
 
-                        ? <section className="pt-3 pl-3 pr-3 ">
-                            <Skeleton className="w-full h-1 pt-10 rounded-lg"></Skeleton>
-                        </section>
+                            ? <section className="pt-3 pl-3 pr-3 ">
+                                <Skeleton className="w-full h-1 pt-10 rounded-lg"></Skeleton>
+                            </section>
 
-                        : <Tabs
-                            aria-label="Options"
-                            items={listCategories}
-                            selectedKey={selected}
-                            onSelectionChange={setSelected}
-                            variant={'light'}
-                            className="pt-3 pl-3"
-                        >
-                            {(item) => (
-                                <Tab key={item.id} size={'lg'} title={item.label === 'search' ? <MagnifyingGlassIcon className='w-5 h-5'/> : item?.label}>
-                                </Tab>
-                            )}
-                        </Tabs>}
+                            : <Tabs
+                                aria-label="Options"
+                                items={listCategories}
+                                selectedKey={selected}
+                                onSelectionChange={setSelected}
+                                variant={'light'}
+                                className="pt-3 pl-3"
+                            >
+                                {listCategories
+                                    ? listCategories.map(
+                                        (item) => (
+                                            <Tab key={item.id} size={'lg'} title={item.label}>
+                                            </Tab>
+                                        )
+                                    )
+                                    : null}
+                                <Tab key={-1} size={'lg'} title={<MagnifyingGlassIcon className='w-5 h-5'/>}/>
+                            </Tabs>}
 
-                </div>
+                    </div>
+                    <Button variant={sectionSearch ? 'solid' : 'ghost'} isIconOnly onClick={() => setSelected('-1')}>
+                        <MagnifyingGlassIcon className='w-5 h-5'/>
+                    </Button>
+                </section>
                 <div className="flex space-x-2">
                     {/* <ScannerDetection/> */}
                     <CreateOffer/>

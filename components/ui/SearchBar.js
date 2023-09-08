@@ -4,13 +4,14 @@ import { SearchIcon } from './SearchIcon'
 import useSalesStore from '@/app/(layout-app)/sales/store'
 
 export default function SearchBar (props) {
-    const { onChange } = props
+    const { onChange, onClear } = props
     return (
         <div className="w-full h-[80px] px-2 rounded-t-[12px] flex justify-center items-center text-white bg-secondary-50 dark:bg-secondary-450">
             <Input
                 label="Busqueda"
                 isClearable
                 radius="lg"
+                onClear={onClear}
                 onFocusChange={(value) =>
                     value
                         ? useSalesStore.getState()?.disabledScanner()

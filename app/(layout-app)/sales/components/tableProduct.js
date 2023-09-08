@@ -19,22 +19,14 @@ export default function tableProducts (props) {
     const [listInventory, setListInventory] = useState([])
     const { listCategories, listInventory: list, getCategories, getListInventory, loading, loadingCategories } = useInventoryStore(({ listCategories, listInventory: list, getCategories, getListInventory, loading, loadingCategories }) => ({ listCategories, listInventory: list, getCategories, getListInventory, loading, loadingCategories }))
     const [filteredList, setFilteredList] = useState([])
-    const [sectionSearch, setSectionSearch] = useState(false)
     const { listSales, addFromNewSales, setTotalPrice, units, setUnits, getOffers, offers } = useSalesStore()
     const listEmpty = new Array(20).fill(null)
 
     useEffect(() => {
         if (selected) {
-            setFilteredList(list)
-            if (parseInt(selected) === -1 || searchInput?.length > 0) {
-                setSectionSearch(true)
-                setListInventory(list)
-            } else {
-                setSectionSearch(false)
-                setListInventory(list.filter((item) => item.productCategoryId === parseInt(selected)))
-            }
+            setListInventory(list.filter((item) => item.productCategoryId === parseInt(selected)))
         }
-    }, [selected, searchInput, list])
+    }, [selected, list])
 
     useEffect(() => {
         if (targeProduct) {
@@ -72,59 +64,78 @@ export default function tableProducts (props) {
         getOffers()
     }, [])
     useEffect(() => {
-        // Create copy of item list
-        if (searchInput) {
+        const searchSize = searchInput?.length || 0
+        if (searchSize >= 3) {
             let updatedList = [...list]
             // Include all elements which includes the search query
             updatedList = updatedList.filter((item) => {
-                return item?.meta?.toLowerCase().indexOf(searchInput?.toLowerCase()) !== -1
+                return item?.meta?.toLowerCase().includes(searchInput?.toLowerCase())
+                // return item?.meta?.toLowerCase().indexOf(searchInput?.toLowerCase()) !== -1
             })
             // Trigger render with updated values
             setFilteredList(updatedList)
-        } else if (searchInput === '') {
-            setFilteredList([...list])
+        } else if (searchSize >= 1) {
+            setFilteredList([])
+        } else {
+            setFilteredList([])
         }
     }, [searchInput])
 
     return (
-        <section className='animation-fade-in h-full w-full'>
-            <section className="z-10 h-[6%] w-[280px] top-[52px] rounded-t-[12px] bg-secondary-50 dark:bg-secondary-450">
+        <section className='animation-fade-in h-full w-full flex flex-col'>
+            <section style={{ scrollbarGutter: 'stable' }} className="z-10 h-[6%] w-[350px] top-[52px] rounded-t-[12px] bg-secondary-50 dark:bg-secondary-450 overflow-x-auto flex items-center pb-2">
                 {loadingCategories
-
-                    ? <section className="pt-3 pl-3 pr-3 ">
+                    ? <section className="pt-3 pl-3 pr-3 w-full">
                         <Skeleton className="w-full h-1 pt-10 rounded-lg"></Skeleton>
                     </section>
 
                     : <Tabs
                         aria-label="Options"
-                        items={listCategories?.filter((category) => category?.id !== -1)}
+                        items={listCategories}
                         selectedKey={selected}
                         onSelectionChange={setSelected}
                         variant={'light'}
                         className="pt-3 pl-3"
                     >
                         {(item) => (
-                            <Tab key={item.id} size={'lg'} title={item.label}>
+                            <Tab key={item.id} size={'lg'} title={item.label} className='pb-2'>
                             </Tab>
                         )}
                     </Tabs>}
             </section>
-            <section className='flex flex-col h-3/4  sm:h-[93%] items-center px-5 py-[1rem] shadow-md hover:shadow-lg  rounded-tl-[0px]  bg-secondary-50 dark:bg-secondary-450 rounded-[14px]'>
-                <ScrollShadow className="w-full pb-4">
-                    <div className="gap-4 grid grid-cols-2 md:grid-cols-5 p-1">
-                        {loading
-                            ? listEmpty?.map((item, key) => (<LoadingCard key={key}/>))
-                            : sectionSearch
-                                ? filteredList?.map((item, index) => (
+            <section className='flex-1 rounded-xl rounded-tl-[0px] p-[1rem] bg-secondary-50 dark:bg-secondary-450'>
+                {/*  <section className='flex flex-col h-3/4  sm:h-[93%] items-center px-5 py-[1rem] shadow-md hover:shadow-lg  rounded-tl-[0px] rounded-[14px]'>
+                    <ScrollShadow className="w-full pb-4">
+                        <div className="gap-4 grid grid-cols-2 md:grid-cols-5 p-1">
+                            {loading
+                                ? listEmpty?.map((item, key) => (<LoadingCard key={key}/>))
+                                : sectionSearch
+                                    ? filteredList?.map((item, index) => (
+                                        <CardUi className key={index} item={item} index={index} isFromSales={true} setTargetProduct={setTargetProduct}/>
+                                    ))
+                                    : listInventory.map((item, index) => (
+                                        <CardUi className key={index} item={item} index={index} isFromSales={true} setTargetProduct={setTargetProduct}/>
+                                    ))}
+                            {
+                            }
+                        </div>
+                    </ScrollShadow>
+                </section> */}
+
+                <section style={{ scrollbarGutter: 'stable' }} className='max-h-[44rem] w-full overflow-y-auto flex flex-wrap snap-y snap-mandatory content-start '>
+                    {loading
+                        ? <div className="gap-4 grid grid-cols-2 md:grid-cols-5 p-1 w-full">
+                            {listEmpty?.map((item, key) => (<LoadingCard key={key}/>))}
+                        </div>
+                        : (filteredList.length ? filteredList : listInventory)?.map((item, index) => (
+                            <div key={'productList' + index} className='w-1/2 sm:w-1/3 md:w-1/4 lg:w-1/5 xl:w-1/5 xlg:w-1/6 snap-start shrink-0'>
+                                <div className='mx-1 my-1 h-[95%] w-auto'>
                                     <CardUi className key={index} item={item} index={index} isFromSales={true} setTargetProduct={setTargetProduct}/>
-                                ))
-                                : listInventory.map((item, index) => (
-                                    <CardUi className key={index} item={item} index={index} isFromSales={true} setTargetProduct={setTargetProduct}/>
-                                ))}
-                        {
-                        }
-                    </div>
-                </ScrollShadow>
+                                </div>
+                            </div>
+                        ))}
+
+                </section>
             </section>
             <DetailedProduct targeProduct={targeProduct} setTargetProduct={setTargetProduct} />
             <WeighingScaleModal isOpen={isOpen} onClose={onClose} product={selectedKL} value={4.20} setIsAcepted = {setIsAcepted} setUnits={setUnits} setTargetProduct={setTargetProduct}/>
