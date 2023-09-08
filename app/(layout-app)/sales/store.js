@@ -132,7 +132,7 @@ const useSalesStore = create(
             }
         },
         /* Create sale */
-        createSale: (paymentTarget, voucherTarget, listSales, notify, setPayment, onClose, setGoPay, clearList) => {
+        createSale: (paymentTarget, voucherTarget, listSales, notify, setPayment, onClose, setGoPay, clearList, setPageTarget, pageTarget) => {
             const body = {
                 sales_receipt: listSales?.map((sale) => {
                     return {
@@ -147,15 +147,29 @@ const useSalesStore = create(
             set({ loadingSale: true, error: null })
             try {
                 fetchPost(SALE_TICKET_CREATE, body).then(result => {
+                    setPageTarget(false)
                     set({ loadingSale: false })
                     if (result?.code === 200) {
-                        notify('✅ Pago con éxito')
+                        if (pageTarget) {
+                            notify('✅ Pago con tarjeta con éxito')
+                        } else {
+                            notify('✅ Pago con éxito')
+                        }
+
                         setPayment(false)
                         onClose()
                         setGoPay(false)
                         clearList()
                     } else {
-                        notify('❌ Problemas con el pago, intente efectuar el pago nuevamente')
+                        if (pageTarget) {
+                            notify('❌ Problemas con el pago con la tarjeta')
+                        } else {
+                            notify('❌ Problemas con el pago, intente efectuar el pago nuevamente')
+                        }
+
+                        onClose()
+                        setGoPay(false)
+                        setPageTarget(null)
                     }
                 })
             } catch {

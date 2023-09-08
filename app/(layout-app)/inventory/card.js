@@ -116,7 +116,7 @@ export default function Card () {
                     ? <ScrollShadow className="w-full pb-4">
                         <div className="gap-4 grid grid-cols-2 md:grid-cols-5 p-1">{listEmpty?.map((item, key) => (<LoadingCard key={key}/>))}</div> </ScrollShadow>
                     : sectionSearch
-                        ? <section style={{ scrollbarGutter: 'stable' }} className='max-h-[44rem] w-full overflow-y-auto flex flex-wrap snap-y snap-mandatory content-start'>
+                        ? <section style={{ scrollbarGutter: 'stable' }} className='max-h-[44rem] w-full overflow-y-auto flex flex-wrap  content-start'>
                             <Input
                                 label="Busqueda"
                                 isClearable
