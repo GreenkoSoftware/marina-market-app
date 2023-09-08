@@ -10,7 +10,7 @@ import LoadingCard from '@/components/ui/Loading'
 import WeighingScaleModal from './weighingScaleModal'
 
 export default function tableProducts (props) {
-    const { searchInput } = props
+    const { searchInput, setKeyFocus } = props
     const { isOpen, onClose, onOpen } = useDisclosure()
     const [targeProduct, setTargetProduct] = useState(null)
     const [selected, setSelected] = useState(1)
@@ -31,17 +31,23 @@ export default function tableProducts (props) {
     useEffect(() => {
         if (targeProduct) {
             // agregar a la lista de venstas
-            addFromNewSales(listSales, targeProduct, setTargetProduct, units, setUnits, offers)
+            if (targeProduct?.stockTypeId === 1) {
+                setSelectedKL(targeProduct)
+            } else {
+                setSelectedKL(null)
+                addFromNewSales(listSales, targeProduct, setTargetProduct, units, setUnits, offers, setKeyFocus, setSelectedKL)
+            }
         }
     }, [targeProduct])
 
     useEffect(() => {
-        if (targeProduct != null) { onOpen() }
+        if (targeProduct != null) {
+            onOpen()
+        }
     }, [selectedKL])
-
     useEffect(() => {
         if (isAcepted) {
-            addFromNewSales(listSales, selectedKL, setTargetProduct, units, setUnits)
+            addFromNewSales(listSales, selectedKL, setTargetProduct, units, setUnits, offers, setKeyFocus, setSelectedKL)
             setIsAcepted(false)
         }
     }, [isAcepted])
@@ -53,7 +59,7 @@ export default function tableProducts (props) {
                 currentTotal += item?.discount ? item.product?.price * item.quantity - item?.discount : item.product?.price * item.quantity
                 // TODO: agregar logica de ofertas
             })
-            setTotalPrice(currentTotal)
+            setTotalPrice(Math.floor((currentTotal / 10)) * 10)
         }
     }, [listSales])
 
@@ -104,24 +110,6 @@ export default function tableProducts (props) {
                     </Tabs>}
             </section>
             <section className='flex-1 rounded-xl rounded-tl-[0px] p-[1rem] bg-secondary-50 dark:bg-secondary-450'>
-                {/*  <section className='flex flex-col h-3/4  sm:h-[93%] items-center px-5 py-[1rem] shadow-md hover:shadow-lg  rounded-tl-[0px] rounded-[14px]'>
-                    <ScrollShadow className="w-full pb-4">
-                        <div className="gap-4 grid grid-cols-2 md:grid-cols-5 p-1">
-                            {loading
-                                ? listEmpty?.map((item, key) => (<LoadingCard key={key}/>))
-                                : sectionSearch
-                                    ? filteredList?.map((item, index) => (
-                                        <CardUi className key={index} item={item} index={index} isFromSales={true} setTargetProduct={setTargetProduct}/>
-                                    ))
-                                    : listInventory.map((item, index) => (
-                                        <CardUi className key={index} item={item} index={index} isFromSales={true} setTargetProduct={setTargetProduct}/>
-                                    ))}
-                            {
-                            }
-                        </div>
-                    </ScrollShadow>
-                </section> */}
-
                 <section style={{ scrollbarGutter: 'stable' }} className='max-h-[44rem] w-full overflow-y-auto flex flex-wrap snap-y snap-mandatory content-start '>
                     {loading
                         ? <div className="gap-4 grid grid-cols-2 md:grid-cols-5 p-1 w-full">
@@ -138,7 +126,7 @@ export default function tableProducts (props) {
                 </section>
             </section>
             <DetailedProduct targeProduct={targeProduct} setTargetProduct={setTargetProduct} />
-            <WeighingScaleModal isOpen={isOpen} onClose={onClose} product={selectedKL} value={4.20} setIsAcepted = {setIsAcepted} setUnits={setUnits} setTargetProduct={setTargetProduct}/>
+            <WeighingScaleModal isOpen={isOpen} onClose={onClose} product={selectedKL} value={4.20} setIsAcepted = {setIsAcepted} setUnits={setUnits} setTargetProduct={setTargetProduct} setSelectedKL={setSelectedKL}/>
         </section>
     )
 }

@@ -8,17 +8,18 @@ import useAuthStore from '@/stores/user'
 import { getIdUser } from '@/services/user'
 import hubScale from './store/connectionScale'
 
-const onSubmitHandler = (product, value, setIsAcepted, setUnits) => {
+const onSubmitHandler = (product, value, setIsAcepted, setUnits,setTargetProduct,setSelectedKL) => {
     product.price = Math.round(product?.price * value)
     setUnits(value)
     setIsAcepted(true)
+    setTargetProduct(null)
 }
 
-export default function WeighingScaleModal ({ isOpen, onClose, product, setIsAcepted, setUnits, setTargetProduct }) {
+export default function WeighingScaleModal ({ isOpen, onClose, product, setIsAcepted, setUnits, setTargetProduct,setSelectedKL }) {
     const [handShake,setHandShake] = useState(false)
     const [ url, setUrl ] = useState(null)
     const {setIsConnected} = hubScale()
-    const[value,setValue] = useState(null)
+    const[value,setValue] = useState(1)
     const {
         sendJsonMessage,
         lastMessage,
@@ -126,7 +127,7 @@ export default function WeighingScaleModal ({ isOpen, onClose, product, setIsAce
                             </ModalBody>
                             <ModalFooter>
                                 <section className='flex flex-row w-full justify-center'>
-                                    <Button className ="dark w-full" onClick = {() => onSubmitHandler(product, value, setIsAcepted, setUnits)} onPressEnd={onClose}>
+                                    <Button className ="dark w-full" onClick = {() => onSubmitHandler(product, value, setIsAcepted, setUnits,setTargetProduct,setSelectedKL)} onPressEnd={onClose}>
                                     Aceptar
                                     </Button>
                                     <Button className='w-full' color="danger" variant="light" onClick={onClose}>

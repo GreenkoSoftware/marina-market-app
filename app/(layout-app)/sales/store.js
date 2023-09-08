@@ -19,7 +19,7 @@ const useSalesStore = create(
         enabledRedirectSales: (value) => set({ enabledRedirect: true }),
         disabledRedirectSales: (value) => set({ enabledRedirect: false }),
         setUnits: (value) => set({ units: parseInt(value) }),
-        addFromNewSales: (listSales, product, setTargetProduct, units, setUnits, offers) => {
+        addFromNewSales: (listSales, product, setTargetProduct, units, setUnits, offers, setKeyFocus, setSelectedKL) => {
             const searhProduct = listSales?.find((item) => { return item?.product?.id === product?.id })
             const offersProduct = offers?.find((item) => { return item?.productId === product?.id })
             if (offersProduct) {
@@ -44,7 +44,10 @@ const useSalesStore = create(
                 }
             }
             setUnits(1)
-            if (setTargetProduct) { setTargetProduct(null) }
+            if (setTargetProduct) {
+                setTargetProduct(null)
+                setSelectedKL(null)
+            }
         },
         removeProduct: (listSales, productId) => {
             const newList = listSales?.filter((item) => item?.product?.id !== productId)

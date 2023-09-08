@@ -35,9 +35,7 @@ const SalesMenu = () => {
             onOpen()
         }
     }, [goPay])
-    useEffect(() => {
-        console.log('TIPO PAGO: ' + pageTarget)
-    }, [pageTarget])
+
     return (
         <section className='h-full w-full flex md:flex-col'>
             <div className="flex h-full md:flex-wrap">
@@ -45,14 +43,21 @@ const SalesMenu = () => {
                     {payment
                         ? <PayPage payment={payment} setPayment={setPayment} paymentTarget={paymentTarget} setPaymentTarget={setPaymentTarget}
                             voucherTarget={voucherTarget} setVoucherTarget={setVoucherTarget}/>
-                        : <TableInventory setSearchInput={setSearchInput} searchInput={searchInput} />
+                        : <TableInventory setSearchInput={setSearchInput} searchInput={searchInput} setKeyFocus={setKeyFocus}/>
                     }
                 </div>
                 <div className="w-full md:w-[30%]">
                     <SaleList
                         loadingSale={loadingSale}
                         setPageTarget={setPageTarget}
-                        payment={payment} setPayment={setPayment} setSearchInput={setSearchInput} paymentTarget={paymentTarget} voucherTarget={voucherTarget} setGoPay={setGoPay}/>
+                        payment={payment} setPayment={setPayment}
+                        setSearchInput={setSearchInput}
+                        paymentTarget={paymentTarget}
+                        voucherTarget={voucherTarget}
+                        setGoPay={setGoPay}
+                        setKeyFocus={setKeyFocus}
+                        keyFocus={keyFocus}
+                    />
                 </div>
                 <PayDetailed isOpen={isOpen}
                     onClose={onClose} onOpen={onOpen}
@@ -69,7 +74,6 @@ const SalesMenu = () => {
                     loadingSale={loadingSale}
                     pageTarget={pageTarget}
                     setPageTarget={setPageTarget}
-
                 />
             </div>
         </section>
