@@ -83,7 +83,7 @@ export default function tableProducts (props) {
 
     return (
         <section className='animation-fade-in h-full w-full flex flex-col'>
-            <section style={{ scrollbarGutter: 'stable' }} className="z-10 h-[6%] w-[280px] top-[52px] rounded-t-[12px] bg-secondary-50 dark:bg-secondary-450 overflow-x-auto flex items-center pb-2">
+            <section style={{ scrollbarGutter: 'stable' }} className="z-10 h-[6%] w-[350px] top-[52px] rounded-t-[12px] bg-secondary-50 dark:bg-secondary-450 overflow-x-auto flex items-center pb-2">
                 {loadingCategories
                     ? <section className="pt-3 pl-3 pr-3 w-full">
                         <Skeleton className="w-full h-1 pt-10 rounded-lg"></Skeleton>
@@ -91,7 +91,7 @@ export default function tableProducts (props) {
 
                     : <Tabs
                         aria-label="Options"
-                        items={listCategories?.slice(0, 3)}
+                        items={listCategories}
                         selectedKey={selected}
                         onSelectionChange={setSelected}
                         variant={'light'}
