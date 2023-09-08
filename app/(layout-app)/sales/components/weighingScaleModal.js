@@ -15,6 +15,7 @@ const onSubmitHandler = (product, value, setIsAcepted, setUnits,setTargetProduct
     setTargetProduct(null)
 }
 
+
 export default function WeighingScaleModal ({ isOpen, onClose, product, setIsAcepted, setUnits, setTargetProduct,setSelectedKL }) {
     const [handShake,setHandShake] = useState(false)
     const [ url, setUrl ] = useState(null)
@@ -33,7 +34,11 @@ export default function WeighingScaleModal ({ isOpen, onClose, product, setIsAce
         // Will attempt to reconnect on all close events, such as server shutting down
         shouldReconnect: (closeEvent) => true
     })
-
+    const handleOnClose = () => {
+        onClose()
+        setTargetProduct(null)
+        setSelectedKL(null)
+    }
     /* Last message ws from fleet status */
     useEffect(() => {
         if (lastMessage) {
@@ -130,7 +135,7 @@ export default function WeighingScaleModal ({ isOpen, onClose, product, setIsAce
                                     <Button className ="dark w-full" onClick = {() => onSubmitHandler(product, value, setIsAcepted, setUnits,setTargetProduct,setSelectedKL)} onPressEnd={onClose}>
                                     Aceptar
                                     </Button>
-                                    <Button className='w-full' color="danger" variant="light" onClick={onClose}>
+                                    <Button className='w-full' color="danger" variant="light" onClick={()=>{handleOnClose()}}>
                                     Cancelar
                                     </Button>
                                 </section>

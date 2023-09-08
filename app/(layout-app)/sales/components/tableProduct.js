@@ -53,7 +53,7 @@ export default function tableProducts (props) {
     }, [isAcepted])
 
     useEffect(() => {
-        if (listSales?.length >= 0) {
+        if (listSales?.length > 0) {
             let currentTotal = 0
             listSales?.forEach((item) => {
                 currentTotal += item?.discount ? item.product?.price * item.quantity - item?.discount : item.product?.price * item.quantity

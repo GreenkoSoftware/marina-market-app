@@ -4,7 +4,7 @@ import { create } from 'zustand'
 import { TYPE_PAYMENT_API_URL, TYPE_VOUCHER_API_URL, SALE_TICKET_CREATE } from '@/settings/constants'
 import { fetchGet, fetchPost } from '@/services/sales'
 import { fetchGetOfferById, fetchGetOffers } from '@/services/products'
-import { formatter } from '@/utils/number'
+
 const useSalesStore = create(
     (set) => ({
         loading: false,
@@ -16,7 +16,7 @@ const useSalesStore = create(
         units: 1,
         enabledScanner: (value) => set({ scannerEnabled: true, enabledRedirect: false }),
         disabledScanner: (value) => set({ scannerEnabled: false }),
-        setTotalPrice: (value) => set({ totalPrice: formatter.format(value) }),
+        setTotalPrice: (value) => set({ totalPrice: value }),
         enabledRedirectSales: (value) => set({ enabledRedirect: true }),
         disabledRedirectSales: (value) => set({ enabledRedirect: false }),
         setUnits: (value) => set({ units: parseInt(value) }),
