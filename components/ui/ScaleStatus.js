@@ -39,12 +39,18 @@ export default function ScaleStatus ({ scaleStatus }) {
     }
 
     return (
-        <div className="flex items-center gap-4" onClick={() => setIsOpen(!isOpen)}>
+        <div className="flex items-center gap-4 animation-fade-in" onClick={() => setIsOpen(!isOpen)}>
             <div className="flex items-center gap-3">
-                <Popover placement="top-end" offset={25} color={color} showArrow={true} isOpen={isOpen}>
+                <Popover placement="top-end" offset={30} color={color} showArrow={true} isOpen={isOpen}>
                     <PopoverTrigger>
                         <Badge color={color} content={''} size = "lg" shape="circle">
-                            <FaWeight size={35} />
+                            <button
+                                aria-label='Toggle Dark Mode'
+                                type='button'
+                                className='flex items-center justify-center rounded-lg p-2 transition-colors hover:bg-zinc-100 dark:hover:bg-zinc-700'
+                            >
+                                <FaWeight className="w-6 h-6 sm:w-9 sm:h-9 cursor-pointer fill-primary-500 dark:fill-primary-300"/>
+                            </button>
                         </Badge>
                     </PopoverTrigger>
                     <PopoverContent className='mt-1' color={color}>
