@@ -34,7 +34,7 @@ export default function ScaleStatus ({ scaleStatus }) {
             </div>
             : <div className="">
                 <div className="text-small font-bold">Pesa desconectada</div>
-                <div className="text-tiny">Por favor abrir el archivo scaleConnector en escritorio.</div>
+                <div className="text-tiny">Por favor abrir el archivo scale-connector en escritorio.</div>
             </div>
     }
 
