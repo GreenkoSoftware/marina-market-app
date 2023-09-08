@@ -9,9 +9,9 @@ export function Header () {
     const { isConnected } = hubScale()
     return (
         <section className={'flex flex-row-reverse my-[1rem] mx-[1rem] xl:mx-[6rem] xlg:mx-[6rem] gap-x-unit-1 animation-fade-in'}>
-            {usePathname() === '/sales' ? <ScaleStatus scaleStatus = {isConnected}/> : <></>}
-            <HomeButton/>
             <ThemeButton/>
+            <HomeButton/>
+            {usePathname() === '/sales' ? <ScaleStatus scaleStatus = {isConnected}/> : <></>}
         </section>
     )
 }
