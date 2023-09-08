@@ -29,13 +29,8 @@ export default function Card () {
     const [filteredList, setFilteredList] = useState([])
     useEffect(() => {
         if (selected) {
-            if (parseInt(selected) === -1) {
-                setSectionSearch(true)
-                setListInventory(list)
-            } else {
-                setSectionSearch(false)
-                setListInventory(list.filter((item) => item.productCategoryId === parseInt(selected)))
-            }
+            setSectionSearch(false)
+            setListInventory(list.filter((item) => item.productCategoryId === parseInt(selected)))
         }
     }, [selected, list])
     useEffect(() => {
@@ -85,7 +80,7 @@ export default function Card () {
         <section className='h-full flex flex-col'>
             <section className="flex items-start justify-between z-10">
                 <section className='flex flex-row rounded-t-[12px] space-x-5 bg-secondary-50 dark:bg-secondary-450 pr-5 pt-1 items-center'>
-                    <div style={{ scrollbarGutter: 'stable' }} className='h-[3rem]  w-[400px] top-[0px] overflow-x-auto overflow-hidden flex items-center  pb-2'>
+                    <div style={{ scrollbarGutter: 'stable', scrollbarWidth: 0 }} className='h-[3rem]  w-[400px] top-[0px] overflow-x-auto overflow-hidden flex items-center'>
                         {loadingCategories
 
                             ? <section className="pt-3 pl-3 pr-3 ">
@@ -98,20 +93,24 @@ export default function Card () {
                                 selectedKey={selected}
                                 onSelectionChange={setSelected}
                                 variant={'light'}
-                                className="pt-3 pl-3"
+                                className="pt-3 pl-3 pb-3"
+                                color={!sectionSearch ? 'warning' : ''}
+                                onClick={() => setSectionSearch(false)}
                             >
                                 {listCategories
                                     ? listCategories.map(
                                         (item) => (
-                                            <Tab key={item.id} size={'lg'} title={item.label}>
-                                            </Tab>
+                                            <Tab key={item.id} size={'lg'} title={item.label}/>
                                         )
                                     )
                                     : null}
+
                             </Tabs>}
 
                     </div>
-                    <Button variant={sectionSearch ? 'solid' : 'ghost'} isIconOnly onClick={() => setSelected('-1')}>
+                    <Button variant={sectionSearch ? 'solid' : 'ghost'} color={sectionSearch ? 'warning' : ''} isIconOnly onClick={() => {
+                        setSectionSearch(!sectionSearch)
+                    }}>
                         <MagnifyingGlassIcon className='w-5 h-5'/>
                     </Button>
                 </section>
