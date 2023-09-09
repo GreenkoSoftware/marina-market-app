@@ -79,12 +79,12 @@ export default function Card () {
     return (
         <section className='h-full flex flex-col'>
             <section className="flex items-start justify-between z-10">
-                <section className='flex flex-row rounded-t-[12px] space-x-5 bg-secondary-50 dark:bg-secondary-450 pr-5 pt-1 items-center'>
+                <section className='flex flex-row rounded-t-[12px] space-x-5 bg-secondary-50 dark:bg-secondary-450 pr-3 pt-1 items-center'>
                     <div style={{ scrollbarGutter: 'stable', scrollbarWidth: 0 }} className='h-[3rem]  w-[400px] top-[0px] overflow-x-auto overflow-hidden flex items-center'>
                         {loadingCategories
 
-                            ? <section className="pt-3 pl-3 pr-3 ">
-                                <Skeleton className="w-full h-1 pt-10 rounded-lg"></Skeleton>
+                            ? <section className="pt-1 pl-3 pr-3 w-full flex ">
+                                <Skeleton className="w-full h-8 rounded-lg"></Skeleton>
                             </section>
 
                             : <Tabs

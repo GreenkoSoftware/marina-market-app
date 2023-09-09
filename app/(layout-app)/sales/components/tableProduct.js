@@ -93,25 +93,29 @@ export default function tableProducts (props) {
 
     return (
         <section className='animation-fade-in h-full w-full flex flex-col'>
-            <section style={{ scrollbarGutter: 'stable' }} className="z-10 h-[6%] w-[350px] top-[52px] rounded-t-[12px] bg-secondary-50 dark:bg-secondary-450 overflow-x-auto flex items-center pb-2">
-                {loadingCategories
-                    ? <section className="pt-3 pl-3 pr-3 w-full">
-                        <Skeleton className="w-full h-1 pt-10 rounded-lg"></Skeleton>
-                    </section>
+            <section className='flex flex-row rounded-t-[12px] w-[400px] space-x-5 bg-secondary-50 dark:bg-secondary-450 pt-1 items-center'>
+                <div style={{ scrollbarGutter: 'stable', scrollbarWidth: 0 }} className='h-[3rem]  w-[400px] top-[0px] overflow-x-auto overflow-hidden flex items-center'>
 
-                    : <Tabs
-                        aria-label="Options"
-                        items={listCategories}
-                        selectedKey={categoryTabSelected}
-                        onSelectionChange={setCategoryTabSelected}
-                        variant={'light'}
-                        className="pt-3 pl-3"
-                    >
-                        {(item) => (
-                            <Tab key={item.id} size={'lg'} title={item.label} className='pb-2'>
-                            </Tab>
-                        )}
-                    </Tabs>}
+                    {loadingCategories
+                        ? <section className="pl-3 w-full flex ">
+                            <Skeleton className="w-full h-8 rounded-lg"></Skeleton>
+                        </section>
+
+                        : <Tabs
+                            aria-label="Options"
+                            items={listCategories}
+                            selectedKey={categoryTabSelected}
+                            onSelectionChange={setCategoryTabSelected}
+                            variant={'light'}
+                            className="pt-3 pl-3  pb-3"
+                            color={!filteredList.length ? 'warning' : ''}
+                        >
+                            {(item) => (
+                                <Tab key={item.id} size={'lg'} title={item.label}>
+                                </Tab>
+                            )}
+                        </Tabs>}
+                </div>
             </section>
             <section className='flex-1 rounded-xl rounded-tl-[0px] p-[1rem] bg-secondary-50 dark:bg-secondary-450'>
                 <section style={{ scrollbarGutter: 'stable' }} className='max-h-[44rem] w-full overflow-y-auto flex flex-wrap snap-y snap-mandatory content-start '>
