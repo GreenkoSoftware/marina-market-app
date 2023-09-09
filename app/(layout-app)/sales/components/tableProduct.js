@@ -37,7 +37,7 @@ export default function tableProducts (props) {
             if (targeProduct?.stockTypeId === 1) {
                 setSelectedProductWithKG(targeProduct)
             } else {
-                addFromNewSales(listSales, targeProduct, units, offers, onCompleteFunction)
+                addFromNewSales(listSales, targeProduct, units, offers, onCompleteFunction, setKeyFocus)
             }
         }
     }, [targeProduct])

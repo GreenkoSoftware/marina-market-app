@@ -37,8 +37,8 @@ export default function SaleList (props) {
     }
     useEffect(() => {
         if (keyFocus) {
-            const focusMapElement = document.getElementById(keyFocus)
-            focusMapElement?.scrollIntoView({ behavior: 'smooth', block: 'start' })
+            const focusKey = document.getElementById(keyFocus)
+            focusKey?.scrollIntoView({ behavior: 'smooth', block: 'start' })
         }
     }, [keyFocus])
     return (

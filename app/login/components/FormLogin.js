@@ -9,10 +9,11 @@ export default function LoginForm () {
     const { signIn, loading } = useAuthStore()
     const [validateValues, setValidateValues] = useState(false)
     const [sendDisabled, setSendDisabled] = useState(false)
-    const [email, setEmail] = useState('')
-    const [password, setPassword] = useState('')
+    const [email, setEmail] = useState(null)
+    const [password, setPassword] = useState(null)
     const [emailError, setEmailError] = useState()
     const [passwordError, setPasswordError] = useState()
+    const [eventListener, setEventListener] = useState(false)
 
     const validationStateEmail = useMemo(() => {
         if (validateValues) {
@@ -57,7 +58,24 @@ export default function LoginForm () {
             )
         }
     }
-
+    useEffect(() => {
+        if (email && password) {
+            onSubmitHandler()
+            setEventListener(false)
+        }
+    }, [eventListener])
+    /* Capture event from enter key */
+    useEffect(() => {
+        document.addEventListener('keydown', function (event) {
+            if (event.code === 'Enter') {
+                const email = document.getElementById('email').value
+                const password = document.getElementById('pass').value
+                setEmail(email)
+                setPassword(password)
+                setEventListener(true)
+            }
+        })
+    }, [])
     return (
         <section className="max-w-md w-full mx-auto overflow-hidden  space-y-5 rounded-2xl">
             <form
@@ -79,6 +97,7 @@ export default function LoginForm () {
                     errorMessage={emailError}
                     onBlur={() => setValidateValues(true)}
                     isRequired
+                    id={'email'}
                 />
                 <Input
                     radius="full"
@@ -95,6 +114,7 @@ export default function LoginForm () {
                     color={passwordError ? 'danger' : 'default'}
                     errorMessage={passwordError}
                     onBlur={() => setValidateValues(true)}
+                    id={'pass'}
                     // isRequired
                 />
             </form>
