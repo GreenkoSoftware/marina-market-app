@@ -7,6 +7,7 @@ import useWebSocket, { ReadyState } from 'react-use-websocket'
 import { getIdUser } from '@/services/user'
 import hubScale from './store/connectionScale'
 import useSalesStore from '../store'
+import useOffersStore from '@/stores/offers'
 
 export default function WeighingScaleModal ({ isOpen, onClose, product }) {
     const [handShake, setHandShake] = useState(false)
@@ -16,7 +17,8 @@ export default function WeighingScaleModal ({ isOpen, onClose, product }) {
     const [isDefaultValue, setIsDefaultValue] = useState(false)
     const { setIsConnected } = hubScale()
 
-    const { listSales, addFromNewSales, offers } = useSalesStore()
+    const { listSales, addFromNewSales } = useSalesStore()
+    const { offers } = useOffersStore()
 
     const {
         sendJsonMessage,

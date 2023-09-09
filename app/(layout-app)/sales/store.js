@@ -63,79 +63,9 @@ const useSalesStore = create(
         voucherTarget: 1,
         setPaymentTarget: (value) => set({ paymentTarget: value }),
         setVoucherTarget: (value) => set({ voucherTarget: value }),
-        payment: [],
-        voucher: [],
-        offers: [],
-        loadingPayment: false,
-        loadingVoucher: false,
-        loadingOffers: false,
+
         loadingSale: false,
-        getPaymentType: () => {
-            set({ loadingPayment: true, error: null })
-            try {
-                fetchGet(TYPE_PAYMENT_API_URL).then(result => {
-                    if (result?.code === 200) {
-                        set({
-                            payment: result?.data?.reduce((acc, { ID, name }) => {
-                                return [...acc,
-                                    {
-                                        id: ID,
-                                        name
-                                    }
-                                ]
-                            }, []),
-                            loadingPayment: false
-                        })
-                    } else {
-                        return null
-                    }
-                })
-            } catch {
-                set({ loadingPayment: false })
-            }
-        },
-        getVoucherType: () => {
-            set({ loadingVoucher: true, error: null })
-            try {
-                fetchGet(TYPE_VOUCHER_API_URL).then(result => {
-                    if (result?.code === 200) {
-                        set({
-                            voucher: result?.data?.reduce((acc, { ID, name }) => {
-                                return [...acc,
-                                    {
-                                        id: ID,
-                                        name
-                                    }
-                                ]
-                            }, []),
-                            loadingVoucher: false
-                        })
-                    } else {
-                        return null
-                    }
-                })
-            } catch {
-                set({ loadingVoucher: false })
-            }
-        },
-        getOffers: () => {
-            set({ loadingOffers: true, error: null })
-            try {
-                fetchGetOffers().then(result => {
-                    if (result?.code === 200) {
-                        set({
-                            offers: result?.data?.reduce((acc, value) => {
-                                return [...acc, { id: value?.ID, quantity: value?.quantity, unitPrice: value?.unit_price, productId: value?.product_id }]
-                            }, [])
-                        })
-                    } else {
-                        return null
-                    }
-                })
-            } catch {
-                set({ loadingOffers: false })
-            }
-        },
+
         /* Create sale */
         createSale: (paymentTarget, voucherTarget, listSales, notify, setPayment, onClose, setGoPay, clearList, setPageTarget, pageTarget) => {
             const body = {

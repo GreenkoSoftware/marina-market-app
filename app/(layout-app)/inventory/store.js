@@ -84,6 +84,10 @@ const useInventoryStore = create(
             const result = products?.find(({ code }) => code === searchCode)
             return result || undefined
         },
+        getProductById: (products, searchId) => {
+            const result = products?.find(({ id }) => id === searchId)
+            return result || undefined
+        },
         getTypeById: (types, typeId) => {
             const result = types?.find(({ id }) => id === typeId)
             return result?.label || undefined

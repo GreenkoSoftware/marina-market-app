@@ -7,6 +7,7 @@ import useSalesStore from '../store'
 import useInventoryStore from '../../inventory/store'
 import LoadingCard from '@/components/ui/Loading'
 import WeighingScaleModal from './weighingScaleModal'
+import useOffersStore from '@/stores/offers'
 
 export default function tableProducts (props) {
     const { searchInput, setKeyFocus } = props
@@ -17,7 +18,8 @@ export default function tableProducts (props) {
     const [listInventory, setListInventory] = useState([])
     const { listCategories, listInventory: list, getCategories, getListInventory, loading, loadingCategories } = useInventoryStore(({ listCategories, listInventory: list, getCategories, getListInventory, loading, loadingCategories }) => ({ listCategories, listInventory: list, getCategories, getListInventory, loading, loadingCategories }))
     const [filteredList, setFilteredList] = useState([])
-    const { listSales, addFromNewSales, setTotalPrice, units, setUnits, getOffers, offers } = useSalesStore()
+    const { listSales, addFromNewSales, setTotalPrice, units, setUnits } = useSalesStore()
+    const { offers, getOffers } = useOffersStore()
     const listEmpty = new Array(20).fill(null)
 
     useEffect(() => {

@@ -1,6 +1,7 @@
 /* eslint-disable no-unused-vars */
 import useInventoryStore from '@/app/(layout-app)/inventory/store'
 import useSalesStore from '@/app/(layout-app)/sales/store'
+import useOffersStore from '@/stores/offers'
 import { Button } from '@nextui-org/react'
 import { useRouter } from 'next/navigation'
 import React, { useEffect, useState } from 'react'
@@ -16,7 +17,7 @@ export default function ScannerDetection () {
         const currentListSales = useSalesStore.getState().listSales
         const enabledRedirectSales = useSalesStore.getState().enabledRedirect
         const units = useSalesStore.getState().units
-        const offers = useSalesStore.getState().offers
+        const offers = useOffersStore.getState().offers
 
         const product = useInventoryStore.getState().getProductByCode(useInventoryStore.getState().listInventory, barcode)
         console.log(currentListSales)
