@@ -7,7 +7,7 @@ import SearchBar from '../../../../components/ui/SearchBar'
 import useSalesStore from '@/app/(layout-app)/sales/store'
 import { motion } from 'framer-motion'
 import useInventoryStore from '../../inventory/store'
-
+import { formatter } from '@/utils/number'
 export default function SaleList (props) {
     const {
         setPayment, payment, setSearchInput,
@@ -51,6 +51,13 @@ export default function SaleList (props) {
                         type="number"
                         label="Unidades"
                         value={inputValue}
+                        min={1}
+                        onFocusChange={(value) =>
+                            value
+                                ? useSalesStore.getState()?.disabledScanner()
+                                : useSalesStore.getState()?.enabledScanner()
+                        }
+                        onPaste={(e) => { e.preventDefault(); alert('No puedes escanear en este lugar') }}
                         placeholder={1}
                         labelPlacement="inside"
                         onValueChange={(value) => { setUnits(value) }}>
@@ -129,7 +136,7 @@ export default function SaleList (props) {
                                     delay: 0.2,
                                     ease: [0, 0.71, 0.2, 1.01]
                                 }}>
-                                {loadingSale ? 'Cargando pago ... ' : paymentTarget && voucherTarget ? 'PAGAR  ' : 'TOTAL '}{ totalPrice}
+                                {loadingSale ? 'Cargando pago ... ' : paymentTarget && voucherTarget ? 'PAGAR  ' : 'TOTAL '}{ formatter.format(totalPrice)}
                                 {}
                             </motion.div>
                         </div>

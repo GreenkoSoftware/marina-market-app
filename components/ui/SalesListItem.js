@@ -1,7 +1,7 @@
 'use client'
 import React from 'react'
 import DeleteButton from './DeleteButton'
-
+import { formatter } from '@/utils/number'
 export default function SaleListItem (props) {
     const { product: productDetail } = props
     const { product, quantity, discount } = productDetail
@@ -23,7 +23,7 @@ export default function SaleListItem (props) {
                         <div className='flex flex-row gap-3'>
                             <div>{quantity}</div>
                             <div>x</div>
-                            <div>{price}</div>
+                            <div>{formatter.format(price) }</div>
                             <div>CLP</div>
                             <DeleteButton productId={id}/>
                         </div>

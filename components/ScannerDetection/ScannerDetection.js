@@ -9,13 +9,14 @@ export default function ScannerDetection () {
     const [detected, setDetected] = useState(true)
     const [scanner, setScanner] = useState(null)
     const router = useRouter()
-    const { listInventory, getProductByCode } = useInventoryStore()
     const { addFromNewSales, scannerEnabled, enabledRedirect } = useSalesStore()
 
     const onComplete = (barcode) => {
         // get current status from store
         const currentListSales = useSalesStore.getState().listSales
         const enabledRedirectSales = useSalesStore.getState().enabledRedirect
+        const units = useSalesStore.getState().units
+        const offers = useSalesStore.getState().offers
 
         const product = useInventoryStore.getState().getProductByCode(useInventoryStore.getState().listInventory, barcode)
         console.log(currentListSales)
@@ -26,7 +27,7 @@ export default function ScannerDetection () {
                 router.push('/sales')
                 console.log('/sales')
             }
-            addFromNewSales(currentListSales, product)
+            addFromNewSales(currentListSales, product, units, offers)
         } else {
             alert(`El producto ${barcode} no ha sido encontrado.`)
         }
@@ -49,6 +50,8 @@ export default function ScannerDetection () {
         const options = {
             onComplete,
             onError
+            // preventDefault: true,
+            // stopPropagation: true
         }
 
         // disabled scanner

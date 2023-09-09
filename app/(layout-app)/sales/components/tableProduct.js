@@ -2,8 +2,7 @@
 'use client'
 import React, { useEffect, useState } from 'react'
 import CardUi from '@/components/ui/Card'
-import { Tabs, Tab, useDisclosure, ScrollShadow, Skeleton } from '@nextui-org/react'
-import DetailedProduct from './detailedProduct'
+import { Tabs, Tab, useDisclosure, Skeleton } from '@nextui-org/react'
 import useSalesStore from '../store'
 import useInventoryStore from '../../inventory/store'
 import LoadingCard from '@/components/ui/Loading'
@@ -13,9 +12,8 @@ export default function tableProducts (props) {
     const { searchInput, setKeyFocus } = props
     const { isOpen, onClose, onOpen } = useDisclosure()
     const [targeProduct, setTargetProduct] = useState(null)
-    const [selected, setSelected] = useState(1)
-    const [isAcepted, setIsAcepted] = useState()
-    const [selectedKL, setSelectedKL] = useState()
+    const [selectedProductWithKG, setSelectedProductWithKG] = useState(null)
+    const [categoryTabSelected, setCategoryTabSelected] = useState()
     const [listInventory, setListInventory] = useState([])
     const { listCategories, listInventory: list, getCategories, getListInventory, loading, loadingCategories } = useInventoryStore(({ listCategories, listInventory: list, getCategories, getListInventory, loading, loadingCategories }) => ({ listCategories, listInventory: list, getCategories, getListInventory, loading, loadingCategories }))
     const [filteredList, setFilteredList] = useState([])
@@ -23,37 +21,43 @@ export default function tableProducts (props) {
     const listEmpty = new Array(20).fill(null)
 
     useEffect(() => {
-        if (selected) {
-            setListInventory(list.filter((item) => item.productCategoryId === parseInt(selected)))
+        if (categoryTabSelected) {
+            setListInventory(list.filter((item) => item.productCategoryId === parseInt(categoryTabSelected)))
         }
-    }, [selected, list])
+    }, [categoryTabSelected, list])
+
+    const onCompleteFunction = () => {
+        setTargetProduct(null)
+        setSelectedProductWithKG(null)
+    }
 
     useEffect(() => {
         if (targeProduct) {
             // agregar a la lista de venstas
             if (targeProduct?.stockTypeId === 1) {
-                setSelectedKL(targeProduct)
+                setSelectedProductWithKG(targeProduct)
             } else {
-                setSelectedKL(null)
-                addFromNewSales(listSales, targeProduct, setTargetProduct, units, setUnits, offers, setKeyFocus, setSelectedKL)
+                addFromNewSales(listSales, targeProduct, units, offers, onCompleteFunction)
             }
         }
     }, [targeProduct])
 
     useEffect(() => {
-        if (targeProduct != null) {
+        if (selectedProductWithKG != null) {
             onOpen()
         }
-    }, [selectedKL])
-    useEffect(() => {
-        if (isAcepted) {
-            addFromNewSales(listSales, selectedKL, setTargetProduct, units, setUnits, offers, setKeyFocus, setSelectedKL)
-            setIsAcepted(false)
-        }
-    }, [isAcepted])
+    }, [selectedProductWithKG])
 
     useEffect(() => {
-        if (listSales?.length >= 0) {
+        console.log('open: ', isOpen)
+        if (!isOpen) {
+            setTargetProduct(null)
+            setSelectedProductWithKG(null)
+        }
+    }, [isOpen])
+
+    useEffect(() => {
+        if (listSales?.length > 0) {
             let currentTotal = 0
             listSales?.forEach((item) => {
                 currentTotal += item?.discount ? item.product?.price * item.quantity - item?.discount : item.product?.price * item.quantity
@@ -98,8 +102,8 @@ export default function tableProducts (props) {
                     : <Tabs
                         aria-label="Options"
                         items={listCategories}
-                        selectedKey={selected}
-                        onSelectionChange={setSelected}
+                        selectedKey={categoryTabSelected}
+                        onSelectionChange={setCategoryTabSelected}
                         variant={'light'}
                         className="pt-3 pl-3"
                     >
@@ -125,8 +129,7 @@ export default function tableProducts (props) {
 
                 </section>
             </section>
-            <DetailedProduct targeProduct={targeProduct} setTargetProduct={setTargetProduct} />
-            <WeighingScaleModal isOpen={isOpen} onClose={onClose} product={selectedKL} value={4.20} setIsAcepted = {setIsAcepted} setUnits={setUnits} setTargetProduct={setTargetProduct} setSelectedKL={setSelectedKL}/>
+            <WeighingScaleModal isOpen={isOpen} onClose={onClose} product={selectedProductWithKG}/>
         </section>
     )
 }
