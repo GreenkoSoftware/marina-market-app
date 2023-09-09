@@ -3,11 +3,15 @@ import React from 'react'
 import { saveAs } from 'file-saver'
 import { pdf as pdff } from '@react-pdf/renderer'
 import { Pdf } from './pdf'
+const handleOpenPDF = () => {
+    window.open('/pdf', '_blank')
+}
+
 export const generateVoucher = async () => {
     const blob = await pdff(
         <Pdf />
-    ).toBlob()
-    // return (<a href={blob} without rel="noopener noreferrer" target="_blank"></a>)
-    window.open(blob, 'boleta')
+    ).toBlob(() => {}, 'application/pdf')
+    const fileUrl = URL.createObjectURL(blob)
+    window.open(fileUrl, '_blank')
     // saveAs(blob, 'boleta')
 }
