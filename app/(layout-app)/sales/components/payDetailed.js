@@ -56,7 +56,7 @@ export default function PayDetailed ({ loadingSale, setPageTarget, setPayment, i
                         <h1 className='text-4xl font-bold'>CALCULAR PAGO EN EFECTIVO</h1>
                         <section className="flex flex-row items-center justify-center content-between gap-5">
                             <Button className=' w-[8rem] h-[4rem] bg-green-600 text-white font-bold text-lg'
-                                onClick={() => setPayDetailed(1000) }>
+                                onClick={() => { setPayDetailed(1000) } }>
                                 $1.000
                             </Button>
                             <Button className=' w-[8rem] h-[4rem] bg-indigo-600 text-white font-bold text-lg'

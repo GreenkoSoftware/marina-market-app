@@ -133,16 +133,17 @@ export default function WeighingScaleModal ({ isOpen, onClose, product, setIsAce
                                             </div>:
                                             <section className="flex flex-col items-center justify-center content-between gap-2 h-full">
                                                 <div key="flat" className="flex w-[20rem] h-[4rem] flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4">
-                                                    <Input type="email" variant={"flat"} label="kg" placeholder="Ingresa manualmente los kg" className='text-sm'
+                                                    <Input type="number" variant={"flat"} label="kg" placeholder="Ingresa manualmente los kg" className='text-sm'
                                                         onValueChange={(value)=>setValue(value)}
                                                     />
                                                 </div>
                                                 <Button className=' w-[20rem] h-[3rem] bg-green-600 text-white font-bold text-lg'
-                                                    onClick={() => setValue(1) }>
+                                                            onClick = {() => onSubmitHandler(product, 1, setIsAcepted, setUnits,setTargetProduct,setSelectedKL)} onPressEnd={onClose}>
                                                     1KG
                                                 </Button>
                                                 <Button className=' w-[20rem] h-[3rem]  bg-green-600 text-white font-bold text-lg'
-                                                    onClick={() => setValue(2) }>
+                                                    onClick = {() => onSubmitHandler(product, 2, setIsAcepted, setUnits,setTargetProduct,setSelectedKL)} onPressEnd={onClose}
+                                                >
                                                     2KG
                                                 </Button>
                                                 <div className='flex flex-row w-[20rem] gap-4 items-center px-5 py-3 border-3 rounded-xl border-green-500'>
