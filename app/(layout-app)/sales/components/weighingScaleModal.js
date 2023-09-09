@@ -101,8 +101,8 @@ export default function WeighingScaleModal ({ isOpen, onClose, product }) {
                             onClick={() => { setManualMode(!manualMode) }}
                         >
                             {manualMode
-                                ? 'MODO MANUAL'
-                                : 'MODO AUTOMATICO'}
+                                ? 'MODO AUTOMATICO'
+                                : 'MODO MANUAL'}
                         </Button>
                     </ModalHeader>
                     <ModalBody className='flex flex-col '>
@@ -123,35 +123,35 @@ export default function WeighingScaleModal ({ isOpen, onClose, product }) {
                                             className="w-full object-cover h-[10rem] bg-slate-100 dark:bg-white"
                                             src={product?.image?.length ? ConvertBytesToImage({ imageBytes: product?.image }) : DefaultImageMarinaMarket()}
                                         />
-                                        <div className='m-5'>
+                                        <div className='m-5 mt-5'>
                                             <h3 className="text-2xl font-semibold text-foreground/90">{product?.name.toUpperCase()}</h3>
                                             <p className="text-small text-foreground/80">{product?.code}</p>
                                             <div className='flex felx-row gap-5'>
-                                                <h1 className="text-lg font-medium">PRECIO KILO</h1>
-                                                <h1 className="text-lg text-lime-500 ">${product?.price}</h1>
+                                                <h1 className="text-md font-medium">PRECIO X KILO</h1>
+                                                <h1 className="text-md text-lime-500 ">${product?.price}</h1>
                                             </div>
                                         </div>
                                     </div>
                                     {!manualMode
-                                        ? <div className="flex flex-col items-center justify-center content-between gap-2 h-full">
-                                            <div className="flex  items-start h-full w-full">
-                                                <div className="flex flex-col gap-5 h-full">
-                                                    <div className='flex flex-col items-center gap-2 h-full'>
-                                                        <h1 className="text-large font-medium mt-2">PESO REGISTRADO</h1>
-                                                        <div className='flex flex-row gap-1 justify-center items-end'>
-                                                            <h1 className="text-8xl text-teal-500 font-medium ">{valueKg}</h1>
+                                        ? <div className="flex flex-col items-center justify-center content-between gap-2 h-[20rem]">
+                                            <div className="flex  items-start   w-full">
+                                                <div className="flex flex-col ">
+                                                    <div className='flex flex-col items-center gap-14 '>
+                                                        <h1 className="text-large font-extrabold">PESO REGISTRADO</h1>
+                                                        <div className='flex flex-row justify-center '>
+                                                            <h1 className="text-9xl  text-teal-500 font-medium ">{valueKg}</h1>
                                                             <h1 className="text-lg text-zinc-400 font-medium ">KG</h1>
                                                         </div>
                                                     </div>
-                                                    <div className='flex flex-row w-[20rem] gap-4 items-center px-5 py-3 border-3 mt-6 rounded-xl border-green-500'>
-                                                        <h1 className="text-4xl  text-green-500 font-bold">TOTAL</h1>
-                                                        <h1 className="text-4xl font-xl font-bold text-green-500">$ {Math.floor((product?.price * valueKg) / 10) * 10}</h1>
+                                                    <div className='flex flex-row w-[20rem] gap-4  px-5 py-3 border-3 mt-6 rounded-xl border-green-500'>
+                                                        <h1 className="text-3xl w-full text-green-500 font-bold">TOTAL</h1>
+                                                        <h1 className="text-3xl w-full font-xl font-bold text-green-500">$ {Math.floor((product?.price * valueKg) / 10) * 10}</h1>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
-                                        : <section className="flex flex-col items-center justify-center content-between gap-2 h-full">
-                                            <div key="flat" className="flex w-[20rem] h-[4rem] flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4">
+                                        : <section className="flex flex-col items-center justify-center content-between gap-2 h-[20rem]">
+                                            <div key="flat" className="flex w-[20rem] h-[4rem] flex-wrap md:flex-nowrap mb-4 md:mb-0 gap-2">
                                                 <Input type="email" variant={'flat'} label="KG" placeholder="Ingresa manualmente los KG." className='text-sm'
                                                     onValueChange={(value) => setValueKg(value)} value={valueKg}
                                                 />
@@ -164,9 +164,13 @@ export default function WeighingScaleModal ({ isOpen, onClose, product }) {
                                                 onClick={() => { setValueKg(2); setIsDefaultValue(true) } }>
                                                     2KG
                                             </Button>
+                                            <Button className=' w-[20rem] h-[3rem]  bg-green-600 text-white font-bold text-lg'
+                                                onClick={() => { setValueKg(5); setIsDefaultValue(true) } }>
+                                                    5KG
+                                            </Button>
                                             <div className='flex flex-row w-[20rem] gap-4 items-center px-5 py-3 border-3 rounded-xl border-green-500'>
-                                                <h1 className="text-4xl  text-green-500 font-bold">TOTAL</h1>
-                                                <h1 className="text-4xl font-xl font-bold text-green-500">$ {Math.floor((product?.price * valueKg) / 10) * 10}</h1>
+                                                <h1 className="text-3xl w-full  text-green-500 font-bold">TOTAL</h1>
+                                                <h1 className="text-3xl  w-full font-xl font-bold text-green-500">$ {Math.floor((product?.price * valueKg) / 10) * 10}</h1>
                                             </div>
                                         </section>
                                     }
