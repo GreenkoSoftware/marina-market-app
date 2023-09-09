@@ -115,11 +115,3 @@ const useSalesStore = create(
 )
 
 export default useSalesStore
-
-/* Encontrar si se encuentra una oferta de dicho producto */
-/* Si ya existe el topde de la cantidad en la oferta del producto, se deberia agregar el mismo
-            producto en la lista de venta
-            */
-/*             const quantity = searhProduct?.quantity ? searhProduct?.quantity + 1 : 1
-            const priceUpdate = offersProduct && quantity === offersProduct?.quantity ? offersProduct?.unitPrice : product?.price
-            const productUpdate = { ...product, price: priceUpdate } */

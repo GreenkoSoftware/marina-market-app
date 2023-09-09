@@ -10,7 +10,7 @@ const handleOpenPDF = () => {
 export const generateVoucher = async () => {
     const blob = await pdff(
         <Pdf />
-    ).toBlob(() => {}, 'application/pdf')
+    ).toBuffer(() => {}, 'application/pdf')
     const fileUrl = URL.createObjectURL(blob)
     window.open(fileUrl, '_blank')
     // saveAs(blob, 'boleta')
