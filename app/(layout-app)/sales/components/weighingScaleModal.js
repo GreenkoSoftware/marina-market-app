@@ -13,6 +13,7 @@ export default function WeighingScaleModal ({ isOpen, onClose, product }) {
     const [url, setUrl] = useState(null)
     const [manualMode, setManualMode] = useState(false)
     const [valueKg, setValueKg] = useState(1)
+    const [isDefaultValue, setIsDefaultValue] = useState(false)
     const { setIsConnected } = hubScale()
 
     const { listSales, addFromNewSales, offers } = useSalesStore()
@@ -36,6 +37,7 @@ export default function WeighingScaleModal ({ isOpen, onClose, product }) {
 
     const onSubmitHandler = (product, unitsKg) => {
         addFromNewSales(listSales, product, unitsKg, offers)
+        onClose()
     }
     /* Last message ws from fleet status */
     useEffect(() => {
@@ -53,8 +55,15 @@ export default function WeighingScaleModal ({ isOpen, onClose, product }) {
             useSalesStore.getState()?.disabledScanner()
         } else {
             useSalesStore.getState()?.enabledScanner()
+            setIsDefaultValue(false)
         }
     }, [isOpen])
+
+    useEffect(() => {
+        if (isDefaultValue) {
+            onSubmitHandler(product, valueKg)
+        }
+    }, [isDefaultValue, valueKg])
 
     useEffect(() => {
         if (manualMode) {
@@ -148,11 +157,11 @@ export default function WeighingScaleModal ({ isOpen, onClose, product }) {
                                                 />
                                             </div>
                                             <Button className=' w-[20rem] h-[3rem] bg-green-600 text-white font-bold text-lg'
-                                                onClick={() => setValueKg(1) }>
+                                                onClick={() => { setValueKg(1); setIsDefaultValue(true) } }>
                                                     1KG
                                             </Button>
                                             <Button className=' w-[20rem] h-[3rem]  bg-green-600 text-white font-bold text-lg'
-                                                onClick={() => setValueKg(2) }>
+                                                onClick={() => { setValueKg(2); setIsDefaultValue(true) } }>
                                                     2KG
                                             </Button>
                                             <div className='flex flex-row w-[20rem] gap-4 items-center px-5 py-3 border-3 rounded-xl border-green-500'>
@@ -167,7 +176,7 @@ export default function WeighingScaleModal ({ isOpen, onClose, product }) {
                     </ModalBody>
                     <ModalFooter>
                         <section className='flex flex-row w-full justify-center'>
-                            <Button className ="dark w-full" onClick = {() => onSubmitHandler(product, valueKg)} onPressEnd={onClose}>
+                            <Button className ="dark w-full" onClick = {() => onSubmitHandler(product, valueKg) }>
                                     Aceptar
                             </Button>
                             <Button className='w-full' color="danger" variant="light" onClick={() => { handleOnClose() }}>
