@@ -5,10 +5,14 @@ import toast, { Toaster } from 'react-hot-toast'
 import { formatter } from '@/utils/number'
 export default function PayDetailed ({ loadingSale, setPageTarget, setPayment, isOpen, onClose, setGoPay, totalPay, payDetailed, setPayDetailed, listSales, createSale, paymentTarget, voucherTarget, clearList, pageTarget }) {
     const notify = (text) => toast(text)
-    const [payValue, setPayValue] = useState(0)
+    const onSet = () => {
+        setGoPay(false)
+        setPageTarget(null)
+        setPayment(null)
+    }
     useEffect(() => {
         if (pageTarget) {
-            createSale(paymentTarget, voucherTarget, listSales, notify, setPayment, onClose, setGoPay, clearList, setPageTarget, pageTarget)
+            createSale(paymentTarget, voucherTarget, listSales, notify, onClose, clearList, pageTarget, onSet)
         }
     }, [pageTarget])
     return (
@@ -114,12 +118,11 @@ export default function PayDetailed ({ loadingSale, setPageTarget, setPayment, i
                                     const result = totalPay - payDetailed
                                     if (result <= 0) {
                                         setPayDetailed(null)
-                                        createSale(paymentTarget, voucherTarget, listSales, notify, setPayment, onClose, setGoPay, clearList, setPayment)
+                                        createSale(paymentTarget, voucherTarget, listSales, notify, onClose, clearList, pageTarget, onSet)
                                     } else {
                                         setPayDetailed(null)
                                     }
                                 }
-
                             }
                             isLoading={loadingSale}>
                             {((totalPay - payDetailed) <= 0 ? 'Pagar' : 'Verificar pago')}

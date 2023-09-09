@@ -4,6 +4,7 @@ import { create } from 'zustand'
 import { TYPE_PAYMENT_API_URL, TYPE_VOUCHER_API_URL, SALE_TICKET_CREATE } from '@/settings/constants'
 import { fetchGet, fetchPost } from '@/services/sales'
 import { fetchGetOfferById, fetchGetOffers } from '@/services/products'
+import { generateVoucher } from './components/voucher'
 
 const useSalesStore = create(
     (set) => ({
@@ -137,7 +138,7 @@ const useSalesStore = create(
             }
         },
         /* Create sale */
-        createSale: (paymentTarget, voucherTarget, listSales, notify, setPayment, onClose, setGoPay, clearList, setPageTarget, pageTarget) => {
+        createSale: (paymentTarget, voucherTarget, listSales, notify, onClose, clearList, pageTarget, onSet) => {
             const body = {
                 sales_receipt: listSales?.map((sale) => {
                     return {
@@ -152,18 +153,15 @@ const useSalesStore = create(
             set({ loadingSale: true, error: null })
             try {
                 fetchPost(SALE_TICKET_CREATE, body).then(result => {
-                    setPageTarget(false)
                     set({ loadingSale: false })
                     if (result?.code === 200) {
                         if (pageTarget) {
                             notify('✅ Pago con tarjeta con éxito')
+                            generateVoucher()
                         } else {
                             notify('✅ Pago con éxito')
                         }
-
-                        setPayment(false)
                         onClose()
-                        setGoPay(false)
                         clearList()
                     } else {
                         if (pageTarget) {
@@ -171,11 +169,9 @@ const useSalesStore = create(
                         } else {
                             notify('❌ Problemas con el pago, intente efectuar el pago nuevamente')
                         }
-
                         onClose()
-                        setGoPay(false)
-                        setPageTarget(null)
                     }
+                    onSet()
                 })
             } catch {
                 set({ loadingSale: false })

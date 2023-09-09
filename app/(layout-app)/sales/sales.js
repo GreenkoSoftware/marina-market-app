@@ -41,9 +41,15 @@ const SalesMenu = () => {
             <div className="flex h-full md:flex-wrap">
                 <div className="w-full md:w-[70%] ">
                     {payment
-                        ? <PayPage payment={payment} setPayment={setPayment} paymentTarget={paymentTarget} setPaymentTarget={setPaymentTarget}
-                            voucherTarget={voucherTarget} setVoucherTarget={setVoucherTarget}/>
-                        : <TableInventory setSearchInput={setSearchInput} searchInput={searchInput} setKeyFocus={setKeyFocus}/>
+                        ? <PayPage payment={payment} setPayment={setPayment}
+                            paymentTarget={paymentTarget}
+                            setPaymentTarget={setPaymentTarget}
+                            voucherTarget={voucherTarget}
+                            setVoucherTarget={setVoucherTarget}/>
+                        : <TableInventory
+                            setSearchInput={setSearchInput}
+                            searchInput={searchInput}
+                            setKeyFocus={setKeyFocus}/>
                     }
                 </div>
                 <div className="w-full md:w-[30%]">
