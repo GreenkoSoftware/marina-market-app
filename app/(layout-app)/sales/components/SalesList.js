@@ -51,6 +51,13 @@ export default function SaleList (props) {
                         type="number"
                         label="Unidades"
                         value={inputValue}
+                        min={1}
+                        onFocusChange={(value) =>
+                            value
+                                ? useSalesStore.getState()?.disabledScanner()
+                                : useSalesStore.getState()?.enabledScanner()
+                        }
+                        onPaste={(e) => { e.preventDefault(); alert('No puedes escanear en este lugar') }}
                         placeholder={1}
                         labelPlacement="inside"
                         onValueChange={(value) => { setUnits(value) }}>
