@@ -36,8 +36,6 @@ export default function ProductImage ({ defaultImg }) {
     }, [defaultImg])
 
     useEffect(() => {
-        // setFormData({ ...data, image: selectedImageBytes })
-        // console.log('selectedImageBytes: ', selectedImageBytes)
         setFormData({ ...data, image: optimizedImage })
         console.log('optimizedImage: ', optimizedImage)
     }, [selectedImageBytes, optimizedImage])
@@ -45,18 +43,6 @@ export default function ProductImage ({ defaultImg }) {
     useEffect(() => {
         if (selectedImage) {
             const reader = new FileReader()
-            /* reader.readAsArrayBuffer(selectedImage)
-
-            reader.onload = async () => {
-                const imageBytes = reader.result
-                const base64 = btoa(
-                    new Uint8Array(imageBytes)
-                        .reduce((data, byte) => data + String.fromCharCode(byte), '')
-                )
-
-                setSelectedImageBytes(base64)
-            }
- */
             reader.readAsDataURL(selectedImage)
             reader.onload = async (e) => {
                 const img = new Image()
