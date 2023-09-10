@@ -7,7 +7,7 @@ import useProductFormStore from './store'
 import html2canvas from 'html2canvas'
 import { ConvertBytesToImage } from '@/utils/image'
 
-export default function ProductImage ({ defaultImg }) {
+export default function ProductImage ({ defaultImg, setImage }) {
     const [selectedImage, setSelectedImage] = useState(null)
     const [selectedImageBytes, setSelectedImageBytes] = useState(null)
     const [optimizedImage, setOptimizedImage] = useState(null)
@@ -34,6 +34,12 @@ export default function ProductImage ({ defaultImg }) {
             setOptimizedImage(defaultImg)
         }
     }, [defaultImg])
+
+    useEffect(() => {
+        if (setImage) {
+            setImage(optimizedImage)
+        }
+    }, [optimizedImage, setImage])
 
     useEffect(() => {
         setFormData({ ...data, image: optimizedImage })
