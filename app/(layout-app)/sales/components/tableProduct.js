@@ -24,7 +24,7 @@ export default function tableProducts (props) {
 
     useEffect(() => {
         if (categoryTabSelected) {
-            setListInventory(list.filter((item) => item.productCategoryId === parseInt(categoryTabSelected)))
+            setListInventory(list?.filter((item) => item.productCategoryId === parseInt(categoryTabSelected)))
         }
     }, [categoryTabSelected, list])
 
