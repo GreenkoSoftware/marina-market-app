@@ -1,7 +1,7 @@
 /* eslint-disable camelcase */
 import { create } from 'zustand'
-import { fetchGetproducts, fetchGetCategories, fetchGetTypeStocks } from '@/services/products'
-
+import { fetchGet, fetchGetCategories, fetchGetTypeStocks } from '@/services/products'
+import { PRODUCT_API_URL, CATEGORIES_API_URL, TYPE_STOCK_API_URL, PRODUCT_OFFER } from '@/settings/constants'
 const useInventoryStore = create(
     (set) => ({
         listInventory: [],
@@ -14,7 +14,7 @@ const useInventoryStore = create(
         getListInventory: () => {
             set({ loading: true, error: null })
             try {
-                fetchGetproducts().then(result => {
+                fetchGet({ url: PRODUCT_API_URL }).then(result => {
                     if (result?.code === 200) {
                         set({
                             listInventory: result?.data?.reduce((acc, { ID, code, cost_price, image, name, net_price, sale_price, product_categories_id, stock_types_id, product_stock }) => {
@@ -37,7 +37,8 @@ const useInventoryStore = create(
                             }, []),
                             loading: false
                         })
-                    } else {
+                    } else if (result?.status) {
+                        set({ loading: false, error: result?.statusText })
                         return null
                     }
                 })
@@ -48,12 +49,15 @@ const useInventoryStore = create(
         getCategories: () => {
             set({ loadingCategories: true, error: null })
             try {
-                fetchGetCategories().then(result => {
+                fetchGet({ url: CATEGORIES_API_URL }).then(result => {
                     if (result?.code === 200) {
                         const data = result?.data?.reduce((acc, value) => {
                             return [...acc, { id: value?.ID, label: value?.name.toUpperCase() }]
                         }, [])
                         set({ listCategories: data, loadingCategories: false })
+                    } else if (result?.status) {
+                        set({ loading: false, error: result?.statusText })
+                        return null
                     } else {
                         return null
                     }
@@ -65,13 +69,16 @@ const useInventoryStore = create(
         getStockTypes: () => {
             set({ loading: true, error: null })
             try {
-                fetchGetTypeStocks().then(result => {
+                fetchGet({ url: TYPE_STOCK_API_URL }).then(result => {
                     if (result?.code === 200) {
                         set({
                             listStockTypes: result?.data?.reduce((acc, value) => {
                                 return [...acc, { id: value?.ID, label: value?.name }]
                             }, [])
                         })
+                    } else if (result?.status) {
+                        set({ loading: false, error: result?.statusText })
+                        return null
                     } else {
                         return null
                     }

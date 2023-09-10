@@ -1,6 +1,30 @@
 /* eslint-disable camelcase */
 import { PRODUCT_API_URL, CATEGORIES_API_URL, TYPE_STOCK_API_URL, PRODUCT_OFFER } from '@/settings/constants'
 import { getToken } from '@/services/user'
+/* GET GENERAL */
+export const fetchGet = async ({ url }) => {
+    try {
+        return await fetch(url,
+            {
+                method: 'get',
+                headers: new Headers({
+                    Authorization: 'Bearer ' + getToken(),
+                    'Content-Type': 'application/x-www-form-urlencoded'
+                })
+            }).then(response => {
+            try {
+                if (response?.status === 204) {
+                    return response
+                }
+                return response.json()
+            } catch {
+                return null
+            }
+        })
+    } catch {
+        return null
+    }
+}
 export const fetchGetproducts = async () => {
     try {
         return await fetch(PRODUCT_API_URL,
@@ -12,6 +36,9 @@ export const fetchGetproducts = async () => {
                 })
             }).then(response => {
             try {
+                if (response?.status === 204) {
+                    return response
+                }
                 return response.json()
             } catch {
                 return null
