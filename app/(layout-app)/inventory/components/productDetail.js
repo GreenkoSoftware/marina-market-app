@@ -7,13 +7,14 @@ import Image from 'next/image'
 import { ConvertBytesToImage } from '@/utils/image'
 import { DeleteIcon } from '@/components/ui/DeleteIcon'
 import { deleteProduct, updateProduct } from '@/services/products'
+import toast, { Toaster } from 'react-hot-toast'
 
 export default function ProductDetail ({ targeProduct, isOpen, onClose, setTargetProduct }) {
     const { listCategories, listStockTypes, getListInventory } = useInventoryStore()
     const [edit, setEdit] = useState(false)
     const [categoryOptions, setCategoryOptions] = useState([])
     const [stockTypeOptions, setStockTypeOptions] = useState([])
-
+    const notify = (text) => toast(text)
     const defaultState = {
         image: null,
         code: null,
@@ -65,7 +66,7 @@ export default function ProductDetail ({ targeProduct, isOpen, onClose, setTarge
     const handleDeleteProduct = () => {
         setLoadingDelete(true)
         const productId = targeProduct?.id
-        deleteProduct({ id: productId }).then(
+        deleteProduct({ id: productId, notify }).then(
             (response) => {
                 console.log(response)
                 setTargetProduct(null)
@@ -80,7 +81,7 @@ export default function ProductDetail ({ targeProduct, isOpen, onClose, setTarge
         setLoadingEdit(true)
         const productId = targeProduct?.id
         try {
-            updateProduct({ id: productId, ...newProductData }).then(
+            updateProduct({ id: productId, ...newProductData, notify }).then(
                 (response) => {
                     console.log(response)
                     setLoadingEdit(false)
@@ -107,6 +108,24 @@ export default function ProductDetail ({ targeProduct, isOpen, onClose, setTarge
     return (
         <>
             <div className="flex flex-wrap gap-3">
+                <Toaster
+                    position="top-center"
+                    reverseOrder={false}
+                    gutter={8}
+                    containerClassName=""
+                    containerStyle={{}}
+                    className={' bg-primary-50 text-primary-500 dark:bg-primary-200 dark:text-primary-500'}
+                    toastOptions={{
+                        className: '',
+                        duration: 10000,
+                        success: {
+                            duration: 3000,
+                            theme: {
+                                primary: 'green',
+                                secondary: 'black'
+                            }
+                        }
+                    }} />
             </div>
             <Modal size={'2xl'}
                 isOpen={isOpen}
