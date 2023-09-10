@@ -45,7 +45,7 @@ const OffertCard = ({ item, deleteAction }) => {
 
     const [loadingDelete, setLoadingDelete] = useState(false)
 
-    const handleDeleteProduct = (id) => {
+    const handleDeleteOffer = (id) => {
         setLoadingDelete(true)
 
         deleteOffer({ id, notify }).then(
@@ -101,7 +101,7 @@ const OffertCard = ({ item, deleteAction }) => {
                 <span className="text-sm  text-default-400">{`Dcto: $${dctoOffer} (${pctgOffer}%)`}</span>
             </div>
         </section>
-        <Button className='' isLoading={loadingDelete} variant='flat' color='danger' isIconOnly onClick={() => handleDeleteProduct(idOffer)}>
+        <Button className='' isLoading={loadingDelete} variant='flat' color='danger' isIconOnly onClick={() => handleDeleteOffer(idOffer)}>
             {!loadingDelete
                 ? <DeleteIcon/>
                 : null}
@@ -142,7 +142,12 @@ export default function Offers () {
                     product
                 }
             })
-            setListOffersWithProducts(offersWithProducts)
+
+            const offersValids = offersWithProducts.filter(({ product }) => {
+                return !!product
+            })
+
+            setListOffersWithProducts(offersValids)
         } else {
             setListOffersWithProducts([])
         }

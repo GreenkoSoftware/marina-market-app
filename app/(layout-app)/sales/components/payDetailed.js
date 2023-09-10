@@ -99,9 +99,9 @@ export default function PayDetailed ({ loadingSale, setPageTarget, setPayment, i
                             />
                             <div className='grid grid-rows-2 grid-flow-col gap-4 '>
                                 <h1 className='text-2xl font-bold'>{'Pago total:'}</h1>
-                                <h1 className='text-2xl font-bold text-green-700'>{((totalPay - payDetailed) < 0 ? 'Vuelto:' : 'Saldo pendiente:')}</h1>
+                                <h1 className={`text-2xl font-bold ${(totalPay - payDetailed) < 0 ? 'text-green-700' : 'text-red-700'}`}>{((totalPay - payDetailed) < 0 ? 'Vuelto:' : 'Saldo pendiente:')}</h1>
                                 <h1 className='text-2xl font-bold '>{ formatter.format(totalPay)}</h1>
-                                <h1 className='text-2xl font-bold text-green-700'>{((totalPay - payDetailed) < 0 ? formatter.format((payDetailed - totalPay)) : formatter.format((totalPay - payDetailed)))}</h1>
+                                <h1 className={`text-2xl font-bold ${(totalPay - payDetailed) < 0 ? 'text-green-700' : 'text-red-700'}`}>{((totalPay - payDetailed) < 0 ? formatter.format((payDetailed - totalPay)) : formatter.format((totalPay - payDetailed)))}</h1>
                             </div>
                         </div>
 
