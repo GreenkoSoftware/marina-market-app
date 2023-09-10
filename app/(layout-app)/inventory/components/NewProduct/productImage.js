@@ -81,13 +81,13 @@ export default function ProductImage ({ defaultImg }) {
     return (
         <section>
             <div className="flex items-center justify-center min-w-[200px] w-full">
-                { optimizedImage
+                { selectedImage
                     ? (
                         <div className="rounded-lg flex items-center flex-col space-y-2 p-2 border-2 border-gray-300 border-dashed cursor-pointer hover:bg-gray-100 dark:border-gray-600 dark:hover:border-gray-500 dark:hover:bg-gray-600">
                             <label htmlFor={selectedImage ? 'dropzone-file' : ''}>
                                 <ImageComponent
                                     id='imageProduct'
-                                    src={ConvertBytesToImage({ imageBytes: optimizedImage })}
+                                    src={URL.createObjectURL(selectedImage)}
                                     alt="Image name"
                                     width={200}
                                     height={200}

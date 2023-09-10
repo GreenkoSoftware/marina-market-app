@@ -4,7 +4,7 @@ import { InputComponent, SectionProduct, SelectComponent } from './NewProduct/cr
 import ProductImage from './NewProduct/productImage'
 import useInventoryStore from '../store'
 import Image from 'next/image'
-import { ConvertBytesToImage } from '@/utils/image'
+import { ConvertBytesToImage, DefaultImageMarinaMarket } from '@/utils/image'
 import { DeleteIcon } from '@/components/ui/DeleteIcon'
 import { deleteProduct, updateProduct } from '@/services/products'
 import toast, { Toaster } from 'react-hot-toast'
@@ -149,9 +149,9 @@ export default function ProductDetail ({ targeProduct, isOpen, onClose, setTarge
                                                     : <div className="rounded-lg flex items-center m-auto w-[250px] flex-col space-y-2 p-2 border-2 border-gray-300 border-dashed cursor-pointer hover:bg-gray-100 dark:border-gray-600 dark:hover:border-gray-500 dark:hover:bg-gray-600">
 
                                                         <Image id='imageProduct'
-                                                            src={ConvertBytesToImage({ imageBytes: productData?.image })}
+                                                            src={productData?.image?.length ? ConvertBytesToImage({ imageBytes: productData?.image }) : DefaultImageMarinaMarket()}
                                                             alt="Image name"
-                                                            width={250}
+                                                            width={200}
                                                             height={200}
                                                         />
                                                     </div>

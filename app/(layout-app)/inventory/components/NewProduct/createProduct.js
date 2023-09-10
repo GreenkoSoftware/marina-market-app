@@ -86,6 +86,7 @@ export default function CreateProduct () {
             useSalesStore.getState()?.disabledRedirectSales()
         } else {
             useSalesStore.getState()?.enabledRedirectSales()
+            setIsBarcodeGenerated(false)
             setBarcodeValue(null)
         }
     }, [isOpen])
