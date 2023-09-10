@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 /* eslint-disable camelcase */
 import { create } from 'zustand'
 import { fetchGet, fetchGetCategories, fetchGetTypeStocks } from '@/services/products'

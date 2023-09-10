@@ -26,7 +26,7 @@ export const Voucher = ({ listSales }) => (
                 <Text style={StylePdf.reportTitle}>{'944226305'}</Text>
             </View>
             <View style={StylePdf.container}>
-                <Text style={StylePdf.reportTitle}>Boleta electrónica</Text>
+                <Text style={StylePdf.reportTitle}>{'COMPROBANTE DE VENTA'}</Text>
             </View>
             {/* Table products */}
             <View style={StylePdf.containerFlexCol}>

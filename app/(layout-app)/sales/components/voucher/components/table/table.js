@@ -9,7 +9,7 @@ export const TableProductVoucher = ({ listSales }) =>
             <View style={StylePdf.table}>
                 <View style={StylePdf.rowTable}>
                     <View style={StylePdf.tableColumn1}>
-                        <Text style={StylePdf.textRow}>{'Código'}</Text>
+                        <Text style={StylePdf.textRow}>{'N°'}</Text>
                     </View>
                     <View style={StylePdf.tableColumn2}>
                         <Text style={StylePdf.textRow}>{'Descripción'}</Text>
@@ -24,25 +24,17 @@ export const TableProductVoucher = ({ listSales }) =>
                 <View>
                     {listSales?.map((element, index) => (
                         <View key={index} style={StylePdf.rowTableMandatory}>
-                            <View style={StylePdf.rowTable}>
-                                <View style={StylePdf.tableColumn1}>
-                                    <Text style={StylePdf.textRow}>{element?.product?.code ?? '-'}</Text>
-                                </View>
-                                <View style={StylePdf.tableColumn2}>
-                                    <Text style={StylePdf.textRow}>{element?.product?.name ?? '-'}</Text>
-                                </View>
+                            <View style={StylePdf.tableColumn1}>
+                                <Text style={StylePdf.textRow}>{index + 1 ?? '-'}</Text>
                             </View>
-                            <View style={StylePdf.rowTable}>
-                                <View style={StylePdf.tableColumn1}>
-                                </View>
-                                <View style={StylePdf.tableColumn2}>
-                                </View>
-                                <View style={StylePdf.tableColumn3}>
-                                    <Text style={StylePdf.textRow}>{element?.quantity}</Text>
-                                </View>
-                                <View style={StylePdf.tableColumn4}>
-                                    <Text style={StylePdf.textRow}>{element?.total}</Text>
-                                </View>
+                            <View style={StylePdf.tableColumn2}>
+                                <Text style={StylePdf.textRow}>{element?.product?.name ?? '-'}</Text>
+                            </View>
+                            <View style={StylePdf.tableColumn3}>
+                                <Text style={StylePdf.textRow}>{element?.quantity}</Text>
+                            </View>
+                            <View style={StylePdf.tableColumn4}>
+                                <Text style={StylePdf.textRow}>{element?.total}</Text>
                             </View>
                         </View>)
                     )}

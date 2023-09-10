@@ -1,6 +1,6 @@
 import { StyleSheet /* , Font */ } from '@react-pdf/renderer'
-const COL_WIDTH_1 = 31.25
-const COL_WIDTH_2 = 31.25
+const COL_WIDTH_1 = 12.5
+const COL_WIDTH_2 = 50
 const COL_WIDTH_3 = 12.5
 const COL_WIDTH_4 = 25
 export const StylePdf = StyleSheet.create({
@@ -16,15 +16,13 @@ export const StylePdf = StyleSheet.create({
         marginBottom: 10
     },
     rowTableMandatory: {
-        display: 'flex',
         margin: 'auto',
-        flexDirection: 'wrap',
+        flexDirection: 'row',
         marginBottom: 1
     },
     rowTable: {
-        display: 'flex',
         margin: 'auto',
-        flexDirection: 'wrap'
+        flexDirection: 'row'
     },
     tableColumn1: {
         width: COL_WIDTH_1 + '%',
