@@ -16,8 +16,8 @@ export const StylePdf = StyleSheet.create({
         align: 'justify'
     },
     logo: {
-        width: 60,
-        height: 60,
+        width: 80,
+        height: 80,
         marginLeft: 'auto',
         marginRight: 'auto'
     },
@@ -39,7 +39,7 @@ export const StylePdf = StyleSheet.create({
     reportTitle: {
         color: '#000000',
         letterSpacing: 1,
-        fontSize: 4,
+        fontSize: 11,
         textTransform: 'uppercase',
         fontFamily: 'Helvetica-Bold'
     }

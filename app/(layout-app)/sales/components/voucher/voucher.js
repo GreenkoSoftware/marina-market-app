@@ -8,7 +8,7 @@ import { TableProductVoucher } from './components/table/table'
 // Create Document Component
 export const Voucher = ({ listSales }) => (
     <Document>
-        <Page size={[302]} style={StylePdf.page}>
+        <Page size={[180]} style={StylePdf.page}>
             <View style={StylePdf.container}>
                 <View style={StylePdf.logo}>
                     <Image
