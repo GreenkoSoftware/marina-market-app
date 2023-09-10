@@ -12,6 +12,7 @@ import { ConvertBytesToImage, DefaultImageMarinaMarket } from '@/utils/image'
 import useOffersStore from '@/stores/offers'
 import CreateOffer from './createOffer'
 import { DeleteIcon } from '@/components/ui/DeleteIcon'
+import { deleteOffer } from '@/services/offers'
 
 export const InputComponent = ({ title, type, placeholder, isPrice, isBarCode, ...rest }) => {
     return (
@@ -33,27 +34,57 @@ export const InputComponent = ({ title, type, placeholder, isPrice, isBarCode, .
     )
 }
 
-const OffertCard = ({ item }) => {
-    const { id, quantity, unitPrice, productId } = item
-    const products = useInventoryStore.getState().listInventory
-    const product = useInventoryStore.getState().getProductById(products, productId)
+const OffertCard = ({ item, deleteAction }) => {
+    const { id: idOffer, quantity, unitPrice, productId, product } = item
+    const totalPriceOffer = quantity * unitPrice
+    const totalPriceNormal = quantity * product?.price
+    const dctoOffer = product?.price - unitPrice
+    const pctgOffer = Math.round((dctoOffer / product?.price) * 100)
+
+    const [loadingDelete, setLoadingDelete] = useState(false)
+
+    const handleDeleteProduct = (id) => {
+        setLoadingDelete(true)
+
+        deleteOffer({ id }).then(
+            (response) => {
+                setLoadingDelete(false)
+                if (deleteAction) {
+                    deleteAction()
+                }
+            }
+        )
+    }
+
     return <div className="flex gap-2 flex-row w-full items-center border rounded-xl pr-2">
         <Image
             shadow="none"
             radius="lg"
             width="50"
             height="50"
-            alt={name}
+            alt={product?.name}
             className="w-[4rem] object-cover h-[4rem] rounded-lg bg-slate-100 dark:bg-white"
             // src={'https://confidentefinanciero.com/wp-content/uploads/2023/04/Facturacion-electronica-restaurantes-scaled.jpg'}
             src={product?.image?.length ? ConvertBytesToImage({ imageBytes: product?.image }) : DefaultImageMarinaMarket()}
         />
-        <div className="flex w-full flex-col">
-            <span className="text-small">{name}</span>
-            <span className="text-tiny text-default-400">{product?.salePrice}</span>
-        </div>
-        <Button className='' variant='flat' color='danger' isIconOnly /* onClick={ dlete } */>
-            <DeleteIcon/>
+        <section className='flex-1 flex gap-2 flex-wrap'>
+            <div className="flex flex-1 min-w-[8rem] flex-col">
+                <span className="text-md">{product?.name?.toUpperCase()}</span>
+                <span className="text-sm  text-default-400">{product?.code}</span>
+            </div>
+            <div className="flex flex-1 min-w-[8rem] flex-col">
+                <span className="text-md">{'Precio'}</span>
+                <span className="text-sm  text-default-400">{`$${unitPrice} (Normal: $${product?.price})`}</span>
+            </div>
+            <div className="flex flex-1 min-w-[8rem] flex-col">
+                <span className="text-md">{`${quantity} x $${totalPriceOffer}`}</span>
+                <span className="text-sm  text-default-400">{`Dcto: $${dctoOffer} (${pctgOffer}%)`}</span>
+            </div>
+        </section>
+        <Button className='' isLoading={loadingDelete} variant='flat' color='danger' isIconOnly onClick={() => handleDeleteProduct(idOffer)}>
+            {!loadingDelete
+                ? <DeleteIcon/>
+                : null}
         </Button>
     </div>
 }
@@ -62,16 +93,18 @@ export default function Offers () {
     const { isOpen, onClose, onOpen } = useDisclosure()
     const [searchInput, setSearchInput] = useState('')
     const [filteredList, setFilteredList] = useState([])
+    const [listOffersWithProducts, setListOffersWithProducts] = useState([])
     const [sectionCreateOffer, setSectionCreateOffer] = useState(false)
     const [messageSearch, setMessageSearch] = useState('')
 
     const { data, setFormData, requestCreateOffer, loading, error, setError, complete, hasRequeredValues, clearStore } = useOfferFormStore()
     const { listInventory } = useInventoryStore()
-    const { offers } = useOffersStore()
+    const { offers, getOffers, loadingOffers } = useOffersStore()
 
     useEffect(() => {
         if (isOpen) {
             useSalesStore.getState()?.disabledRedirectSales()
+            getOffers()
         } else {
             useSalesStore.getState()?.enabledRedirectSales()
             setFilteredList([])
@@ -80,35 +113,47 @@ export default function Offers () {
         }
     }, [isOpen])
 
-    /* useEffect(() => {
+    useEffect(() => {
+        if (offers && listInventory?.length) {
+            const offersWithProducts = offers?.map((item) => {
+                const product = useInventoryStore.getState().getProductById(listInventory, item.productId)
+                return {
+                    ...item,
+                    product
+                }
+            })
+            setListOffersWithProducts(offersWithProducts)
+        } else {
+            setListOffersWithProducts([])
+        }
+    }, [offers, listInventory])
+
+    useEffect(() => {
         // Create copy of item list
         const searchSize = searchInput?.length || 0
-        if (searchSize >= 3) {
-            let updatedList = [...listInventory]
+        if (searchSize >= 1) {
+            let updatedList = [...listOffersWithProducts]
             updatedList = updatedList.filter((item) => {
-                return item?.meta?.toLowerCase().includes(searchInput?.toLowerCase())
+                return item?.product?.meta?.toLowerCase().includes(searchInput?.toLowerCase())
                 // return item?.meta?.toLowerCase().indexOf(searchInput?.toLowerCase()) !== -1
             })
-
             if (!updatedList?.length) {
                 setMessageSearch('Ups.. no lo hemos podido encontrar, intenta buscar otro producto.')
             } else {
                 setMessageSearch(null)
             }
             setFilteredList(updatedList)
-        } else if (searchSize >= 1) {
-            setFilteredList([])
-            setMessageSearch('Escribe al menos 3 carácteres para realizar una búsqueda.')
         } else {
-            setFilteredList([])
+            setFilteredList(listOffersWithProducts)
             setMessageSearch('Realiza una búsqueda.')
         }
-    }, [searchInput, listInventory]) */
+    }, [searchInput, listOffersWithProducts])
 
     useEffect(() => {
         if (complete && !error) {
+            getOffers()
             clearStore()
-            onClose()
+            setSectionCreateOffer(false)
         }
     }, [complete, error])
 
@@ -117,7 +162,7 @@ export default function Offers () {
             <header className="flex justify-end">
                 <Button className='bg-primary-400 dark:bg-primary-400' color='primary' onClick={onOpen}>Ofertas</Button>
             </header>
-            <Modal size={'xl'}
+            <Modal size={'3xl'}
                 isOpen={isOpen}
                 backdrop='blur'
                 onClose={() => onClose}
@@ -128,14 +173,50 @@ export default function Offers () {
                     ? <ModalContent>
                         <ModalHeader className="flex flex-col gap-1 text-primary-500 dark:text-primary-200">{'Ofertas'}</ModalHeader>
                         <ModalBody>
-                            <section className='flex flex-col gap-2'>
-                                {offers?.length
-                                    ? offers.map((item) => {
-                                        // {id,quantity,unitPrice,productId }
-                                        return (<div key={item.id}><OffertCard item={item}/></div>)
-                                    })
-                                    : null}
-                            </section>
+                            <div className="my-4 items-center gap-4 grid">
+                                <Input
+                                    label="Busqueda"
+                                    isClearable
+                                    radius="lg"
+                                    value={searchInput}
+                                    onClear={() => setSearchInput('')}
+                                    onChange={(e) => setSearchInput(e.target.value)}
+                                    classNames={{
+                                        label: 'text-black/50 dark:text-white/90',
+                                        input: [
+                                            'bg-transparent',
+                                            'text-black/90 dark:text-white/90',
+                                            'placeholder:text-default-700/50 dark:placeholder:text-white/60'
+                                        ],
+                                        innerWrapper: 'bg-transparent'
+                                    }}
+                                    className='my-4 w-full'
+                                    placeholder="Toca para buscar un producto en oferta..."
+                                    startContent={
+                                        <SearchIcon className="text-black/50 dark:text-white/90 text-slate-400 pointer-events-none flex-shrink-0" />
+                                    }
+                                />
+                            </div>
+                            {
+                                (searchInput && listOffersWithProducts.length)
+                                    ? <section className='flex flex-col gap-2'>
+                                        {(filteredList)?.length
+                                            ? filteredList.map((item) => {
+                                                // {id,quantity,unitPrice,productId }
+                                                return (<div key={item.id}><OffertCard item={item} deleteAction={getOffers}/></div>)
+                                            })
+                                            : <div>No se ha encontrado la oferta</div>}
+
+                                    </section>
+                                    : <section className='flex flex-col gap-2'>
+                                        {(listOffersWithProducts)?.length
+                                            ? listOffersWithProducts.map((item) => {
+                                            // {id,quantity,unitPrice,productId }
+                                                return (<div key={item.id}><OffertCard item={item} deleteAction={getOffers}/></div>)
+                                            })
+                                            : <div>No hay ofertas</div>}
+                                    </section>
+                            }
                         </ModalBody>
                         <ModalFooter>
                             {error
