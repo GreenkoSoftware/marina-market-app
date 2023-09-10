@@ -99,12 +99,6 @@ export default function CreateOffer () {
         handleInputChange({ field: 'product_id', value })
     }, [selectedProduct])
 
-    useEffect(() => {
-        if (complete && !error) {
-            clearStore()
-        }
-    }, [complete, error])
-
     const handleInputChange = ({ field, value, isSalePrice }) => {
         const newFormValues = { ...data, [field]: !isNaN(value) ? parseInt(value) : value }
         if (isSalePrice) {
