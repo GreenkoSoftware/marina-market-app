@@ -1,11 +1,11 @@
+/* eslint-disable react/jsx-no-comment-textnodes */
 /* eslint-disable no-unused-vars */
 import React, { useEffect, useState } from 'react'
-import { Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Button, Input } from '@nextui-org/react'
+import { Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Button, Input, Text } from '@nextui-org/react'
 import toast, { Toaster } from 'react-hot-toast'
 import { formatter } from '@/utils/number'
 export default function PayDetailed ({ loadingSale, setPageTarget, setPayment, isOpen, onClose, setGoPay, totalPay, payDetailed, setPayDetailed, listSales, createSale, paymentTarget, voucherTarget, clearList, pageTarget }) {
     const notify = (text) => toast(text)
-    const [payValue, setPayValue] = useState(0)
     useEffect(() => {
         if (pageTarget) {
             createSale(paymentTarget, voucherTarget, listSales, notify, setPayment, onClose, setGoPay, clearList, setPageTarget, pageTarget)
@@ -124,6 +124,7 @@ export default function PayDetailed ({ loadingSale, setPageTarget, setPayment, i
                             isLoading={loadingSale}>
                             {((totalPay - payDetailed) <= 0 ? 'Pagar' : 'Verificar pago')}
                         </Button>
+
                         <Button color="danger" variant="flat"
                             onClick={() => {
                                 setPayDetailed(null)

@@ -2,8 +2,8 @@
 /* eslint-disable camelcase */
 import { create } from 'zustand'
 import { TYPE_PAYMENT_API_URL, TYPE_VOUCHER_API_URL, SALE_TICKET_CREATE } from '@/settings/constants'
-import { fetchGet, fetchPost } from '@/services/sales'
-import { fetchGetOfferById, fetchGetOffers } from '@/services/products'
+import { fetchPost } from '@/services/sales'
+import { generatePdfDocument } from './components/voucher/services'
 
 const useSalesStore = create(
     (set) => ({
@@ -85,6 +85,7 @@ const useSalesStore = create(
                     setPageTarget(false)
                     set({ loadingSale: false })
                     if (result?.code === 200) {
+                        generatePdfDocument({ listSales })
                         if (pageTarget) {
                             notify('✅ Pago con tarjeta con éxito')
                         } else {
@@ -119,11 +120,3 @@ const useSalesStore = create(
 )
 
 export default useSalesStore
-
-/* Encontrar si se encuentra una oferta de dicho producto */
-/* Si ya existe el topde de la cantidad en la oferta del producto, se deberia agregar el mismo
-            producto en la lista de venta
-            */
-/*             const quantity = searhProduct?.quantity ? searhProduct?.quantity + 1 : 1
-            const priceUpdate = offersProduct && quantity === offersProduct?.quantity ? offersProduct?.unitPrice : product?.price
-            const productUpdate = { ...product, price: priceUpdate } */
