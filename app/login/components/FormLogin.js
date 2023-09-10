@@ -59,7 +59,7 @@ export default function LoginForm () {
         }
     }
     useEffect(() => {
-        if (email && password) {
+        if (eventListener && email && password) {
             onSubmitHandler()
             setEventListener(false)
         }
