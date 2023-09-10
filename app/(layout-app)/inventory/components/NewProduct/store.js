@@ -67,7 +67,7 @@ const useProductFormStore = create((set) => ({
                     if (response?.code === 200) {
                         notify('✅ Producto creado con exito!')
                     } else {
-                        notify(' Producto creado con exito!')
+                        notify('❌ El producto no fue creado con exito, intenta otra vez!')
                     }
                 })
         } catch (err) {

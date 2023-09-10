@@ -171,7 +171,7 @@ export const updateProductStock = async ({ stock_min, stock, notify }) => {
                 if (response?.status === 200) {
                     notify('✅ Stock de producto actualizado con exito!')
                 } else {
-                    notify('❌ El stock de producto no se actualizo correctamente, intenta otra vez!')
+                    notify('❌ El stock de producto no se actualizo correctamente, intenta más tarde.')
                 }
             } catch {
                 return null
@@ -198,7 +198,7 @@ export const deleteProduct = async ({ id, notify }) => {
                 if (response?.status === 200) {
                     notify('🗑️ Producto eliminado con exito!')
                 } else {
-                    notify('❌ El producto no se elimino correctamente, intenta otra vez!')
+                    notify('❌ El producto no se elimino correctamente, intenta más tarde')
                 }
             } catch {
                 return null

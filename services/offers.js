@@ -1,7 +1,7 @@
 import { PRODUCT_OFFER } from '@/settings/constants'
 import { getToken } from './user'
 
-export const deleteOffer = async ({ id }) => {
+export const deleteOffer = async ({ id, notify }) => {
     try {
         return await fetch(`${PRODUCT_OFFER}/${id}`,
             {
@@ -13,7 +13,11 @@ export const deleteOffer = async ({ id }) => {
                 mode: 'cors'
             }).then(response => {
             try {
-                return response.json()
+                if (response?.status === 200) {
+                    notify('✅ Oferta eliminada con exito!')
+                } else {
+                    notify('❌ La oferta no se pudo eliminar correctamente, intente mas tarde.')
+                }
             } catch {
                 return null
             }

@@ -13,7 +13,9 @@ import useOffersStore from '@/stores/offers'
 import CreateOffer from './createOffer'
 import { DeleteIcon } from '@/components/ui/DeleteIcon'
 import { deleteOffer } from '@/services/offers'
+import toast, { Toaster } from 'react-hot-toast'
 
+const notify = (text) => toast(text)
 export const InputComponent = ({ title, type, placeholder, isPrice, isBarCode, ...rest }) => {
     return (
         <Input
@@ -46,7 +48,7 @@ const OffertCard = ({ item, deleteAction }) => {
     const handleDeleteProduct = (id) => {
         setLoadingDelete(true)
 
-        deleteOffer({ id }).then(
+        deleteOffer({ id, notify }).then(
             (response) => {
                 setLoadingDelete(false)
                 if (deleteAction) {
@@ -57,6 +59,24 @@ const OffertCard = ({ item, deleteAction }) => {
     }
 
     return <div className="flex gap-2 flex-row w-full items-center border rounded-xl pr-2">
+        <Toaster
+            position="top-center"
+            reverseOrder={false}
+            gutter={8}
+            containerClassName=""
+            containerStyle={{}}
+            className={' bg-primary-50 text-primary-500 dark:bg-primary-200 dark:text-primary-500'}
+            toastOptions={{
+                className: '',
+                duration: 10000,
+                success: {
+                    duration: 3000,
+                    theme: {
+                        primary: 'green',
+                        secondary: 'black'
+                    }
+                }
+            }} />
         <Image
             shadow="none"
             radius="lg"
@@ -252,7 +272,7 @@ export default function Offers () {
                                 </div>
                                 : null}
                             <Button className =" bg-green-500 text-primary-50"
-                                onClick={() => { requestCreateOffer(data) }}
+                                onClick={() => { requestCreateOffer(data, notify) }}
                                 isLoading={!!loading}>
                                 {'Guardar'}
                             </Button>
