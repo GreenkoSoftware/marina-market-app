@@ -4,9 +4,10 @@ import { Document, Page, Text, View, Svg, G, Line, Image } from '@react-pdf/rend
 import { StylePdf } from './StylePdf'
 import { DefaultImageMarinaMarket } from '@/utils/image'
 import { TableProductVoucher } from './components/table/table'
+import ViewTotal from './components/total/total'
 
 // Create Document Component
-export const Voucher = ({ listSales }) => (
+export const Voucher = ({ listSales, totalPay }) => (
     <Document>
         <Page size={[180]} style={StylePdf.page}>
             <View style={StylePdf.container}>
@@ -31,6 +32,9 @@ export const Voucher = ({ listSales }) => (
             {/* Table products */}
             <View style={StylePdf.containerFlexCol}>
                 <TableProductVoucher listSales={listSales}/>
+            </View>
+            <View style={StylePdf.containerFlexCol}>
+                <ViewTotal totalPay={totalPay} />
             </View>
         </Page>
     </Document>
