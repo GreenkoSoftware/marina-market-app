@@ -8,7 +8,7 @@ export default function PayDetailed ({ loadingSale, setPageTarget, setPayment, i
     const notify = (text) => toast(text)
     useEffect(() => {
         if (pageTarget) {
-            createSale(paymentTarget, voucherTarget, listSales, notify, setPayment, onClose, setGoPay, clearList, setPageTarget, pageTarget)
+            createSale(paymentTarget, voucherTarget, listSales, notify, setPayment, onClose, setGoPay, clearList, setPageTarget, pageTarget, totalPay)
         }
     }, [pageTarget])
     return (
@@ -114,7 +114,8 @@ export default function PayDetailed ({ loadingSale, setPageTarget, setPayment, i
                                     const result = totalPay - payDetailed
                                     if (result <= 0) {
                                         setPayDetailed(null)
-                                        createSale(paymentTarget, voucherTarget, listSales, notify, setPayment, onClose, setGoPay, clearList, setPayment)
+                                        createSale(paymentTarget, voucherTarget, listSales, notify, setPayment, onClose, setGoPay, clearList, setPayment, pageTarget, totalPay)
+                                        // createSale(paymentTarget, voucherTarget, listSales, notify, setPayment, onClose, setGoPay, clearList, setPayment, totalPay)
                                     } else {
                                         setPayDetailed(null)
                                     }

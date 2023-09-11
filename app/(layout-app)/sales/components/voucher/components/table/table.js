@@ -2,6 +2,7 @@
 import { Text, View } from '@react-pdf/renderer'
 // Create StylePdf
 import { StylePdf } from './styleTable'
+import { formatter } from '@/utils/number'
 
 export const TableProductVoucher = ({ listSales }) =>
     (
@@ -34,7 +35,7 @@ export const TableProductVoucher = ({ listSales }) =>
                                 <Text style={StylePdf.textRow}>{element?.quantity}</Text>
                             </View>
                             <View style={StylePdf.tableColumn4}>
-                                <Text style={StylePdf.textRow}>{element?.total}</Text>
+                                <Text style={StylePdf.textRow}>{ formatter.format(element?.total ?? 0)}</Text>
                             </View>
                         </View>)
                     )}

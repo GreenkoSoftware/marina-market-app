@@ -67,7 +67,7 @@ const useSalesStore = create(
         loadingSale: false,
 
         /* Create sale */
-        createSale: (paymentTarget, voucherTarget, listSales, notify, setPayment, onClose, setGoPay, clearList, setPageTarget, pageTarget) => {
+        createSale: (paymentTarget, voucherTarget, listSales, notify, setPayment, onClose, setGoPay, clearList, setPageTarget, pageTarget, totalPay) => {
             const body = {
                 sales_receipt: listSales?.map((sale) => {
                     return {
@@ -85,7 +85,7 @@ const useSalesStore = create(
                     setPageTarget(false)
                     set({ loadingSale: false })
                     if (result?.code === 200) {
-                        generatePdfDocument({ listSales })
+                        generatePdfDocument({ listSales, totalPay })
                         if (pageTarget) {
                             notify('✅ Pago con tarjeta con éxito')
                         } else {
