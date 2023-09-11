@@ -95,8 +95,8 @@ export default function tableProducts (props) {
 
     return (
         <section className='animation-fade-in h-full w-full flex flex-col'>
-            <section className='flex flex-row rounded-t-[12px] w-[300px] space-x-5 bg-secondary-50 dark:bg-secondary-450 pt-1 items-center'>
-                <div style={{ scrollbarGutter: 'stable', scrollbarWidth: 0 }} className='h-[3rem]  w-[300px] top-[0px] overflow-x-auto overflow-hidden flex items-center'>
+            <section className='flex flex-row rounded-t-[12px] w-[360px] space-x-5 bg-secondary-50 dark:bg-secondary-450 pt-1 items-center'>
+                <div style={{ scrollbarGutter: 'stable', scrollbarWidth: 0 }} className='h-[3rem]  w-[360px] top-[0px] overflow-x-auto overflow-hidden flex items-center'>
 
                     {loadingCategories
                         ? <section className="pl-3 w-full flex ">
