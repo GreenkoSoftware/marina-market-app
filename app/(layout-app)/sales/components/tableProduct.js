@@ -95,8 +95,8 @@ export default function tableProducts (props) {
 
     return (
         <section className='animation-fade-in h-full w-full flex flex-col'>
-            <section className='flex flex-row rounded-t-[12px] w-[420px] space-x-5 bg-secondary-50 dark:bg-secondary-450 pt-1 items-center'>
-                <div style={{ scrollbarGutter: 'stable', scrollbarWidth: 0 }} className='h-[3rem]  w-[400px] top-[0px] overflow-x-auto overflow-hidden flex items-center'>
+            <section className='flex flex-row rounded-t-[12px] w-[360px] space-x-5 bg-secondary-50 dark:bg-secondary-450 pt-1 items-center'>
+                <div style={{ scrollbarGutter: 'stable', scrollbarWidth: 0 }} className='h-[3rem]  w-[360px] top-[0px] overflow-x-auto overflow-hidden flex items-center'>
 
                     {loadingCategories
                         ? <section className="pl-3 w-full flex ">
@@ -108,12 +108,15 @@ export default function tableProducts (props) {
 
                         : <Tabs
                             aria-label="Options"
-                            items={listCategories}
+                            items={listCategories?.length > 0 ? listCategories?.filter((element) => element?.label === 'FRUTAS' || element?.label === 'VERDURAS' || element?.label === 'CARNES' || element?.label === 'PAN') : [] }
                             selectedKey={categoryTabSelected}
                             onSelectionChange={setCategoryTabSelected}
                             variant={'light'}
-                            className="pt-3 pl-3  pb-3"
-                            color={!filteredList.length ? 'warning' : ''}
+                            className="pt-3 pl-3  pb-3 "
+                            classNames={{
+                                cursor: 'w-full bg-primary-400',
+                                tabContent: 'group-data-[selected=true]:text-primary-50'
+                            }}
                         >
                             {(item) => (
                                 <Tab key={item.id} size={'lg'} title={item.label}>
@@ -128,13 +131,16 @@ export default function tableProducts (props) {
                         ? <div className="gap-4 grid grid-cols-2 md:grid-cols-5 p-1 w-full">
                             {listEmpty?.map((item, key) => (<LoadingCard key={key}/>))}
                         </div>
-                        : (filteredList.length ? filteredList : listInventory)?.map((item, index) => (
-                            <div key={'productList' + index} className='w-1/2 sm:w-1/3 md:w-1/4 lg:w-1/5 xl:w-1/5 xlg:w-1/6 snap-start shrink-0'>
-                                <div className='mx-1 my-1 h-[95%] w-auto'>
-                                    <CardUi className key={index} item={item} index={index} isFromSales={true} setTargetProduct={setTargetProduct}/>
+                        : (filteredList.length ? filteredList : listInventory)?.length > 0
+                            ? (filteredList.length ? filteredList : listInventory)?.map((item, index) => (
+                                <div key={'productList' + index} className='w-1/2 sm:w-1/3 md:w-1/4 lg:w-1/5 xl:w-1/5 xlg:w-1/6 snap-start shrink-0'>
+                                    <div className='mx-1 my-1 h-[95%] w-auto'>
+                                        <CardUi className key={index} item={item} index={index} isFromSales={true} setTargetProduct={setTargetProduct}/>
+                                    </div>
                                 </div>
-                            </div>
-                        ))}
+                            ))
+                            : null
+                    }
 
                 </section>
             </section>

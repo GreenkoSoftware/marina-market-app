@@ -94,7 +94,11 @@ export default function Card () {
                                 onSelectionChange={setSelected}
                                 variant={'light'}
                                 className="pt-3 pl-3 pb-3"
-                                color={!sectionSearch ? 'warning' : ''}
+                                color={!sectionSearch ? '' : ''}
+                                classNames={{
+                                    cursor: 'w-full bg-primary-400',
+                                    tabContent: 'group-data-[selected=true]:text-primary-50'
+                                }}
                                 onClick={() => setSectionSearch(false)}
                             >
                                 {listCategories
