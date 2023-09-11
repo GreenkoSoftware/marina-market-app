@@ -5,5 +5,5 @@ export const generatePdfDocument = async ({ listSales }) => {
         <Voucher listSales={listSales}/>
     ).toBlob()
     const fileURL = URL.createObjectURL(blob)
-    window.open(fileURL)
+    window.open(fileURL, 'Boleta.pdf')
 }
