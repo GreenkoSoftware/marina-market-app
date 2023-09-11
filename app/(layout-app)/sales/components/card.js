@@ -16,7 +16,7 @@ export default function Card () {
 
     useEffect(() => {
         if (selected) {
-            setListInventory(list.filter((item) => item.productCategoryId === parseInt(selected)))
+            setListInventory(list?.filter((item) => item.productCategoryId === parseInt(selected)))
         }
     }, [selected, list])
 

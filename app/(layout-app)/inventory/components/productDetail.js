@@ -14,6 +14,7 @@ export default function ProductDetail ({ targeProduct, isOpen, onClose, setTarge
     const [edit, setEdit] = useState(false)
     const [categoryOptions, setCategoryOptions] = useState([])
     const [stockTypeOptions, setStockTypeOptions] = useState([])
+    const [image, setImage] = useState([])
     const notify = (text) => toast(text)
     const defaultState = {
         image: null,
@@ -36,6 +37,12 @@ export default function ProductDetail ({ targeProduct, isOpen, onClose, setTarge
         setCategoryOptions(listCategories)
         setStockTypeOptions(listStockTypes)
     }, [listCategories, listStockTypes])
+
+    useEffect(() => {
+        const newProductValues = { ...newProductData, image }
+        console.log(newProductValues)
+        setNewProductData(newProductValues)
+    }, [image])
 
     const handleInputChange = ({ field, value, isSalePrice }) => {
         const newProductValues = { ...newProductData, [field]: !isNaN(value) ? parseInt(value) : value }
@@ -145,7 +152,7 @@ export default function ProductDetail ({ targeProduct, isOpen, onClose, setTarge
                                         <div className="flex-3">
                                             {
                                                 edit
-                                                    ? <ProductImage defaultImg={productData?.image}/>
+                                                    ? <ProductImage defaultImg={productData?.image} setImage={setImage}/>
                                                     : <div className="rounded-lg flex items-center m-auto w-[250px] flex-col space-y-2 p-2 border-2 border-gray-300 border-dashed cursor-pointer hover:bg-gray-100 dark:border-gray-600 dark:hover:border-gray-500 dark:hover:bg-gray-600">
 
                                                         <Image id='imageProduct'
