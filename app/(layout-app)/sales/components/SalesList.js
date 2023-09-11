@@ -2,45 +2,62 @@
 'use client'
 import React, { useEffect, useState } from 'react'
 import SaleListItem from '../../../../components/ui/SalesListItem'
-import { Divider, ScrollShadow, Button, Input } from '@nextui-org/react'
+import { Divider, ScrollShadow, Button, Input, Skeleton } from '@nextui-org/react'
 import SearchBar from '../../../../components/ui/SearchBar'
 import useSalesStore from '@/app/(layout-app)/sales/store'
 import { motion } from 'framer-motion'
 import useInventoryStore from '../../inventory/store'
-
+import { formatter } from '@/utils/number'
 export default function SaleList (props) {
     const {
         setPayment, payment, setSearchInput,
         paymentTarget,
-        voucherTarget, setGoPay
+        voucherTarget, setGoPay, keyFocus, setKeyFocus,
+        setPageTarget, loadingSale
     } = props
     const { listSales, totalPrice, units, setUnits, clearList } = useSalesStore()
     const { loading } = useInventoryStore()
     const [inputValue, setInputValue] = useState(1)
-
     useEffect(() => {
         setInputValue(units)
     }, [units])
 
     const onChange = (event) => {
         setSearchInput(event.target.value)
+        console.log(event.target.value)
+    }
+
+    const onClear = () => {
+        setSearchInput('')
     }
 
     const handleButton = () => {
         clearList()
         setPayment(false)
     }
-
+    useEffect(() => {
+        if (keyFocus) {
+            const focusKey = document.getElementById(keyFocus)
+            focusKey?.scrollIntoView({ behavior: 'smooth', block: 'start' })
+        }
+    }, [keyFocus])
     return (
-        <section className='flex flex-col items-center h-full w-full px-3 pt-[3rem] pb-[0.5rem]'>
+        <section className='flex flex-col items-center h-full w-full px-3 pt-[3rem] '>
             <section className='w-full h-full rounded-[14px] bg-primary-50 border border-gray-200 dark:border-secondary-450 shadow  dark:bg-secondary-450 '>
                 <section className='flex flex-row px-1'>
-                    <SearchBar onChange={onChange}/>
+                    <SearchBar onChange={onChange} onClear={onClear}/>
                     <Input
                         className='w-auto mt-3 px-2'
                         type="number"
                         label="Unidades"
                         value={inputValue}
+                        min={1}
+                        onFocusChange={(value) =>
+                            value
+                                ? useSalesStore.getState()?.disabledScanner()
+                                : useSalesStore.getState()?.enabledScanner()
+                        }
+                        onPaste={(e) => { e.preventDefault(); alert('No puedes escanear en este lugar') }}
                         placeholder={1}
                         labelPlacement="inside"
                         onValueChange={(value) => { setUnits(value) }}>
@@ -61,15 +78,35 @@ export default function SaleList (props) {
 
                 <section className="flow-root px-3 max-h-[44rem]">
                     <ul className="divide-y divide-gray-200 dark:divide-white">
-                        <ScrollShadow className="w-full h-[31rem] pr-1 ">
-                            {listSales?.map((product, index) =>
-                                <section key={index}>
-                                    <Divider orientation="horizontal" />
-                                    <SaleListItem product={product} />
-                                    <Divider orientation="horizontal" />
-                                </section>
-                            )}
-                        </ScrollShadow>
+                        {loading
+                            ? <section className="pt-3 pl-3 pr-3 ">
+                                <div className="max-w-full w-full flex items-center gap-3">
+                                    <div className="w-full flex flex-col gap-5">
+                                        <Skeleton className="h-7 w-full rounded-lg"/>
+                                        <Skeleton className="h-7 w-full rounded-lg"/>
+                                        <Skeleton className="h-7 w-full rounded-lg"/>
+                                        <Skeleton className="h-7 w-full rounded-lg"/>
+                                        <Skeleton className="h-7 w-full rounded-lg"/>
+                                        <Skeleton className="h-7 w-full rounded-lg"/>
+                                        <Skeleton className="h-7 w-full rounded-lg"/>
+                                        <Skeleton className="h-7 w-full rounded-lg"/>
+                                        <Skeleton className="h-7 w-full rounded-lg"/>
+                                        <Skeleton className="h-7 w-full rounded-lg"/>
+                                        <Skeleton className="h-7 w-full rounded-lg"/>
+                                    </div>
+                                </div>
+                            </section>
+
+                            : <ScrollShadow className="w-full h-[31rem] pr-1 ">
+                                {listSales?.map((product, index) =>
+                                    <section key={index} id={product?.product?.code}>
+                                        <Divider orientation="horizontal" />
+                                        <SaleListItem product={product} />
+                                        <Divider orientation="horizontal" />
+                                    </section>
+                                )}
+                            </ScrollShadow>
+                        }
 
                     </ul>
                 </section>
@@ -78,7 +115,18 @@ export default function SaleList (props) {
             <section className='w-full'>
                 {totalPrice
                     ? <Button color="success" variant="shadow" className='text-white mt-3 h-[5rem] w-full font-bold text-2xl'
-                        onClick={() => { paymentTarget && voucherTarget ? setGoPay(true) : setPayment(true) }}>
+                        onClick={() => {
+                            if (!payment) {
+                                setPayment(true)
+                            } else if (paymentTarget === 1 && voucherTarget) {
+                                setGoPay(true)
+                            } else if (paymentTarget === 2 && voucherTarget) {
+                                // Create sale
+                                setPageTarget(true)
+                            } else {
+                                setGoPay(false)
+                            }
+                        } }>
                         <div className="text-2xl font-bol flex flex-row gap-4 items-center">
                             <motion.div
                                 initial={{ opacity: 0, scale: 0.5 }}
@@ -88,7 +136,8 @@ export default function SaleList (props) {
                                     delay: 0.2,
                                     ease: [0, 0.71, 0.2, 1.01]
                                 }}>
-                                {paymentTarget && voucherTarget ? 'PAGAR  $ ' : 'TOTAL  $ '}{Math.floor((totalPrice / 10)) * 10}
+                                {loadingSale ? 'Cargando pago ... ' : paymentTarget && voucherTarget ? 'PAGAR  ' : 'TOTAL '}{ formatter.format(totalPrice)}
+                                {}
                             </motion.div>
                         </div>
 

@@ -1,7 +1,7 @@
 'use client'
 import React, { useEffect, useState } from 'react'
 import CardUi from '@/components/ui/Card'
-import { Tabs, Tab, useDisclosure, Input, Skeleton, ScrollShadow } from '@nextui-org/react'
+import { Tabs, Tab, useDisclosure, Input, Skeleton, ScrollShadow, Button } from '@nextui-org/react'
 import useInventoryStore from './store'
 import CreateProduct from './components/NewProduct/createProduct'
 import { MagnifyingGlassIcon } from '@heroicons/react/24/solid'
@@ -9,7 +9,7 @@ import { SearchIcon } from '@/components/ui/SearchIcon'
 import useSalesStore from '../sales/store'
 import ProductDetail from './components/productDetail'
 import LoadingCard from '@/components/ui/Loading'
-import CreateOffer from './components/NewOffer/createOffer'
+import Offers from './components/Offer/offers'
 export default function Card () {
     const { isOpen, onClose, onOpen } = useDisclosure()
     const [targeProduct, setTargetProduct] = useState(null)
@@ -17,6 +17,8 @@ export default function Card () {
     const [listInventory, setListInventory] = useState([])
     const [sectionSearch, setSectionSearch] = useState(false)
     const [searchInput, setSearchInput] = useState(null)
+    const [messageSearch, setMessageSearch] = useState('')
+
     const listEmpty = new Array(20).fill(null)
     const { listCategories, listInventory: list, getCategories, getStockTypes, getListInventory, loadingCategories, loading } = useInventoryStore(
         ({ listCategories, listInventory, getCategories, getStockTypes, getListInventory, loadingCategories, loading }) => (
@@ -27,14 +29,8 @@ export default function Card () {
     const [filteredList, setFilteredList] = useState([])
     useEffect(() => {
         if (selected) {
-            setFilteredList(list)
-            if (parseInt(selected) === -1) {
-                setSectionSearch(true)
-                setListInventory(list)
-            } else {
-                setSectionSearch(false)
-                setListInventory(list.filter((item) => item.productCategoryId === parseInt(selected)))
-            }
+            setSectionSearch(false)
+            setListInventory(list?.filter((item) => item.productCategoryId === parseInt(selected)))
         }
     }, [selected, list])
     useEffect(() => {
@@ -52,17 +48,26 @@ export default function Card () {
     }, [isOpen])
 
     useEffect(() => {
-        // Create copy of item list
-        if (searchInput) {
+        const searchSize = searchInput?.length || 0
+        if (searchSize >= 3) {
             let updatedList = [...list]
             // Include all elements which includes the search query
             updatedList = updatedList.filter((item) => {
                 return item?.meta?.toLowerCase().indexOf(searchInput?.toLowerCase()) !== -1
             })
             // Trigger render with updated values
+            if (!updatedList?.length) {
+                setMessageSearch('Ups.. no lo hemos podido encontrar, intenta buscar otro producto.')
+            } else {
+                setMessageSearch(null)
+            }
             setFilteredList(updatedList)
-        } else if (searchInput === '') {
-            setFilteredList([...list])
+        } else if (searchSize >= 1) {
+            setFilteredList([])
+            setMessageSearch('Escribe al menos 3 carácteres para realizar una búsqueda.')
+        } else {
+            setFilteredList([])
+            setMessageSearch('Realiza una búsqueda.')
         }
     }, [searchInput])
     useEffect(() => {
@@ -74,31 +79,44 @@ export default function Card () {
     return (
         <section className='h-full flex flex-col'>
             <section className="flex items-start justify-between z-10">
-                <div className='h-[3rem]  w-[300px] top-[0px] rounded-t-[12px] bg-secondary-50 dark:bg-secondary-450'>
-                    {loadingCategories
+                <section className='flex flex-row rounded-t-[12px] space-x-5 bg-secondary-50 dark:bg-secondary-450 pr-3 pt-1 items-center'>
+                    <div style={{ scrollbarGutter: 'stable', scrollbarWidth: 0 }} className='h-[3rem]  w-[400px] top-[0px] overflow-x-auto overflow-hidden flex items-center'>
+                        {loadingCategories
 
-                        ? <section className="pt-3 pl-3 pr-3 ">
-                            <Skeleton className="w-full h-1 pt-10 rounded-lg"></Skeleton>
-                        </section>
+                            ? <section className="pt-1 pl-3 pr-3 w-full flex ">
+                                <Skeleton className="w-full h-8 rounded-lg"></Skeleton>
+                            </section>
 
-                        : <Tabs
-                            aria-label="Options"
-                            items={listCategories}
-                            selectedKey={selected}
-                            onSelectionChange={setSelected}
-                            variant={'light'}
-                            className="pt-3 pl-3"
-                        >
-                            {(item) => (
-                                <Tab key={item.id} size={'lg'} title={item.label === 'search' ? <MagnifyingGlassIcon className='w-5 h-5'/> : item?.label}>
-                                </Tab>
-                            )}
-                        </Tabs>}
+                            : <Tabs
+                                aria-label="Options"
+                                items={listCategories}
+                                selectedKey={selected}
+                                onSelectionChange={setSelected}
+                                variant={'light'}
+                                className="pt-3 pl-3 pb-3"
+                                color={!sectionSearch ? 'warning' : ''}
+                                onClick={() => setSectionSearch(false)}
+                            >
+                                {listCategories
+                                    ? listCategories.map(
+                                        (item) => (
+                                            <Tab key={item.id} size={'lg'} title={item.label}/>
+                                        )
+                                    )
+                                    : null}
 
-                </div>
+                            </Tabs>}
+
+                    </div>
+                    <Button variant={sectionSearch ? 'solid' : 'ghost'} color={sectionSearch ? 'warning' : ''} isIconOnly onClick={() => {
+                        setSectionSearch(!sectionSearch)
+                    }}>
+                        <MagnifyingGlassIcon className='w-5 h-5'/>
+                    </Button>
+                </section>
                 <div className="flex space-x-2">
                     {/* <ScannerDetection/> */}
-                    <CreateOffer/>
+                    <Offers/>
                     <CreateProduct/>
                 </div>
             </section>
@@ -107,7 +125,7 @@ export default function Card () {
                     ? <ScrollShadow className="w-full pb-4">
                         <div className="gap-4 grid grid-cols-2 md:grid-cols-5 p-1">{listEmpty?.map((item, key) => (<LoadingCard key={key}/>))}</div> </ScrollShadow>
                     : sectionSearch
-                        ? <section style={{ scrollbarGutter: 'stable' }} className='max-h-[44rem] w-full overflow-y-auto flex flex-wrap snap-y snap-mandatory content-start'>
+                        ? <section className='h-full w-full'>
                             <Input
                                 label="Busqueda"
                                 isClearable
@@ -133,19 +151,21 @@ export default function Card () {
                                     <SearchIcon className="text-black/50 dark:text-white/90 text-slate-400 pointer-events-none flex-shrink-0" />
                                 }
                             />
-                            {filteredList?.map((item, index) => (
-                                <div key={'productSearch' + index} className='w-1/2 sm:w-1/3 md:w-1/4 lg:w-1/5 xl:w-1/6 xlg:w-[12.5%] snap-start shrink-0'>
-                                    <div className='mx-1 my-1'>
-                                        <CardUi item={item} setTargetProduct={setTargetProduct}/>
+                            <section style={{ scrollbarGutter: 'stable' }} className='max-h-[38rem] w-full overflow-y-auto flex flex-wrap snap-y snap-mandatory content-start'>
+                                {filteredList?.map((item, index) => (
+                                    <div key={'productSearch' + index} className='w-1/2 sm:w-1/3 md:w-1/4 lg:w-1/5 xl:w-1/6 xlg:w-[12.5%] snap-start shrink-0'>
+                                        <div className='mx-1 my-1'>
+                                            <CardUi item={item} setTargetProduct={setTargetProduct}/>
+                                        </div>
                                     </div>
-                                </div>
-                            ))}
-                            {!listInventory?.length
-                                ? <div>No hay productos</div>
-                                : (!filteredList.length && searchInput?.length > 0)
-                                    ? <div>Sin resultados</div>
-                                    : null
-                            }
+                                ))}
+                                {!listInventory?.length
+                                    ? <div>No hay productos</div>
+                                    : (!filteredList.length && messageSearch)
+                                        ? <div>{messageSearch}</div>
+                                        : null
+                                }
+                            </section>
                         </section>
                         : <section style={{ scrollbarGutter: 'stable' }} className='max-h-[44rem] w-full overflow-y-auto flex flex-wrap snap-y snap-mandatory content-start'>
                             {listInventory?.map((item, index) => (

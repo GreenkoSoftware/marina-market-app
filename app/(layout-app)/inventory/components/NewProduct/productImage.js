@@ -7,7 +7,7 @@ import useProductFormStore from './store'
 import html2canvas from 'html2canvas'
 import { ConvertBytesToImage } from '@/utils/image'
 
-export default function ProductImage ({ defaultImg }) {
+export default function ProductImage ({ defaultImg, setImage }) {
     const [selectedImage, setSelectedImage] = useState(null)
     const [selectedImageBytes, setSelectedImageBytes] = useState(null)
     const [optimizedImage, setOptimizedImage] = useState(null)
@@ -36,8 +36,12 @@ export default function ProductImage ({ defaultImg }) {
     }, [defaultImg])
 
     useEffect(() => {
-        // setFormData({ ...data, image: selectedImageBytes })
-        // console.log('selectedImageBytes: ', selectedImageBytes)
+        if (setImage) {
+            setImage(optimizedImage)
+        }
+    }, [optimizedImage, setImage])
+
+    useEffect(() => {
         setFormData({ ...data, image: optimizedImage })
         console.log('optimizedImage: ', optimizedImage)
     }, [selectedImageBytes, optimizedImage])
@@ -45,18 +49,6 @@ export default function ProductImage ({ defaultImg }) {
     useEffect(() => {
         if (selectedImage) {
             const reader = new FileReader()
-            /* reader.readAsArrayBuffer(selectedImage)
-
-            reader.onload = async () => {
-                const imageBytes = reader.result
-                const base64 = btoa(
-                    new Uint8Array(imageBytes)
-                        .reduce((data, byte) => data + String.fromCharCode(byte), '')
-                )
-
-                setSelectedImageBytes(base64)
-            }
- */
             reader.readAsDataURL(selectedImage)
             reader.onload = async (e) => {
                 const img = new Image()
@@ -95,13 +87,13 @@ export default function ProductImage ({ defaultImg }) {
     return (
         <section>
             <div className="flex items-center justify-center min-w-[200px] w-full">
-                { optimizedImage
+                { selectedImage
                     ? (
                         <div className="rounded-lg flex items-center flex-col space-y-2 p-2 border-2 border-gray-300 border-dashed cursor-pointer hover:bg-gray-100 dark:border-gray-600 dark:hover:border-gray-500 dark:hover:bg-gray-600">
                             <label htmlFor={selectedImage ? 'dropzone-file' : ''}>
                                 <ImageComponent
                                     id='imageProduct'
-                                    src={ConvertBytesToImage({ imageBytes: optimizedImage })}
+                                    src={URL.createObjectURL(selectedImage)}
                                     alt="Image name"
                                     width={200}
                                     height={200}

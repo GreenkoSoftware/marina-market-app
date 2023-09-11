@@ -9,6 +9,8 @@ import { InvoiceIcon } from '@/components/ui/InvoiceIcon'
 import { TicketIcon } from '@/components/ui/TicketIcon'
 import { BillIcon } from '@/components/ui/BillIcon'
 import useSalesStore from './store'
+import usePaymentStore from '@/stores/payment'
+import useVocuherStore from '@/stores/voucher'
 export default function PayPage (props) {
     /* Change state to go back to sales table product */
     const {
@@ -16,21 +18,9 @@ export default function PayPage (props) {
         voucherTarget, setVoucherTarget
     } = props
     /* Use states */
-    /* Store sales to get type payment and voucher */
-    const {
-        getPaymentType, getVoucherType, payment,
-        voucher, loadingPayment, loadingVoucher
-    } = useSalesStore(({
-        getPaymentType, getVoucherType, payment,
-        voucher, loadingPayment, loadingVoucher
-    }) => ({
-        getPaymentType,
-        getVoucherType,
-        payment,
-        voucher,
-        loadingPayment,
-        loadingVoucher
-    }))
+
+    const { payment, getPaymentType, loadingPayment } = usePaymentStore()
+    const { voucher, getVoucherType, loadingVoucher } = useVocuherStore()
     const listEmpty = new Array(2).fill(null)
     const listEmpty3 = new Array(3).fill(null)
     useEffect(() => {

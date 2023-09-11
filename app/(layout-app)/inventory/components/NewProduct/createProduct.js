@@ -9,7 +9,9 @@ import Barcosde from '@/components/barcode'
 import useProductFormStore from './store'
 import useInventoryStore from '../../store'
 import useSalesStore from '@/app/(layout-app)/sales/store'
+import toast, { Toaster } from 'react-hot-toast'
 
+const notify = (text) => toast(text)
 export const SectionProduct = ({ title, children, showDivider }) => {
     return (
         <section className="mt-3 space-y-2">
@@ -84,6 +86,7 @@ export default function CreateProduct () {
             useSalesStore.getState()?.disabledRedirectSales()
         } else {
             useSalesStore.getState()?.enabledRedirectSales()
+            setIsBarcodeGenerated(false)
             setBarcodeValue(null)
         }
     }, [isOpen])
@@ -124,6 +127,24 @@ export default function CreateProduct () {
 
     return (
         <section>
+            <Toaster
+                position="top-center"
+                reverseOrder={false}
+                gutter={8}
+                containerClassName=""
+                containerStyle={{}}
+                className={' bg-primary-50 text-primary-500 dark:bg-primary-200 dark:text-primary-500'}
+                toastOptions={{
+                    className: '',
+                    duration: 10000,
+                    success: {
+                        duration: 3000,
+                        theme: {
+                            primary: 'green',
+                            secondary: 'black'
+                        }
+                    }
+                }} />
             <header className="flex justify-end">
                 <Button className='bg-primary-400 dark:bg-primary-400' color='primary' onClick={onOpen}>Crear nuevo producto</Button>
             </header>
@@ -138,15 +159,8 @@ export default function CreateProduct () {
                     <ModalHeader className="flex flex-col gap-1 text-primary-500 dark:text-primary-200">Nuevo producto</ModalHeader>
                     <ModalBody>
                         <section>
-                            {/* <Barcosde showDetail={true} productName = {productName} productCode ={ productCode } productCost={"1790"}/> */}
                             <SectionProduct title={null}>
                                 <div className="my-4 items-center gap-4 grid grid-cols-1 md:grid-cols-2">
-                                    {/*  <div>
-                        <Button onClick={() => {scanProduct ? setScanProduct(false) : setScanProduct(true)}}>{!scanProduct ? 'Scanner' : 'Finalizar Scanner'}</Button>
-                        {scanProduct ?
-                        <BarcodeScanner stopScan={() => setScanProduct(false)}/>
-                        : null}
-                        </div> */}
                                     <div className="flex-3">
                                         <ProductImage/>
                                     </div>
@@ -157,7 +171,6 @@ export default function CreateProduct () {
                                             value={barcodeValue}
                                             type="text"
                                             title="Codigo de barra"
-                                            // onValueChange={(value) => { handleInputChange({ field: 'barcode', value }) }}
                                             onValueChange={(value) => {
                                                 setBarcodeValue(value)
                                             }}
@@ -256,7 +269,7 @@ export default function CreateProduct () {
                             </div>
                             : null}
                         <Button className =" bg-green-500 text-primary-50"
-                            onClick={() => { requestCreateProduct(data) }}
+                            onClick={() => { requestCreateProduct(data, notify) }}
                             isLoading={!!loading}>
                             Guardar
                         </Button>

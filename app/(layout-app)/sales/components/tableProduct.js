@@ -2,65 +2,70 @@
 'use client'
 import React, { useEffect, useState } from 'react'
 import CardUi from '@/components/ui/Card'
-import { Tabs, Tab, useDisclosure, ScrollShadow, Skeleton } from '@nextui-org/react'
-import DetailedProduct from './detailedProduct'
+import { Tabs, Tab, useDisclosure, Skeleton } from '@nextui-org/react'
 import useSalesStore from '../store'
 import useInventoryStore from '../../inventory/store'
 import LoadingCard from '@/components/ui/Loading'
 import WeighingScaleModal from './weighingScaleModal'
+import useOffersStore from '@/stores/offers'
 
 export default function tableProducts (props) {
-    const { searchInput } = props
+    const { searchInput, setKeyFocus } = props
     const { isOpen, onClose, onOpen } = useDisclosure()
     const [targeProduct, setTargetProduct] = useState(null)
-    const [selected, setSelected] = useState(1)
-    const [isAcepted, setIsAcepted] = useState()
-    const [selectedKL, setSelectedKL] = useState()
+    const [selectedProductWithKG, setSelectedProductWithKG] = useState(null)
+    const [categoryTabSelected, setCategoryTabSelected] = useState()
     const [listInventory, setListInventory] = useState([])
     const { listCategories, listInventory: list, getCategories, getListInventory, loading, loadingCategories } = useInventoryStore(({ listCategories, listInventory: list, getCategories, getListInventory, loading, loadingCategories }) => ({ listCategories, listInventory: list, getCategories, getListInventory, loading, loadingCategories }))
     const [filteredList, setFilteredList] = useState([])
-    const [sectionSearch, setSectionSearch] = useState(false)
-    const { listSales, addFromNewSales, setTotalPrice, units, setUnits, getOffers, offers } = useSalesStore()
+    const { listSales, addFromNewSales, setTotalPrice, units, setUnits } = useSalesStore()
+    const { offers, getOffers } = useOffersStore()
     const listEmpty = new Array(20).fill(null)
+
     useEffect(() => {
-        if (selected) {
-            setFilteredList(list)
-            if (parseInt(selected) === -1 || searchInput?.length > 0) {
-                setSectionSearch(true)
-                setListInventory(list)
-            } else {
-                setSectionSearch(false)
-                setListInventory(list.filter((item) => item.productCategoryId === parseInt(selected)))
-            }
+        if (categoryTabSelected) {
+            setListInventory(list?.filter((item) => item.productCategoryId === parseInt(categoryTabSelected)))
         }
-    }, [selected, searchInput, list])
+    }, [categoryTabSelected, list])
+
+    const onCompleteFunction = () => {
+        setTargetProduct(null)
+        setSelectedProductWithKG(null)
+    }
 
     useEffect(() => {
         if (targeProduct) {
             // agregar a la lista de venstas
-            addFromNewSales(listSales, targeProduct, setTargetProduct, units, setUnits, offers)
+            if (targeProduct?.stockTypeId === 1) {
+                setSelectedProductWithKG(targeProduct)
+            } else {
+                addFromNewSales(listSales, targeProduct, units, offers, onCompleteFunction, setKeyFocus)
+            }
         }
     }, [targeProduct])
 
     useEffect(() => {
-        if (targeProduct != null) { onOpen() }
-    }, [selectedKL])
-
-    useEffect(() => {
-        if (isAcepted) {
-            addFromNewSales(listSales, selectedKL, setTargetProduct, units, setUnits)
-            setIsAcepted(false)
+        if (selectedProductWithKG != null) {
+            onOpen()
         }
-    }, [isAcepted])
+    }, [selectedProductWithKG])
 
     useEffect(() => {
-        if (listSales?.length >= 0) {
+        console.log('open: ', isOpen)
+        if (!isOpen) {
+            setTargetProduct(null)
+            setSelectedProductWithKG(null)
+        }
+    }, [isOpen])
+
+    useEffect(() => {
+        if (listSales?.length > 0) {
             let currentTotal = 0
             listSales?.forEach((item) => {
                 currentTotal += item?.discount ? item.product?.price * item.quantity - item?.discount : item.product?.price * item.quantity
                 // TODO: agregar logica de ofertas
             })
-            setTotalPrice(currentTotal)
+            setTotalPrice(Math.floor((currentTotal / 10)) * 10)
         }
     }, [listSales])
 
@@ -71,62 +76,69 @@ export default function tableProducts (props) {
         getOffers()
     }, [])
     useEffect(() => {
-        // Create copy of item list
-        if (searchInput) {
+        const searchSize = searchInput?.length || 0
+        if (searchSize >= 3) {
             let updatedList = [...list]
             // Include all elements which includes the search query
             updatedList = updatedList.filter((item) => {
-                return item?.meta?.toLowerCase().indexOf(searchInput?.toLowerCase()) !== -1
+                return item?.meta?.toLowerCase().includes(searchInput?.toLowerCase())
+                // return item?.meta?.toLowerCase().indexOf(searchInput?.toLowerCase()) !== -1
             })
             // Trigger render with updated values
             setFilteredList(updatedList)
-        } else if (searchInput === '') {
-            setFilteredList([...list])
+        } else if (searchSize >= 1) {
+            setFilteredList([])
+        } else {
+            setFilteredList([])
         }
     }, [searchInput])
 
     return (
-        <section className='animation-fade-in h-full w-full'>
-            <section className="z-10 h-[6%] w-[280px] top-[52px] rounded-t-[12px] bg-secondary-50 dark:bg-secondary-450">
-                {loadingCategories
+        <section className='animation-fade-in h-full w-full flex flex-col'>
+            <section className='flex flex-row rounded-t-[12px] w-[420px] space-x-5 bg-secondary-50 dark:bg-secondary-450 pt-1 items-center'>
+                <div style={{ scrollbarGutter: 'stable', scrollbarWidth: 0 }} className='h-[3rem]  w-[400px] top-[0px] overflow-x-auto overflow-hidden flex items-center'>
 
-                    ? <section className="pt-3 pl-3 pr-3 ">
-                        <Skeleton className="w-full h-1 pt-10 rounded-lg"></Skeleton>
-                    </section>
+                    {loadingCategories
+                        ? <section className="pl-3 w-full flex ">
+                            <Skeleton className="w-[8rem] m-1 h-8 rounded-lg"></Skeleton>
+                            <Skeleton className="w-[8rem] m-1 h-8 rounded-lg"></Skeleton>
+                            <Skeleton className="w-[8rem] m-1 h-8 rounded-lg"></Skeleton>
+                            <Skeleton className="w-[8rem] m-1 h-8 rounded-lg"></Skeleton>
+                        </section>
 
-                    : <Tabs
-                        aria-label="Options"
-                        items={listCategories?.filter((category) => category?.id !== -1)}
-                        selectedKey={selected}
-                        onSelectionChange={setSelected}
-                        variant={'light'}
-                        className="pt-3 pl-3"
-                    >
-                        {(item) => (
-                            <Tab key={item.id} size={'lg'} title={item.label}>
-                            </Tab>
-                        )}
-                    </Tabs>}
+                        : <Tabs
+                            aria-label="Options"
+                            items={listCategories}
+                            selectedKey={categoryTabSelected}
+                            onSelectionChange={setCategoryTabSelected}
+                            variant={'light'}
+                            className="pt-3 pl-3  pb-3"
+                            color={!filteredList.length ? 'warning' : ''}
+                        >
+                            {(item) => (
+                                <Tab key={item.id} size={'lg'} title={item.label}>
+                                </Tab>
+                            )}
+                        </Tabs>}
+                </div>
             </section>
-            <section className='flex flex-col h-3/4  sm:h-[93%] items-center px-5 py-[1rem] shadow-md hover:shadow-lg  rounded-tl-[0px]  bg-secondary-50 dark:bg-secondary-450 rounded-[14px]'>
-                <ScrollShadow className="w-full pb-4">
-                    <div className="gap-4 grid grid-cols-2 md:grid-cols-5 p-1">
-                        {loading
-                            ? listEmpty?.map((item, key) => (<LoadingCard key={key}/>))
-                            : sectionSearch
-                                ? filteredList?.map((item, index) => (
+            <section className='flex-1 rounded-xl rounded-tl-[0px] p-[1rem] bg-secondary-50 dark:bg-secondary-450'>
+                <section style={{ scrollbarGutter: 'stable' }} className='max-h-[44rem] w-full overflow-y-auto flex flex-wrap snap-y snap-mandatory content-start '>
+                    {loading
+                        ? <div className="gap-4 grid grid-cols-2 md:grid-cols-5 p-1 w-full">
+                            {listEmpty?.map((item, key) => (<LoadingCard key={key}/>))}
+                        </div>
+                        : (filteredList.length ? filteredList : listInventory)?.map((item, index) => (
+                            <div key={'productList' + index} className='w-1/2 sm:w-1/3 md:w-1/4 lg:w-1/5 xl:w-1/5 xlg:w-1/6 snap-start shrink-0'>
+                                <div className='mx-1 my-1 h-[95%] w-auto'>
                                     <CardUi className key={index} item={item} index={index} isFromSales={true} setTargetProduct={setTargetProduct}/>
-                                ))
-                                : listInventory.map((item, index) => (
-                                    <CardUi className key={index} item={item} index={index} isFromSales={true} setTargetProduct={setTargetProduct}/>
-                                ))}
-                        {
-                        }
-                    </div>
-                </ScrollShadow>
+                                </div>
+                            </div>
+                        ))}
+
+                </section>
             </section>
-            <DetailedProduct targeProduct={targeProduct} setTargetProduct={setTargetProduct} />
-            <WeighingScaleModal isOpen={isOpen} onClose={onClose} product={selectedKL} value={4.20} setIsAcepted = {setIsAcepted} setUnits={setUnits} setTargetProduct={setTargetProduct}/>
+            <WeighingScaleModal isOpen={isOpen} onClose={onClose} product={selectedProductWithKG}/>
         </section>
     )
 }

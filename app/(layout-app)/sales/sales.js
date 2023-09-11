@@ -13,7 +13,11 @@ const SalesMenu = () => {
     const [searchInput, setSearchInput] = useState(null)
     const [goPay, setGoPay] = useState(false)
     const [payDetailed, setPayDetailed] = useState(null)
-    const { totalPrice, clearList, listSales, createSale } = useSalesStore(({ totalPrice, clearList, listSales, createSale }) => ({ totalPrice, clearList, listSales, createSale }))
+    const [pageTarget, setPageTarget] = useState(null)
+    const [keyFocus, setKeyFocus] = useState(null)
+    const { totalPrice, clearList, listSales, createSale, loadingSale } = useSalesStore((
+        { totalPrice, clearList, listSales, createSale, loadingSale }) => (
+        { totalPrice, clearList, listSales, createSale, loadingSale }))
     const {
         paymentTarget, setPaymentTarget,
         voucherTarget, setVoucherTarget
@@ -31,6 +35,7 @@ const SalesMenu = () => {
             onOpen()
         }
     }, [goPay])
+
     return (
         <section className='h-full w-full flex md:flex-col'>
             <div className="flex h-full md:flex-wrap">
@@ -38,15 +43,26 @@ const SalesMenu = () => {
                     {payment
                         ? <PayPage payment={payment} setPayment={setPayment} paymentTarget={paymentTarget} setPaymentTarget={setPaymentTarget}
                             voucherTarget={voucherTarget} setVoucherTarget={setVoucherTarget}/>
-                        : <TableInventory setSearchInput={setSearchInput} searchInput={searchInput} />
+                        : <TableInventory setSearchInput={setSearchInput} searchInput={searchInput} setKeyFocus={setKeyFocus}/>
                     }
                 </div>
                 <div className="w-full md:w-[30%]">
-                    <SaleList payment={payment} setPayment={setPayment} setSearchInput={setSearchInput} paymentTarget={paymentTarget} voucherTarget={voucherTarget} setGoPay={setGoPay}/>
+                    <SaleList
+                        loadingSale={loadingSale}
+                        setPageTarget={setPageTarget}
+                        payment={payment} setPayment={setPayment}
+                        setSearchInput={setSearchInput}
+                        paymentTarget={paymentTarget}
+                        voucherTarget={voucherTarget}
+                        setGoPay={setGoPay}
+                        setKeyFocus={setKeyFocus}
+                        keyFocus={keyFocus}
+                    />
                 </div>
                 <PayDetailed isOpen={isOpen}
                     onClose={onClose} onOpen={onOpen}
-                    totalPay={totalPrice} setGoPay={setGoPay}
+                    totalPay={totalPrice}
+                    setGoPay={setGoPay}
                     setPayDetailed={setPayDetailed}
                     payDetailed={payDetailed}
                     clearList={clearList}
@@ -54,7 +70,10 @@ const SalesMenu = () => {
                     createSale={createSale}
                     paymentTarget={paymentTarget}
                     voucherTarget={voucherTarget}
-
+                    setPayment={setPayment}
+                    loadingSale={loadingSale}
+                    pageTarget={pageTarget}
+                    setPageTarget={setPageTarget}
                 />
             </div>
         </section>

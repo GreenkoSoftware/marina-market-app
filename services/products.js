@@ -1,6 +1,30 @@
 /* eslint-disable camelcase */
 import { PRODUCT_API_URL, CATEGORIES_API_URL, TYPE_STOCK_API_URL, PRODUCT_OFFER } from '@/settings/constants'
 import { getToken } from '@/services/user'
+/* GET GENERAL */
+export const fetchGet = async ({ url }) => {
+    try {
+        return await fetch(url,
+            {
+                method: 'get',
+                headers: new Headers({
+                    Authorization: 'Bearer ' + getToken(),
+                    'Content-Type': 'application/x-www-form-urlencoded'
+                })
+            }).then(response => {
+            try {
+                if (response?.status === 204) {
+                    return response
+                }
+                return response.json()
+            } catch {
+                return null
+            }
+        })
+    } catch {
+        return null
+    }
+}
 export const fetchGetproducts = async () => {
     try {
         return await fetch(PRODUCT_API_URL,
@@ -12,6 +36,9 @@ export const fetchGetproducts = async () => {
                 })
             }).then(response => {
             try {
+                if (response?.status === 204) {
+                    return response
+                }
                 return response.json()
             } catch {
                 return null
@@ -117,7 +144,8 @@ export const updateProduct = async (
         category_id,
         stock_type_id,
         stock,
-        stock_min
+        stock_min,
+        notify
     }) => {
     try {
         const queryParams = new URLSearchParams(
@@ -142,7 +170,11 @@ export const updateProduct = async (
                 })
             }).then(response => {
             try {
-                return response.json()
+                if (response?.status === 200) {
+                    notify('✅ Producto actualizado con exito!')
+                } else {
+                    notify('❌ El producto no se actualizo correctamente, intenta otra vez!')
+                }
             } catch {
                 return null
             }
@@ -152,7 +184,7 @@ export const updateProduct = async (
     }
 }
 
-export const updateProductStock = async ({ stock_min, stock }) => {
+export const updateProductStock = async ({ stock_min, stock, notify }) => {
     try {
         const queryParams = new URLSearchParams({ stock, stock_min })
         return await fetch(`${PRODUCT_API_URL}/stock?${queryParams}`,
@@ -163,7 +195,11 @@ export const updateProductStock = async ({ stock_min, stock }) => {
                 })
             }).then(response => {
             try {
-                return response.json()
+                if (response?.status === 200) {
+                    notify('✅ Stock de producto actualizado con exito!')
+                } else {
+                    notify('❌ El stock de producto no se actualizo correctamente, intenta más tarde.')
+                }
             } catch {
                 return null
             }
@@ -173,7 +209,7 @@ export const updateProductStock = async ({ stock_min, stock }) => {
     }
 }
 
-export const deleteProduct = async ({ id }) => {
+export const deleteProduct = async ({ id, notify }) => {
     try {
         const queryParams = new URLSearchParams({ id })
         return await fetch(`${PRODUCT_API_URL}?${queryParams}`,
@@ -186,7 +222,11 @@ export const deleteProduct = async ({ id }) => {
                 mode: 'cors'
             }).then(response => {
             try {
-                return response.json()
+                if (response?.status === 200) {
+                    notify('🗑️ Producto eliminado con exito!')
+                } else {
+                    notify('❌ El producto no se elimino correctamente, intenta más tarde')
+                }
             } catch {
                 return null
             }
