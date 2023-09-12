@@ -10,7 +10,7 @@ import WeighingScaleModal from './weighingScaleModal'
 import useOffersStore from '@/stores/offers'
 
 export default function tableProducts (props) {
-    const { searchInput, setKeyFocus } = props
+    const { searchInput, setKeyFocus, setSearchInput } = props
     const { isOpen, onClose, onOpen } = useDisclosure()
     const [targeProduct, setTargetProduct] = useState(null)
     const [selectedProductWithKG, setSelectedProductWithKG] = useState(null)
@@ -24,6 +24,7 @@ export default function tableProducts (props) {
 
     useEffect(() => {
         if (categoryTabSelected) {
+            setSearchInput(null)
             setListInventory(list?.filter((item) => item.productCategoryId === parseInt(categoryTabSelected)))
         }
     }, [categoryTabSelected, list])
