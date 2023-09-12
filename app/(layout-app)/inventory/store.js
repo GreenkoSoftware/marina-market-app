@@ -25,7 +25,7 @@ const useInventoryStore = create(
                                         code,
                                         costPrice: cost_price,
                                         image,
-                                        name,
+                                        name: name?.toUpperCase(),
                                         netPrice: net_price,
                                         price: sale_price,
                                         productCategoryId: product_categories_id,
