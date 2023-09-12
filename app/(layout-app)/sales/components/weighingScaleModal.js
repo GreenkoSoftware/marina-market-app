@@ -99,7 +99,7 @@ export default function WeighingScaleModal ({ isOpen, onClose, product }) {
                 <ModalContent className=''>
 
                     <ModalHeader className="flex flex-col gap-1 text-primary-500 dark:text-primary-200 ">Pesa de productos
-                        <Button color="success" variant="ghost" className='w-full'
+                        <Button variant="shadow" className='w-full text-white font-extrabold tracking-widest bg-emerald-600'
                             onClick={() => { setManualMode(!manualMode) }}
                         >
                             {manualMode
@@ -134,60 +134,56 @@ export default function WeighingScaleModal ({ isOpen, onClose, product }) {
                                             </div>
                                         </div>
                                     </div>
-                                    {!manualMode
-                                        ? <div className="flex flex-col items-center justify-center content-between gap-2 h-[20rem]">
-                                            <div className="flex  items-start   w-full">
-                                                <div className="flex flex-col ">
-                                                    <div className='flex flex-col items-center gap-14 '>
-                                                        <h1 className="text-large font-extrabold">PESO REGISTRADO</h1>
-                                                        <div className='flex flex-row justify-center '>
-                                                            <h1 className="text-9xl  text-teal-500 font-medium ">{valueKg}</h1>
-                                                            <h1 className="text-lg text-zinc-400 font-medium ">KG</h1>
-                                                        </div>
-                                                    </div>
-                                                    <div className='flex flex-row w-[20rem] gap-4  px-5 py-3 border-3 mt-6 rounded-xl border-green-500'>
-                                                        <h1 className="text-3xl w-full text-green-500 font-bold">TOTAL</h1>
-                                                        <h1 className="text-3xl w-full font-xl font-bold text-green-500">$ {Math.floor((product?.price * valueKg) / 10) * 10}</h1>
-                                                    </div>
+
+                                    <section className="flex flex-col items-center justify-center content-between gap-2 h-[20rem]">
+                                        {!manualMode
+                                            ? <div className='flex flex-col gap-14 '>
+                                                <h1 className="text-large font-extrabold">PESO REGISTRADO</h1>
+                                                <div className='flex flex-row justify-center '>
+                                                    <h1 className="text-9xl  text-teal-500 font-medium ">{valueKg}</h1>
+                                                    <h1 className="text-lg text-zinc-400 font-medium ">KG</h1>
                                                 </div>
                                             </div>
-                                        </div>
-                                        : <section className="flex flex-col items-center justify-center content-between gap-2 h-[20rem]">
-                                            <div key="flat" className="flex w-[20rem] h-[4rem] flex-wrap md:flex-nowrap mb-4 md:mb-0 gap-2">
-                                                <Input type="email" variant={'flat'} label="KG" placeholder="Ingresa manualmente los KG." className='text-sm'
-                                                    onValueChange={(value) => setValueKg(value)} value={valueKg}
-                                                />
-                                            </div>
-                                            <Button className=' w-[20rem] h-[3rem] bg-green-600 text-white font-bold text-lg'
-                                                onClick={() => { setValueKg(1); setIsDefaultValue(true) } }>
+                                            : <div className='w-full'>
+                                                <div key="flat" className="flex h-[4rem] flex-wrap md:flex-nowrap mb-4 md:mb-0 gap-2">
+                                                    <Input type="number" variant={'flat'} label="KG" placeholder="Ingresa manualmente los KG." className='text-sm'
+                                                        onValueChange={(value) => setValueKg(value)} value={valueKg}
+                                                    />
+                                                </div>
+                                                <div className='flex flex-col gap-1 w-full'>
+                                                    <Button className='w-full h-[3rem] bg-green-600 text-white font-bold text-lg'
+                                                        onClick={() => { setValueKg(1); setIsDefaultValue(true) } }>
                                                     1KG
-                                            </Button>
-                                            <Button className=' w-[20rem] h-[3rem]  bg-green-600 text-white font-bold text-lg'
-                                                onClick={() => { setValueKg(2); setIsDefaultValue(true) } }>
+                                                    </Button>
+                                                    <Button className='w-full h-[3rem] bg-green-600 text-white font-bold text-lg'
+                                                        onClick={() => { setValueKg(2); setIsDefaultValue(true) } }>
                                                     2KG
-                                            </Button>
-                                            <Button className=' w-[20rem] h-[3rem]  bg-green-600 text-white font-bold text-lg'
-                                                onClick={() => { setValueKg(5); setIsDefaultValue(true) } }>
+                                                    </Button>
+                                                    <Button className='w-full h-[3rem] bg-green-600 text-white font-bold text-lg'
+                                                        onClick={() => { setValueKg(5); setIsDefaultValue(true) } }>
                                                     5KG
-                                            </Button>
-                                            <div className='flex flex-row w-[20rem] gap-4 items-center px-5 py-3 border-3 rounded-xl border-green-500'>
-                                                <h1 className="text-3xl w-full  text-green-500 font-bold">TOTAL</h1>
-                                                <h1 className="text-3xl  w-full font-xl font-bold text-green-500">$ {Math.floor((product?.price * valueKg) / 10) * 10}</h1>
+                                                    </Button>
+                                                </div>
                                             </div>
-                                        </section>
-                                    }
+
+                                        }
+                                        <div className='flex flex-row w-[20rem] gap-4 items-center px-5 py-3 border-3 border-teal-500 rounded-xl text-teal-500'>
+                                            <h1 className="text-3xl w-full  text-teal-500 font-bold">TOTAL</h1>
+                                            <h1 className="text-3xl  w-full font-xl font-bold text-teal-500 ">$ {Math.floor((product?.price * valueKg) / 10) * 10}</h1>
+                                        </div>
+                                    </section>
                                 </div>
                             </CardBody>
                         </Card>
                     </ModalBody>
                     <ModalFooter>
                         <section className='flex flex-row w-full justify-center'>
-                            <Button className ="dark w-full" onClick = {() => onSubmitHandler(product, valueKg) }>
-                                    Aceptar
+                            <Button color='success'variant="shadow" className ="w-full font-extrabold text-5xl text-white h-[6rem]" onClick = {() => onSubmitHandler(product, valueKg) }>
+                                    ACEPTAR
                             </Button>
-                            <Button className='w-full' color="danger" variant="light" onClick={() => { handleOnClose() }}>
+                            {/* <Button className='w-full' color="danger" variant="light" onClick={() => { handleOnClose() }}>
                                     Cancelar
-                            </Button>
+                            </Button> */}
                         </section>
                     </ModalFooter>
                 </ModalContent>

@@ -10,10 +10,6 @@ export default function PaymentButton ({ key, id, icon, title, paymentTarget, se
         } else if (voucherTarget) {
             setVoucherTarget(id)
         }
-        // setIsSelected(true)
-        // onOpen = true
-        /// /const sales = useSalesStore.getState().listSales
-        // useSalesStore.getState().removeProduct(sales, productId)
     }
 
     return (
