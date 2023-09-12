@@ -39,10 +39,10 @@ const useSalesStore = create(
                 }
             } else {
                 if (!searhProduct) {
-                    set({ listSales: [...listSales, { product, quantity: units, discount: 0, total: product?.price * 1 }] })
+                    set({ listSales: [...listSales, { product, quantity: parseFloat(units), discount: 0, total: product?.price * 1 }] })
                 } else {
                     const newList = listSales?.filter((item) => item?.product?.id !== product?.id)
-                    set({ listSales: [...newList, { product, quantity: searhProduct?.quantity + units, discount: 0, total: product?.price * searhProduct?.quantity + units }] })
+                    set({ listSales: [...newList, { product, quantity: searhProduct?.quantity + parseFloat(units), discount: 0, total: product?.price * searhProduct?.quantity + units }] })
                 }
             }
             set({ units: 1 })
