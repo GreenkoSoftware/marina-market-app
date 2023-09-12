@@ -177,8 +177,8 @@ export default function WeighingScaleModal ({ isOpen, onClose, product, setKeyFo
                     </ModalBody>
                     <ModalFooter>
                         <section className='flex flex-row w-full justify-center'>
-                            <Button className ="dark w-full" onClick = {() => onSubmitHandler(product, valueKg, Math.floor((product?.price * valueKg) / 10) * 10) }>
-                                    Aceptar
+                            <Button color='success'variant="shadow" className ="w-full font-extrabold text-5xl text-white h-[6rem]" onClick = {() => onSubmitHandler(product, valueKg) }>
+                                    ACEPTAR
                             </Button>
                             {/* <Button className='w-full' color="danger" variant="light" onClick={() => { handleOnClose() }}>
                                     Cancelar
