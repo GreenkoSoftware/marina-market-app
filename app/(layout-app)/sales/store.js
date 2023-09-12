@@ -43,7 +43,7 @@ const useSalesStore = create(
                     set({ listSales: [...listSales, { product, quantity: parseFloat(units), discount: 0, total: product?.price * 1 }] })
                 } else {
                     const newList = listSales?.filter((item) => item?.product?.id !== product?.id)
-                    set({ listSales: [...newList, { product, quantity: searhProduct?.quantity + parseFloat(units), discount: 0, total: product?.priceKg ? searhProduct?.total + (product?.priceKg * parseFloat(units)) : product?.price * (searhProduct?.quantity + units) }] })
+                    set({ listSales: [...newList, { product, quantity: searhProduct?.quantity + parseFloat(units), discount: 0, total: product?.price * (searhProduct?.quantity + units) }] })
                 }
             }
             set({ units: 1 })

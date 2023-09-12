@@ -69,7 +69,7 @@ export default function SaleList (props) {
                                 if (useScannerStore.getState().enabledSetUnits) {
                                     setUnits(value)
                                 }
-                            }, 30)
+                            }, 100)
                         }}>
                     </Input>
                 </section>
