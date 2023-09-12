@@ -146,7 +146,7 @@ export default function WeighingScaleModal ({ isOpen, onClose, product, setKeyFo
                                             : <div className='w-full'>
                                                 <div key="flat" className="flex h-[4rem] flex-wrap md:flex-nowrap mb-4 md:mb-0 gap-2">
                                                     <Input type="number" variant={'flat'} label="KG" placeholder="Ingresa manualmente los KG." className='text-sm'
-                                                        onValueChange={(value) => setValueKg(parseFloat(value))} value={valueKg}
+                                                        onValueChange={(value) => setValueKg(value)} value={valueKg}
                                                     />
                                                 </div>
                                                 <div className='flex flex-col gap-1 w-full'>
@@ -177,7 +177,7 @@ export default function WeighingScaleModal ({ isOpen, onClose, product, setKeyFo
                     </ModalBody>
                     <ModalFooter>
                         <section className='flex flex-row w-full justify-center'>
-                            <Button color='success'variant="shadow" className ="w-full font-extrabold text-5xl text-white h-[6rem]" onClick = {() => onSubmitHandler(product, valueKg) }>
+                            <Button color='success'variant="shadow" className ="w-full font-extrabold text-5xl text-white h-[6rem]" onClick = {() => onSubmitHandler(product, valueKg, Math.floor((product?.price * valueKg) / 10) * 10) }>
                                     ACEPTAR
                             </Button>
                             {/* <Button className='w-full' color="danger" variant="light" onClick={() => { handleOnClose() }}>
