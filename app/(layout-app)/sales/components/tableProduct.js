@@ -144,7 +144,7 @@ export default function tableProducts (props) {
 
                 </section>
             </section>
-            <WeighingScaleModal isOpen={isOpen} onClose={onClose} product={selectedProductWithKG}/>
+            <WeighingScaleModal setKeyFocus={setKeyFocus} isOpen={isOpen} onClose={onClose} product={selectedProductWithKG}/>
         </section>
     )
 }

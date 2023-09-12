@@ -4,13 +4,16 @@ import React, { useEffect, useState } from 'react'
 import { Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Button, Input, Text } from '@nextui-org/react'
 import toast, { Toaster } from 'react-hot-toast'
 import { formatter } from '@/utils/number'
-export default function PayDetailed ({ loadingSale, setPageTarget, setPayment, isOpen, onClose, setGoPay, totalPay, payDetailed, setPayDetailed, listSales, createSale, paymentTarget, voucherTarget, clearList, pageTarget }) {
+export default function PayDetailed ({ loadingSale, setPageTarget, setPayment, isOpen, onClose, setGoPay, totalPay, payDetailed, setPayDetailed, listSales, createSale, paymentTarget, voucherTarget, clearList, pageTarget, onOpen, setPaymentTarget }) {
     const notify = (text) => toast(text)
     useEffect(() => {
-        if (pageTarget) {
-            createSale(paymentTarget, voucherTarget, listSales, notify, setPayment, onClose, setGoPay, clearList, setPageTarget, pageTarget, totalPay)
+        if (paymentTarget === 1) {
+            onOpen()
+            // createSale(paymentTarget, voucherTarget, listSales, notify, setPayment, onClose, setGoPay, clearList, setPageTarget, pageTarget, totalPay)
+        } else if (paymentTarget === 2) {
+            createSale(paymentTarget, voucherTarget, listSales, notify, setPayment, onClose, setGoPay, clearList, setPageTarget, pageTarget, totalPay, setPaymentTarget)
         }
-    }, [pageTarget])
+    }, [paymentTarget])
     return (
         <>
             <Toaster
@@ -114,7 +117,7 @@ export default function PayDetailed ({ loadingSale, setPageTarget, setPayment, i
                                     const result = totalPay - payDetailed
                                     if (result <= 0) {
                                         setPayDetailed(null)
-                                        createSale(paymentTarget, voucherTarget, listSales, notify, setPayment, onClose, setGoPay, clearList, setPayment, pageTarget, totalPay)
+                                        createSale(paymentTarget, voucherTarget, listSales, notify, setPayment, onClose, setGoPay, clearList, setPayment, pageTarget, totalPay, setPaymentTarget)
                                         // createSale(paymentTarget, voucherTarget, listSales, notify, setPayment, onClose, setGoPay, clearList, setPayment, totalPay)
                                     } else {
                                         setPayDetailed(null)

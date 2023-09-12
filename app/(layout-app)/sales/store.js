@@ -42,7 +42,7 @@ const useSalesStore = create(
                     set({ listSales: [...listSales, { product, quantity: units, discount: 0, total: product?.price * 1 }] })
                 } else {
                     const newList = listSales?.filter((item) => item?.product?.id !== product?.id)
-                    set({ listSales: [...newList, { product, quantity: searhProduct?.quantity + units, discount: 0, total: product?.price * searhProduct?.quantity + 1 }] })
+                    set({ listSales: [...newList, { product, quantity: searhProduct?.quantity + units, discount: 0, total: product?.price * searhProduct?.quantity + units }] })
                 }
             }
             set({ units: 1 })
@@ -67,7 +67,7 @@ const useSalesStore = create(
         loadingSale: false,
 
         /* Create sale */
-        createSale: (paymentTarget, voucherTarget, listSales, notify, setPayment, onClose, setGoPay, clearList, setPageTarget, pageTarget, totalPay) => {
+        createSale: (paymentTarget, voucherTarget, listSales, notify, setPayment, onClose, setGoPay, clearList, setPageTarget, pageTarget, totalPay, setPaymentTarget) => {
             const body = {
                 sales_receipt: listSales?.map((sale) => {
                     return {
@@ -83,6 +83,7 @@ const useSalesStore = create(
             try {
                 fetchPost(SALE_TICKET_CREATE, body).then(result => {
                     setPageTarget(false)
+                    setPaymentTarget(null)
                     set({ loadingSale: false })
                     if (result?.code === 200) {
                         generatePdfDocument({ listSales, totalPay })

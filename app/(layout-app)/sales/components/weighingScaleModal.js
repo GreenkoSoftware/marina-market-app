@@ -9,7 +9,7 @@ import hubScale from './store/connectionScale'
 import useSalesStore from '../store'
 import useOffersStore from '@/stores/offers'
 
-export default function WeighingScaleModal ({ isOpen, onClose, product }) {
+export default function WeighingScaleModal ({ isOpen, onClose, product, setKeyFocus }) {
     const [handShake, setHandShake] = useState(false)
     const [url, setUrl] = useState(null)
     const [manualMode, setManualMode] = useState(false)
@@ -37,9 +37,8 @@ export default function WeighingScaleModal ({ isOpen, onClose, product }) {
         onClose()
     }
 
-    const onSubmitHandler = (product, unitsKg) => {
-        addFromNewSales(listSales, product, unitsKg, offers)
-        onClose()
+    const onSubmitHandler = (product, unitsKg, priceTotal) => {
+        addFromNewSales(listSales, { ...product, price: priceTotal, priceKg: product?.price }, unitsKg, offers, handleOnClose, setKeyFocus)
     }
     /* Last message ws from fleet status */
     useEffect(() => {
@@ -63,7 +62,7 @@ export default function WeighingScaleModal ({ isOpen, onClose, product }) {
 
     useEffect(() => {
         if (isDefaultValue) {
-            onSubmitHandler(product, valueKg)
+            onSubmitHandler(product, valueKg, Math.floor((product?.price * valueKg) / 10) * 10)
         }
     }, [isDefaultValue, valueKg])
 
@@ -154,8 +153,8 @@ export default function WeighingScaleModal ({ isOpen, onClose, product }) {
                                         </div>
                                         : <section className="flex flex-col items-center justify-center content-between gap-2 h-[20rem]">
                                             <div key="flat" className="flex w-[20rem] h-[4rem] flex-wrap md:flex-nowrap mb-4 md:mb-0 gap-2">
-                                                <Input type="email" variant={'flat'} label="KG" placeholder="Ingresa manualmente los KG." className='text-sm'
-                                                    onValueChange={(value) => setValueKg(value)} value={valueKg}
+                                                <Input type="number" variant={'flat'} label="KG" placeholder="Ingresa manualmente los KG." className='text-sm'
+                                                    onValueChange={(value) => setValueKg(parseFloat(value))} value={valueKg}
                                                 />
                                             </div>
                                             <Button className=' w-[20rem] h-[3rem] bg-green-600 text-white font-bold text-lg'
@@ -182,7 +181,7 @@ export default function WeighingScaleModal ({ isOpen, onClose, product }) {
                     </ModalBody>
                     <ModalFooter>
                         <section className='flex flex-row w-full justify-center'>
-                            <Button className ="dark w-full" onClick = {() => onSubmitHandler(product, valueKg) }>
+                            <Button className ="dark w-full" onClick = {() => onSubmitHandler(product, valueKg, Math.floor((product?.price * valueKg) / 10) * 10) }>
                                     Aceptar
                             </Button>
                             <Button className='w-full' color="danger" variant="light" onClick={() => { handleOnClose() }}>

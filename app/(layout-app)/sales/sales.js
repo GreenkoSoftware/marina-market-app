@@ -30,11 +30,11 @@ const SalesMenu = () => {
         voucherTarget,
         setVoucherTarget
     }))
-    useEffect(() => {
+    /*  useEffect(() => {
         if (goPay) {
             onOpen()
         }
-    }, [goPay])
+    }, [goPay]) */
 
     return (
         <section className='h-full w-full flex md:flex-col'>
@@ -60,7 +60,8 @@ const SalesMenu = () => {
                     />
                 </div>
                 <PayDetailed isOpen={isOpen}
-                    onClose={onClose} onOpen={onOpen}
+                    onClose={onClose}
+                    onOpen={onOpen}
                     totalPay={totalPrice}
                     setGoPay={setGoPay}
                     setPayDetailed={setPayDetailed}
@@ -74,6 +75,9 @@ const SalesMenu = () => {
                     loadingSale={loadingSale}
                     pageTarget={pageTarget}
                     setPageTarget={setPageTarget}
+                    setKeyFocus={setKeyFocus}
+                    setPaymentTarget={setPaymentTarget}
+
                 />
             </div>
         </section>
