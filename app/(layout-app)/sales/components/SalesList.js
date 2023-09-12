@@ -8,6 +8,7 @@ import useSalesStore from '@/app/(layout-app)/sales/store'
 import { motion } from 'framer-motion'
 import useInventoryStore from '../../inventory/store'
 import { formatter } from '@/utils/number'
+import useScannerStore from '@/stores/scanner'
 export default function SaleList (props) {
     const {
         setPayment, payment, setSearchInput,
@@ -52,15 +53,24 @@ export default function SaleList (props) {
                         label="Unidades"
                         value={inputValue}
                         min={1}
-                        onFocusChange={(value) =>
-                            value
-                                ? useSalesStore.getState()?.disabledScanner()
-                                : useSalesStore.getState()?.enabledScanner()
-                        }
-                        onPaste={(e) => { e.preventDefault(); alert('No puedes escanear en este lugar') }}
+                        onFocusChange={(value) => {
+                            if (value) {
+                                useScannerStore.getState().setScanFromInputUnits(true)
+                            } else {
+                                useScannerStore.getState().setScanFromInputUnits(false)
+                            }
+                        }}
+                        onPaste={(e) => { e.preventDefault() }}
                         placeholder={1}
+                        defaultValue={1}
                         labelPlacement="inside"
-                        onValueChange={(value) => { setUnits(value) }}>
+                        onValueChange={(value) => {
+                            setTimeout(() => {
+                                if (useScannerStore.getState().enabledSetUnits) {
+                                    setUnits(value)
+                                }
+                            }, 30)
+                        }}>
                     </Input>
                 </section>
                 <section className='mb-4'>

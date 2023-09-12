@@ -21,6 +21,7 @@ const useSalesStore = create(
         disabledRedirectSales: (value) => set({ enabledRedirect: false }),
         setUnits: (value) => set({ units: parseInt(value) }),
         addFromNewSales: (listSales, product, units, offers, onCompleteFunction, setKeyFocus) => {
+            units = units || 1
             const searhProduct = listSales?.find((item) => { return item?.product?.id === product?.id })
             const offersProduct = offers?.find((item) => { return item?.productId === product?.id })
             if (offersProduct) {

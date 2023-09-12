@@ -99,7 +99,14 @@ const useInventoryStore = create(
                 }
             },
             getProductByCode: (products, searchCode) => {
-                const result = products?.find(({ code }) => code === searchCode)
+                const codeSearchSize = searchCode?.length
+                let result = products?.find(({ code }) => code === searchCode)
+
+                if (!result) {
+                    const firstChar = searchCode[0]
+                    result = products?.find(({ code }) => firstChar !== code[0] && searchCode.includes(code) && (Math.abs(code?.length - codeSearchSize) === 1))
+                }
+
                 return result || undefined
             },
             getProductById: (products, searchId) => {
