@@ -62,7 +62,7 @@ export default function WeighingScaleModal ({ isOpen, onClose, product, setKeyFo
 
     useEffect(() => {
         if (isDefaultValue) {
-            onSubmitHandler(product, valueKg, Math.floor((product?.price * valueKg) / 10) * 10)
+            onSubmitHandler(product, valueKg, Math.round(product?.price * valueKg / 10) * 10)
         }
     }, [isDefaultValue, valueKg])
 
@@ -168,7 +168,7 @@ export default function WeighingScaleModal ({ isOpen, onClose, product, setKeyFo
                                         }
                                         <div className='flex flex-row w-[20rem] gap-4 items-center px-5 py-3 border-3 border-teal-500 rounded-xl text-teal-500'>
                                             <h1 className="text-3xl w-full  text-teal-500 font-bold">TOTAL</h1>
-                                            <h1 className="text-3xl  w-full font-xl font-bold text-teal-500 ">$ {Math.floor((product?.price * valueKg) / 10) * 10}</h1>
+                                            <h1 className="text-3xl  w-full font-xl font-bold text-teal-500 ">$ { Math.round(product?.price * valueKg / 10) * 10}</h1>
                                         </div>
                                     </section>
                                 </div>
@@ -177,7 +177,7 @@ export default function WeighingScaleModal ({ isOpen, onClose, product, setKeyFo
                     </ModalBody>
                     <ModalFooter>
                         <section className='flex flex-row w-full justify-center'>
-                            <Button color='success'variant="shadow" className ="w-full font-extrabold text-5xl text-white h-[6rem]" onClick = {() => onSubmitHandler(product, valueKg, Math.floor((product?.price * valueKg) / 10) * 10) }>
+                            <Button color='success'variant="shadow" className ="w-full font-extrabold text-5xl text-white h-[6rem]" onClick = {() => onSubmitHandler(product, valueKg, Math.round(product?.price * valueKg / 10) * 10) }>
                                     ACEPTAR
                             </Button>
                         </section>
