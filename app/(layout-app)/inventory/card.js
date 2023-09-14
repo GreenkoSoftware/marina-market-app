@@ -79,8 +79,8 @@ export default function Card () {
     return (
         <section className='h-full flex flex-col'>
             <section className="flex items-start justify-between z-10">
-                <section className='flex flex-row rounded-t-[12px] space-x-5 bg-secondary-50 dark:bg-secondary-450 pr-3 pt-1 items-center'>
-                    <div style={{ scrollbarGutter: 'stable', scrollbarWidth: 0 }} className='h-[3rem]  w-[400px] top-[0px] overflow-x-auto overflow-hidden flex items-center'>
+                <section className='flex flex-row rounded-t-[12px] space-x-5 bg-secondary-50 dark:bg-secondary-450 pr-3 pt-1 items-center  '>
+                    <div style={{ scrollbarGutter: 'stable', scrollbarWidth: 0 }} className='h-[3rem]  w-[590px] top-[0px] mx-2 overflow-x-auto rounded-r-2xl overflow-hidden flex items-center'>
                         {loadingCategories
 
                             ? <section className="pt-1 pl-3 pr-3 w-full flex ">
@@ -92,11 +92,10 @@ export default function Card () {
                                 items={listCategories}
                                 selectedKey={selected}
                                 onSelectionChange={setSelected}
-                                variant={'light'}
-                                className="pt-3 pl-3 pb-3"
+                                className="pt-3 pl-3 bg-secondary-50 rounded-t-[12px] dark:bg-secondary-450 pb-3 px-5 "
                                 color={!sectionSearch ? '' : ''}
                                 classNames={{
-                                    cursor: 'w-full bg-primary-400',
+                                    cursor: 'w-full  bg-green-400',
                                     tabContent: 'group-data-[selected=true]:text-primary-50'
                                 }}
                                 onClick={() => setSectionSearch(false)}
@@ -158,7 +157,7 @@ export default function Card () {
                             <section style={{ scrollbarGutter: 'stable' }} className='max-h-[38rem] w-full overflow-y-auto flex flex-wrap snap-y snap-mandatory content-start'>
                                 {filteredList?.map((item, index) => (
                                     <div key={'productSearch' + index} className='w-1/2 sm:w-1/3 md:w-1/4 lg:w-1/5 xl:w-1/6 xlg:w-[12.5%] snap-start shrink-0'>
-                                        <div className='mx-1 my-1'>
+                                        <div className='mx-1 my-1 h-[90%] w-auto'>
                                             <CardUi item={item} setTargetProduct={setTargetProduct}/>
                                         </div>
                                     </div>
@@ -171,7 +170,7 @@ export default function Card () {
                                 }
                             </section>
                         </section>
-                        : <section style={{ scrollbarGutter: 'stable' }} className='max-h-[44rem] w-full overflow-y-auto flex flex-wrap snap-y snap-mandatory content-start'>
+                        : <section style={{ scrollbarGutter: 'stable' }} className='max-h-[48rem] w-full overflow-y-auto flex flex-wrap snap-y snap-mandatory content-start'>
                             {listInventory?.map((item, index) => (
                                 <div key={'productList' + index} className='w-1/2 sm:w-1/3 md:w-1/4 lg:w-1/5 xl:w-1/6 xlg:w-[12.5%] snap-start shrink-0'>
                                     <div className='mx-1 my-1'>

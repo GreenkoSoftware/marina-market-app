@@ -2,7 +2,7 @@
 'use client'
 import React, { useEffect, useState } from 'react'
 import CardUi from '@/components/ui/Card'
-import { Tabs, Tab, useDisclosure, Skeleton } from '@nextui-org/react'
+import { Tabs, Tab, useDisclosure, Skeleton, Divider } from '@nextui-org/react'
 import useSalesStore from '../store'
 import useInventoryStore from '../../inventory/store'
 import LoadingCard from '@/components/ui/Loading'
@@ -97,38 +97,41 @@ export default function tableProducts (props) {
 
     return (
         <section className='animation-fade-in h-full w-full flex flex-col'>
-            <section className='flex flex-row rounded-t-[12px] w-[360px] lg:w-[565px] space-x-5 bg-secondary-50 dark:bg-secondary-450 pt-1 items-center'>
-                <div style={{ scrollbarGutter: 'stable', scrollbarWidth: 0 }} className='h-[3rem]  w-[360px] lg:w-[565px] top-[0px] overflow-x-auto overflow-hidden flex items-center'>
+            {/* <section className='flex flex-row rounded-t-[12px] w-full space-x-5 bg-secondary-50 dark:bg-secondary-450 pt-1 items-center'> */}
+            <div style={{ scrollbarGutter: 'stable', scrollbarWidth: 0 }} className='rounded-t-[12px] top-[0px] overflow-x-auto overflow-hidden flex items-center'>
 
-                    {loadingCategories
-                        ? <section className="pl-3 w-full flex ">
-                            <Skeleton className="w-[8rem] m-1 h-8 rounded-lg"></Skeleton>
-                            <Skeleton className="w-[8rem] m-1 h-8 rounded-lg"></Skeleton>
-                            <Skeleton className="w-[8rem] m-1 h-8 rounded-lg"></Skeleton>
-                            <Skeleton className="w-[8rem] m-1 h-8 rounded-lg"></Skeleton>
-                        </section>
+                {loadingCategories
+                    ? <section className="pl-3 w-full flex ">
+                        <Skeleton className="w-[8rem] m-1 h-8 rounded-lg"></Skeleton>
+                        <Skeleton className="w-[8rem] m-1 h-8 rounded-lg"></Skeleton>
+                        <Skeleton className="w-[8rem] m-1 h-8 rounded-lg"></Skeleton>
+                        <Skeleton className="w-[8rem] m-1 h-8 rounded-lg"></Skeleton>
+                    </section>
 
-                        : <Tabs
-                            aria-label="Options"
-                            items={listCategories?.length > 0 ? listCategories?.filter((element) => element?.label === 'FRUTAS' || element?.label === 'VERDURAS' || element?.label === 'CARNES' || element?.label === 'PAN' || element?.label === 'MASCOTAS' || element?.label === 'CIGARROS') : [] }
-                            selectedKey={categoryTabSelected}
-                            onSelectionChange={setCategoryTabSelected}
-                            variant={'light'}
-                            className="pt-3 pl-3  pb-3 "
-                            classNames={{
-                                cursor: 'w-full bg-primary-400',
-                                tabContent: 'group-data-[selected=true]:text-primary-50'
-                            }}
-                        >
-                            {(item) => (
-                                <Tab key={item.id} size={'lg'} title={item.label}>
-                                </Tab>
-                            )}
-                        </Tabs>}
-                </div>
-            </section>
+                    : <Tabs
+                        color="success"
+                        aria-label="Options"
+                        items={listCategories?.length > 0 ? listCategories?.filter((element) => element?.label === 'FRUTAS' || element?.label === 'VERDURAS' || element?.label === 'CARNES' || element?.label === 'PAN' || element?.label === 'MASCOTAS' || element?.label === 'CIGARROS' || element?.label === 'DULCES' || element?.label === 'BAZAR' || element?.label === 'OTROS') : [] }
+                        selectedKey={categoryTabSelected}
+                        onSelectionChange={setCategoryTabSelected}
+                        variant={'bordered'}
+                        className="pt-3 pl-3  bg-secondary-50 rounded-t-[12px] dark:bg-secondary-450 pb-3 px-5 "
+                        classNames={{
+                            cursor: 'w-full bg-green-400',
+                            tabContent: 'group-data-[selected=true]:text-primary-50 font-extrabold'
+                        }}
+                    >
+
+                        {(item) => (
+
+                            <Tab color="primary" variant="shadow" key={item.id} size="xl" title={item.label}>
+                            </Tab>
+                        )}
+                    </Tabs>}
+            </div>
+            {/*         </section> */}
             <section className='flex-1 rounded-xl rounded-tl-[0px] p-[1rem] bg-secondary-50 dark:bg-secondary-450'>
-                <section style={{ scrollbarGutter: 'stable' }} className='max-h-[44rem] w-full overflow-y-auto flex flex-wrap snap-y snap-mandatory content-start '>
+                <section style={{ scrollbarGutter: 'stable' }} className='max-h-[47.5rem] w-full overflow-y-auto flex flex-wrap snap-y snap-mandatory content-start '>
                     {loading
                         ? <div className="gap-4 grid grid-cols-2 md:grid-cols-5 p-1 w-full">
                             {listEmpty?.map((item, key) => (<LoadingCard key={key}/>))}
@@ -136,7 +139,7 @@ export default function tableProducts (props) {
                         : (filteredList.length ? filteredList : listInventory)?.length > 0
                             ? (filteredList.length ? filteredList : listInventory)?.map((item, index) => (
                                 <div key={'productList' + index} className='w-1/2 sm:w-1/3 md:w-1/4 lg:w-1/5 xl:w-1/5 xlg:w-1/6 snap-start shrink-0'>
-                                    <div className='mx-1 my-1 h-[95%] w-auto'>
+                                    <div className='mx-2 my-2.5 h-[90%] w-auto'>
                                         <CardUi className key={index} item={item} index={index} isFromSales={true} setTargetProduct={setTargetProduct}/>
                                     </div>
                                 </div>

@@ -43,7 +43,7 @@ export default function SaleList (props) {
         }
     }, [keyFocus])
     return (
-        <section className='flex flex-col items-center h-full w-full px-3 pt-[3rem] '>
+        <section className='flex flex-col m-1 items-center h-full w-full pt-[4rem] '>
             <section className='w-full h-full rounded-[14px] bg-primary-50 border border-gray-200 dark:border-secondary-450 shadow  dark:bg-secondary-450 '>
                 <section className='flex flex-row px-1'>
                     <SearchBar onChange={onChange} onClear={onClear}/>
@@ -124,7 +124,7 @@ export default function SaleList (props) {
             </section>
             <section className='w-full'>
                 {totalPrice
-                    ? <Button color="success" variant="shadow" className='text-white mt-3 h-[5rem] w-full font-bold text-2xl'
+                    ? <Button color="success" variant="shadow" className='text-white mt-2 mb-2 h-[6rem] w-full font-bold text-2xl'
                         onClick={() => {
                             if (!payment) {
                                 setPayment(true)
