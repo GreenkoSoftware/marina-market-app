@@ -13,6 +13,7 @@ const useInventoryStore = create(
             setListInventory: () => set((state) => ({ listInventory: state })),
             loading: false,
             loadingCategories: false,
+            loadingStock: false,
             error: null,
             getListInventory: () => {
                 set({ loading: true, error: null })
@@ -45,13 +46,13 @@ const useInventoryStore = create(
                                         return 1
                                     }
                                     return 0
-                                }),
-                                loading: false
+                                })
                             })
                         } else if (result?.status) {
-                            set({ loading: false, error: result?.statusText })
+                            set({ error: result?.statusText })
                             return null
                         }
+                        set({ loading: false })
                     })
                 } catch {
                     set({ loading: false })
@@ -72,13 +73,14 @@ const useInventoryStore = create(
                         } else {
                             return null
                         }
+                        set({ loadingCategories: false })
                     })
                 } catch {
                     set({ loadingCategories: false })
                 }
             },
             getStockTypes: () => {
-                set({ loading: true, error: null })
+                set({ loadingStock: true, error: null })
                 try {
                     fetchGet({ url: TYPE_STOCK_API_URL }).then(result => {
                         if (result?.code === 200) {
@@ -88,14 +90,15 @@ const useInventoryStore = create(
                                 }, [])
                             })
                         } else if (result?.status) {
-                            set({ loading: false, error: result?.statusText })
+                            set({ error: result?.statusText })
                             return null
                         } else {
                             return null
                         }
+                        set({ loadingStock: false })
                     })
                 } catch {
-                    set({ loading: false })
+                    set({ loadingStock: false })
                 }
             },
             getProductByCode: (products, searchCode) => {
