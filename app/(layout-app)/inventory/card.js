@@ -117,7 +117,7 @@ export default function Card () {
                         <MagnifyingGlassIcon className='w-5 h-5'/>
                     </Button>
                 </section>
-                <div className="flex space-x-2">
+                <div className="flex space-x-2 pr-[46rem]">
                     {/* <ScannerDetection/> */}
                     <Offers/>
                     <CreateProduct/>
