@@ -139,7 +139,7 @@ export default function tableProducts (props) {
                         : (filteredList.length ? filteredList : listInventory)?.length > 0
                             ? (filteredList.length ? filteredList : listInventory)?.map((item, index) => (
                                 <div key={'productList' + index} className='w-1/2 sm:w-1/3 md:w-1/4 lg:w-1/5 xl:w-1/5 xlg:w-1/6 snap-start shrink-0'>
-                                    <div className='mx-2 my-2.5 h-[90%] w-auto'>
+                                    <div className='mx-2 my-2.5  h-[90%] w-auto'>
                                         <CardUi className key={index} item={item} index={index} isFromSales={true} setTargetProduct={setTargetProduct}/>
                                     </div>
                                 </div>

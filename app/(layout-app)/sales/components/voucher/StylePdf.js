@@ -36,11 +36,28 @@ export const StylePdf = StyleSheet.create({
         marginTop: 0,
         marginBottom: 10
     },
-    reportTitle: {
+    title: {
         color: '#000000',
         letterSpacing: 1,
         fontSize: 11,
+        fontWeight: 'bold',
+        textTransform: 'uppercase',
+        fontFamily: 'Helvetica-Bold'
+    },
+    titleSecondary: {
+        color: '#000000',
+        letterSpacing: 1,
+        fontSize: 9,
+        fontWeight: 'bold',
+        textTransform: 'uppercase',
+        fontFamily: 'Helvetica-Bold'
+    },
+    subtitle: {
+        color: '#000000',
+        letterSpacing: 1,
+        fontSize: 7,
         textTransform: 'uppercase',
         fontFamily: 'Helvetica-Bold'
     }
+
 })

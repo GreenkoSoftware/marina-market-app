@@ -7,7 +7,7 @@ import { TableProductVoucher } from './components/table/table'
 import ViewTotal from './components/total/total'
 
 // Create Document Component
-export const Voucher = ({ listSales, totalPay }) => (
+export const Voucher = ({ listSales, totalPay, date }) => (
     <Document>
         <Page size={[180]} style={StylePdf.page}>
             <View style={StylePdf.container}>
@@ -19,15 +19,17 @@ export const Voucher = ({ listSales, totalPay }) => (
                 </View>
             </View>
             <View style={StylePdf.container}>
-                <Text style={StylePdf.reportTitle}>{'MARINA MARKET'}</Text>
-                <Text style={StylePdf.reportTitle}>{'RUT: 77426986-K'}</Text>
-                <Text style={StylePdf.reportTitle}>{'MINIMARKET'}</Text>
-                <Text style={StylePdf.reportTitle}>{'LA MARINA 200'}</Text>
-                <Text style={StylePdf.reportTitle}>{'COQUIMBO'}</Text>
-                <Text style={StylePdf.reportTitle}>{'944226305'}</Text>
+                <Text style={StylePdf.title}>{'MARINA MARKET'}</Text>
+                <Text style={StylePdf.title}>{'RUT: 77426986-K'}</Text>
+                <Text style={StylePdf.subtitle}>{'MINIMARKET'}</Text>
+                <Text style={StylePdf.subtitle}>{'LA MARINA 200'}</Text>
+                <Text style={StylePdf.subtitle}>{'COQUIMBO'}</Text>
+                <Text style={StylePdf.subtitle}>{'944226305'}</Text>
             </View>
             <View style={StylePdf.container}>
-                <Text style={StylePdf.reportTitle}>{'COMPROBANTE DE VENTA'}</Text>
+                <Text style={StylePdf.titleSecondary}>{'COMPROBANTE DE VENTA'}</Text>
+                <Text style={StylePdf.subtitle}>{date}</Text>
+
             </View>
             {/* Table products */}
             <View style={StylePdf.containerFlexCol}>
