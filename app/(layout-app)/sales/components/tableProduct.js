@@ -121,13 +121,12 @@ export default function tableProducts (props) {
                             tabContent: 'group-data-[selected=true]:text-primary-50 font-extrabold'
                         }}
                     >
-
                         {(item) => (
-
                             <Tab color="primary" variant="shadow" key={item.id} size="xl" title={item.label}>
                             </Tab>
                         )}
-                    </Tabs>}
+                    </Tabs>
+                }
             </div>
             {/*         </section> */}
             <section className='flex-1 rounded-xl rounded-tl-[0px] p-[1rem] bg-secondary-50 dark:bg-secondary-450'>
@@ -139,7 +138,7 @@ export default function tableProducts (props) {
                         : (filteredList.length ? filteredList : listInventory)?.length > 0
                             ? (filteredList.length ? filteredList : listInventory)?.map((item, index) => (
                                 <div key={'productList' + index} className='w-1/2 sm:w-1/3 md:w-1/4 lg:w-1/5 xl:w-1/5 xlg:w-1/6 snap-start shrink-0'>
-                                    <div className='mx-2 my-2.5  h-[90%] w-auto'>
+                                    <div className='mx-1 my-1  h-[95%] w-auto'>
                                         <CardUi className key={index} item={item} index={index} isFromSales={true} setTargetProduct={setTargetProduct}/>
                                     </div>
                                 </div>

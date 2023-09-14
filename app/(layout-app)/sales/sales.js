@@ -14,6 +14,7 @@ const SalesMenu = () => {
     const [goPay, setGoPay] = useState(false)
     const [payDetailed, setPayDetailed] = useState(null)
     const [pageTarget, setPageTarget] = useState(null)
+    const [height, setHeight] = useState(null)
 
     const { totalPrice, clearList, listSales, createSale, loadingSale, keyFocus, setKeyFocus } = useSalesStore((
         { totalPrice, clearList, listSales, createSale, loadingSale, keyFocus, setKeyFocus }) => (
@@ -30,15 +31,16 @@ const SalesMenu = () => {
         voucherTarget,
         setVoucherTarget
     }))
-    /*  useEffect(() => {
-        if (goPay) {
-            onOpen()
-        }
-    }, [goPay]) */
+    useEffect(() => {
+        setHeight(window.innerHeight)
+    }, [])
+    useEffect(() => {
+        console.log(height)
+    }, [height])
 
     return (
         <section className='h-full w-full flex md:flex-col'>
-            <div className="flex h-full md:flex-wrap">
+            <div className="flex h-full md:flex-wrap w-full">
                 <div className="w-full md:w-[70%] ">
                     {payment
                         ? <PayPage payment={payment} setPayment={setPayment} paymentTarget={paymentTarget} setPaymentTarget={setPaymentTarget}
@@ -46,7 +48,7 @@ const SalesMenu = () => {
                         : <TableInventory setSearchInput={setSearchInput} searchInput={searchInput} setKeyFocus={setKeyFocus}/>
                     }
                 </div>
-                <div className="w-full md:w-[30%]">
+                <div className="w-full md:w-[30%] px-5 h-full">
                     <SaleList
                         loadingSale={loadingSale}
                         setPageTarget={setPageTarget}
