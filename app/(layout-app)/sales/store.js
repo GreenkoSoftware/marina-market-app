@@ -9,6 +9,7 @@ const useSalesStore = create(
     (set) => ({
         loading: false,
         error: null,
+        keyFocus: null,
         totalPrice: 0,
         listSales: [],
         scannerEnabled: false,
@@ -20,7 +21,7 @@ const useSalesStore = create(
         enabledRedirectSales: (value) => set({ enabledRedirect: true }),
         disabledRedirectSales: (value) => set({ enabledRedirect: false }),
         setUnits: (value) => set({ units: parseInt(value) }),
-        addFromNewSales: (listSales, product, units, offers, onCompleteFunction, setKeyFocus) => {
+        addFromNewSales: (listSales, product, units, offers, onCompleteFunction) => {
             units = units || 1
             const searhProduct = listSales?.find((item) => { return item?.product?.id === product?.id })
             const offersProduct = offers?.find((item) => { return item?.productId === product?.id })
@@ -47,8 +48,8 @@ const useSalesStore = create(
                 }
             }
             set({ units: 1 })
+            set({ keyFocus: product?.code })
             if (onCompleteFunction) {
-                setKeyFocus(product?.code)
                 onCompleteFunction()
             }
         },
@@ -59,6 +60,7 @@ const useSalesStore = create(
         clearList: () => {
             set({ listSales: [], totalPrice: 0 })
         },
+        setKeyFocus: (value) => set({ keyFocus: value }),
         /* Added method pay and voucher, ticket,etc */
         paymentTarget: null,
         voucherTarget: 1,

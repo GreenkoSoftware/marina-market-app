@@ -14,10 +14,10 @@ const SalesMenu = () => {
     const [goPay, setGoPay] = useState(false)
     const [payDetailed, setPayDetailed] = useState(null)
     const [pageTarget, setPageTarget] = useState(null)
-    const [keyFocus, setKeyFocus] = useState(null)
-    const { totalPrice, clearList, listSales, createSale, loadingSale } = useSalesStore((
-        { totalPrice, clearList, listSales, createSale, loadingSale }) => (
-        { totalPrice, clearList, listSales, createSale, loadingSale }))
+
+    const { totalPrice, clearList, listSales, createSale, loadingSale, keyFocus, setKeyFocus } = useSalesStore((
+        { totalPrice, clearList, listSales, createSale, loadingSale, keyFocus, setKeyFocus }) => (
+        { totalPrice, clearList, listSales, createSale, loadingSale, keyFocus, setKeyFocus }))
     const {
         paymentTarget, setPaymentTarget,
         voucherTarget, setVoucherTarget

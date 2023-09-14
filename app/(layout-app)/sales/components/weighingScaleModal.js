@@ -38,7 +38,7 @@ export default function WeighingScaleModal ({ isOpen, onClose, product, setKeyFo
     }
 
     const onSubmitHandler = (product, unitsKg, priceTotal) => {
-        addFromNewSales(listSales, product, unitsKg, offers, handleOnClose, setKeyFocus)
+        addFromNewSales(listSales, product, unitsKg, offers, handleOnClose)
     }
     /* Last message ws from fleet status */
     useEffect(() => {
