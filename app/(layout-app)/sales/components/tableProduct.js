@@ -101,7 +101,7 @@ export default function tableProducts (props) {
             <div style={{ scrollbarGutter: 'stable', scrollbarWidth: 0 }} className='rounded-t-[12px] top-[0px] overflow-x-auto overflow-hidden flex items-center'>
 
                 {loadingCategories
-                    ? <section className="pl-3 w-full flex ">
+                    ? <section className="pl-3 w-full flex bg-secondary-50 rounded-t-[12px] dark:bg-secondary-450">
                         <Skeleton className="w-[8rem] m-1 h-8 rounded-lg"></Skeleton>
                         <Skeleton className="w-[8rem] m-1 h-8 rounded-lg"></Skeleton>
                         <Skeleton className="w-[8rem] m-1 h-8 rounded-lg"></Skeleton>
@@ -115,7 +115,7 @@ export default function tableProducts (props) {
                         selectedKey={categoryTabSelected}
                         onSelectionChange={setCategoryTabSelected}
                         variant={'bordered'}
-                        className="pt-3 pl-3  bg-secondary-50 rounded-t-[12px] dark:bg-secondary-450 pb-3 px-5 "
+                        className="pt-3 px-3  bg-secondary-50 rounded-t-[12px] dark:bg-secondary-450"
                         classNames={{
                             cursor: 'w-full bg-green-400',
                             tabContent: 'group-data-[selected=true]:text-primary-50 font-extrabold'
@@ -131,7 +131,7 @@ export default function tableProducts (props) {
             </div>
             {/*         </section> */}
             <section className='flex-1 rounded-xl rounded-tl-[0px] p-[1rem] bg-secondary-50 dark:bg-secondary-450'>
-                <section style={{ scrollbarGutter: 'stable' }} className='max-h-[47.5rem] w-full overflow-y-auto flex flex-wrap snap-y snap-mandatory content-start '>
+                <section style={{ scrollbarGutter: 'stable' }} className='max-h-[44rem] w-full overflow-y-auto flex flex-wrap snap-y snap-mandatory content-start '>
                     {loading
                         ? <div className="gap-4 grid grid-cols-2 md:grid-cols-5 p-1 w-full">
                             {listEmpty?.map((item, key) => (<LoadingCard key={key}/>))}

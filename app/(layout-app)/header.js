@@ -8,7 +8,7 @@ import { usePathname } from 'next/navigation'
 export function Header () {
     const { isConnected } = hubScale()
     return (
-        <section className={'flex flex-row-reverse my-[1rem] mx-[1rem] xl:mx-[6rem] xlg:mx-[6rem] gap-x-unit-1 animation-fade-in'}>
+        <section className={'flex flex-row-reverse py-2 mx-[1rem] xl:mx-[6rem] xlg:mx-[6rem] gap-x-unit-1 animation-fade-in'}>
             <HomeButton/>
             <ThemeButton/>
             {usePathname() === '/sales' ? <ScaleStatus scaleStatus = {isConnected}/> : <></>}
