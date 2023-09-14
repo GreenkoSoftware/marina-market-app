@@ -76,7 +76,7 @@ export default function CreateProduct () {
     const [barcodeValue, setBarcodeValue] = useState(null)
     const [isBarcodeGenerated, setIsBarcodeGenerated] = useState(false)
 
-    const { data, setFormData, requestCreateProduct, loading, error, setError, complete, hasRequeredValues, clearStore } = useProductFormStore()
+    const { data, setFormData, requestCreateProduct, loadingStock, loadingCategories, error, setError, complete, hasRequeredValues, clearStore } = useProductFormStore()
     const { listCategories, listStockTypes, getCategories, getStockTypes, getListInventory } = useInventoryStore()
 
     useEffect(() => {
@@ -270,7 +270,7 @@ export default function CreateProduct () {
                             : null}
                         <Button className =" bg-green-500 text-primary-50"
                             onClick={() => { requestCreateProduct(data, notify) }}
-                            isLoading={!!loading}>
+                            isLoading={!!loadingStock && !!loadingCategories}>
                             Guardar
                         </Button>
                         <Button color="danger" variant="flat"
