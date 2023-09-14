@@ -71,6 +71,11 @@ export default function Card () {
         }
     }, [searchInput])
     useEffect(() => {
+        if (!sectionSearch) {
+            setSearchInput('')
+        }
+    }, [sectionSearch])
+    useEffect(() => {
         /* Add in the future refreshToken in this useEffect */
         getCategories()
         getStockTypes()
@@ -81,7 +86,7 @@ export default function Card () {
             <section className="flex items-start justify-between z-10">
                 <section className='flex flex-row rounded-t-[12px] space-x-5 bg-secondary-50 dark:bg-secondary-450 pr-3 pt-1 items-center  '>
                     <div style={{ scrollbarGutter: 'stable', scrollbarWidth: 0 }} className='h-[3rem]  w-[400px] top-[0px] overflow-x-auto mx-2 rounded-r-2xl overflow-hidden flex items-center'>
-                        {loadingCategories
+                        {loadingCategories && loading
 
                             ? <section className="pt-1 pl-3 pr-3 w-full flex ">
                                 <Skeleton className="w-full h-8 rounded-lg"></Skeleton>
@@ -108,14 +113,22 @@ export default function Card () {
                                     )
                                     : null}
 
-                            </Tabs>}
+                            </Tabs>
+                        }
 
                     </div>
-                    <Button variant={sectionSearch ? 'solid' : 'ghost'} color={sectionSearch ? 'warning' : ''} isIconOnly onClick={() => {
-                        setSectionSearch(!sectionSearch)
-                    }}>
-                        <MagnifyingGlassIcon className='w-5 h-5'/>
-                    </Button>
+                    {loadingCategories && loading
+                        ? <section className="pt-1 w-full flex ">
+                            <Skeleton className="w-full h-8 rounded-lg"></Skeleton>
+                        </section>
+                        : <Button
+                            isDisabled={loadingCategories || loading}
+                            variant={sectionSearch ? 'solid' : 'ghost'} color={sectionSearch ? 'warning' : ''} isIconOnly onClick={() => {
+                                setSectionSearch(!sectionSearch)
+                            }}>
+                            <MagnifyingGlassIcon className='w-5 h-5'/>
+                        </Button>
+                    }
                 </section>
                 <div className="flex space-x-2">
                     {/* <ScannerDetection/> */}
@@ -124,13 +137,14 @@ export default function Card () {
                 </div>
             </section>
             <section className="flex flex-1 p-[1rem] w-auto shadow-md hover:shadow-lg  rounded-tl-[0px]  bg-secondary-50 dark:bg-secondary-450 rounded-[14px]">
-                { loading
+                { loadingCategories && loading
                     ? <ScrollShadow className="w-full pb-4">
                         <div className="gap-4 grid grid-cols-2 md:grid-cols-5 p-1">{listEmpty?.map((item, key) => (<LoadingCard key={key}/>))}</div> </ScrollShadow>
                     : sectionSearch
                         ? <section className='h-full w-full'>
                             <Input
                                 label="Busqueda"
+                                autoFocus
                                 isClearable
                                 radius="lg"
                                 onChange={onChangeValue}

@@ -120,6 +120,7 @@ export default function tableProducts (props) {
                             cursor: 'w-full bg-green-400',
                             tabContent: 'group-data-[selected=true]:text-primary-50 font-extrabold'
                         }}
+                        onClick={() => setSearchInput('')}
                     >
 
                         {(item) => (
