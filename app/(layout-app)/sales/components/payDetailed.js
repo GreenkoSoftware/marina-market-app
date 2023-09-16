@@ -49,6 +49,7 @@ export default function PayDetailed ({ loadingSale, setPageTarget, setPayment, i
                 onClose={() => {
                     onClose()
                     setGoPay()
+                    setPaymentTarget(null)
                 }}
                 scrollBehavior={'inside'}
                 closeButton={<></>}
@@ -131,6 +132,7 @@ export default function PayDetailed ({ loadingSale, setPageTarget, setPayment, i
 
                         <Button color="danger" variant="flat"
                             onClick={() => {
+                                setPaymentTarget(null)
                                 setPayDetailed(null)
                                 onClose()
                                 setGoPay(false)
