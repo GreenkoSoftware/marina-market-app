@@ -185,7 +185,7 @@ export default function Offers () {
     return (
         <section>
             <header className="flex justify-end">
-                <Button className='bg-primary-400 dark:bg-primary-400' color='primary' onClick={onOpen}>Ofertas</Button>
+                <Button className='bg-amber-400 dark:bg-amber-400 font-bold' color='danger' variant="bordered" onClick={onOpen}>OFERTAS</Button>
             </header>
             <Modal size={'3xl'}
                 isOpen={isOpen}
