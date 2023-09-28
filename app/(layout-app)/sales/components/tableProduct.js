@@ -101,21 +101,27 @@ export default function tableProducts (props) {
             <div style={{ scrollbarGutter: 'stable', scrollbarWidth: 0 }} className='rounded-t-[12px] top-[0px] overflow-x-auto overflow-hidden flex items-center'>
 
                 {loadingCategories
-                    ? <section className="pl-3 w-full flex bg-secondary-50 rounded-t-[12px] dark:bg-secondary-450">
-                        <Skeleton className="w-[8rem] m-1 h-8 rounded-lg"></Skeleton>
-                        <Skeleton className="w-[8rem] m-1 h-8 rounded-lg"></Skeleton>
-                        <Skeleton className="w-[8rem] m-1 h-8 rounded-lg"></Skeleton>
-                        <Skeleton className="w-[8rem] m-1 h-8 rounded-lg"></Skeleton>
+                    ? <section className="pt-3 px-3  flex bg-secondary-50 rounded-t-[12px] dark:bg-secondary-450">
+                        <Skeleton className="w-[6rem] m-1 h-8 rounded-lg"></Skeleton>
+                        <Skeleton className="w-[6rem] m-1 h-8 rounded-lg"></Skeleton>
+                        <Skeleton className="w-[6rem] m-1 h-8 rounded-lg"></Skeleton>
+                        <Skeleton className="w-[6rem] m-1 h-8 rounded-lg"></Skeleton>
+                        <Skeleton className="w-[6rem] m-1 h-8 rounded-lg"></Skeleton>
+                        <Skeleton className="w-[6rem] m-1 h-8 rounded-lg"></Skeleton>
+                        <Skeleton className="w-[6rem] m-1 h-8 rounded-lg"></Skeleton>
+                        <Skeleton className="w-[6rem] m-1 h-8 rounded-lg"></Skeleton>
+                        <Skeleton className="w-[6rem] m-1 h-8 rounded-lg"></Skeleton>
+                        <Skeleton className="w-[6rem] m-1 h-8 rounded-lg"></Skeleton>
                     </section>
 
                     : <Tabs
                         color="success"
                         aria-label="Options"
-                        items={listCategories?.length > 0 ? listCategories?.filter((element) => element?.label === 'FRUTAS' || element?.label === 'VERDURAS' || element?.label === 'CARNES' || element?.label === 'PAN' || element?.label === 'MASCOTAS' || element?.label === 'CIGARROS' || element?.label === 'DULCES' || element?.label === 'BAZAR' || element?.label === 'OTROS' || element?.label === 'PROMOS') : [] }
+                        items={listCategories?.length > 0 ? listCategories?.filter((element) => element?.label === 'FRUTAS' || element?.label === 'VERDURAS' || element?.label === 'CARNES' || element?.label === 'PAN' || element?.label === 'MASCOTAS' || element?.label === 'CIGARROS' || element?.label === 'DULCES' || element?.label === 'BAZAR' || element?.label === 'OTROS' || element?.label === 'PROMOS' || element?.label === 'REMEDIOS') : [] }
                         selectedKey={categoryTabSelected}
                         onSelectionChange={setCategoryTabSelected}
                         variant={'bordered'}
-                        className="pt-3 px-3  bg-secondary-50 rounded-t-[12px] dark:bg-secondary-450"
+                        className="pt-3 px-3 bg-secondary-50 rounded-t-[12px] dark:bg-secondary-450"
                         classNames={{
                             cursor: 'w-full bg-green-400',
                             tabContent: 'group-data-[selected=true]:text-primary-50 font-extrabold'

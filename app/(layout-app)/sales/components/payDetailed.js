@@ -14,6 +14,10 @@ export default function PayDetailed ({ loadingSale, setPageTarget, setPayment, i
             createSale(paymentTarget, voucherTarget, listSales, notify, setPayment, onClose, setGoPay, clearList, setPageTarget, pageTarget, totalPay, setPaymentTarget)
         }
     }, [paymentTarget])
+
+    useEffect(() => {
+        setPayDetailed(0)
+    }, [])
     return (
         <>
             <Toaster
@@ -24,15 +28,8 @@ export default function PayDetailed ({ loadingSale, setPageTarget, setPayment, i
                 containerStyle={{}}
                 className={' bg-primary-50 text-primary-500 dark:bg-primary-200 dark:text-primary-500'}
                 toastOptions={{
-                    // Define default options
                     className: '',
                     duration: 10000,
-                    // style: {
-                    //    background: '#363636',
-                    //    color: '#fff'
-                    // },
-
-                    // Default options for specific types
                     success: {
                         duration: 3000,
                         theme: {
@@ -60,23 +57,23 @@ export default function PayDetailed ({ loadingSale, setPageTarget, setPayment, i
                         <h1 className='text-4xl font-bold'>CALCULAR PAGO EN EFECTIVO</h1>
                         <section className="flex flex-row items-center justify-center content-between gap-5">
                             <Button className=' w-[8rem] h-[4rem] bg-green-600 text-white font-bold text-lg'
-                                onClick={() => setPayDetailed(1000) }>
+                                onClick={() => setPayDetailed(payDetailed + 1000) }>
                                 $1.000
                             </Button>
                             <Button className=' w-[8rem] h-[4rem] bg-indigo-600 text-white font-bold text-lg'
-                                onClick={() => setPayDetailed(2000) }>
+                                onClick={() => setPayDetailed(payDetailed + 2000) }>
                                 $2.000
                             </Button>
                             <Button className=' w-[8rem] h-[4rem] bg-red-600 text-white  font-bold text-lg'
-                                onClick={() => setPayDetailed(5000) }>
+                                onClick={() => setPayDetailed(payDetailed + 5000) }>
                                 $5.000
                             </Button>
                             <Button className=' w-[8rem] h-[4rem] bg-blue-600 text-white  font-bold text-lg'
-                                onClick={() => setPayDetailed(10000) }>
+                                onClick={() => setPayDetailed(payDetailed + 10000) }>
                                 $10.000
                             </Button>
                             <Button className=' w-[8rem] h-[4rem] bg-orange-600 text-white  font-bold text-lg'
-                                onClick={() => setPayDetailed(20000) }>
+                                onClick={() => setPayDetailed(payDetailed + 20000) }>
                                 $20.000
                             </Button>
                         </section>
