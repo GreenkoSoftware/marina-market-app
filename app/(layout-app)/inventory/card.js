@@ -29,10 +29,16 @@ export default function Card () {
     const [filteredList, setFilteredList] = useState([])
     useEffect(() => {
         if (selected) {
-            setSectionSearch(false)
             setListInventory(list?.filter((item) => item.productCategoryId === parseInt(selected)))
         }
     }, [selected, list])
+
+    useEffect(() => {
+        if (selected) {
+            setSectionSearch(false)
+        }
+    }, [selected])
+
     useEffect(() => {
         if (targeProduct) {
             onOpen()
@@ -69,7 +75,7 @@ export default function Card () {
             setFilteredList([])
             setMessageSearch('Realiza una búsqueda.')
         }
-    }, [searchInput])
+    }, [searchInput, list])
     useEffect(() => {
         if (!sectionSearch) {
             setSearchInput('')
@@ -99,7 +105,7 @@ export default function Card () {
                                 className="pt-3 pl-3 bg-secondary-50 rounded-t-[12px] dark:bg-secondary-450 pb-3 px-5 "
                                 color={!sectionSearch ? '' : ''}
                                 classNames={{
-                                    cursor: 'w-full  bg-green-400',
+                                    cursor: sectionSearch ? 'w-full bg-secondary-200' : 'w-full bg-green-400',
                                     tabContent: 'group-data-[selected=true]:text-primary-50'
                                 }}
                                 onClick={() => setSectionSearch(false)}

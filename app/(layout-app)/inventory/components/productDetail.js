@@ -44,8 +44,8 @@ export default function ProductDetail ({ targeProduct, isOpen, onClose, setTarge
         setNewProductData(newProductValues)
     }, [image])
 
-    const handleInputChange = ({ field, value, isSalePrice }) => {
-        const newProductValues = { ...newProductData, [field]: !isNaN(value) ? parseInt(value) : value }
+    const handleInputChange = ({ field, value, isSalePrice, isCode }) => {
+        const newProductValues = { ...newProductData, [field]: !isNaN(value) && !isCode ? parseInt(value) : value }
         if (isSalePrice) {
             newProductValues.net_price = newProductValues?.price / 1.19
         }
@@ -171,7 +171,7 @@ export default function ProductDetail ({ targeProduct, isOpen, onClose, setTarge
                                                 title="Codigo de barra"
                                                 defaultValue={productData?.code}
                                                 disabled={!edit}
-                                                onValueChange={(value) => { handleInputChange({ field: 'code', value }) }}
+                                                onValueChange={(value) => { handleInputChange({ field: 'code', value, isCode: true }) }}
                                             />
                                             <InputComponent
                                                 type="text"
@@ -224,7 +224,7 @@ export default function ProductDetail ({ targeProduct, isOpen, onClose, setTarge
                                             placeholder="0"
                                             isPrice
                                             defaultValue={productData?.price}
-                                            onValueChange={(value) => { handleInputChange({ field: 'sale_price', value }) }}
+                                            onValueChange={(value) => { handleInputChange({ field: 'sale_price', value, isSalePrice: true }) }}
                                             disabled={!edit}
                                         />
                                     </div>
