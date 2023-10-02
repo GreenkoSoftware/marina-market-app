@@ -31,6 +31,16 @@ export default function SaleList (props) {
     const onClear = () => {
         setSearchInput('')
     }
+    const IncreaseUnit = () => {
+        const Units = inputValue + 1
+        setUnits(Units)
+    }
+    const DecreaseUnit = () => {
+        const Units = inputValue - 1
+        if (Units > 0) {
+            setUnits(Units)
+        }
+    }
 
     const handleButton = () => {
         clearList()
@@ -43,13 +53,12 @@ export default function SaleList (props) {
         }
     }, [keyFocus])
     return (
-        <section className='flex flex-col m-1 items-center h-full w-full pt-[3.2rem] '>
+        <section className='flex flex-col m-1 items-center h-full w-full pt-[3.2rem] animation-fade-in'>
             <section className='w-full h-full rounded-[14px] bg-primary-50 border border-gray-200 dark:border-secondary-450 shadow  dark:bg-secondary-450 '>
                 <section className='flex flex-row px-1'>
                     <SearchBar onChange={onChange} onClear={onClear}/>
                     <Input
-                        className='w-auto mt-3 px-2'
-                        type="number"
+                        className='w-auto mt-3 px-1'
                         label="Unidades"
                         value={inputValue}
                         min={1}
@@ -72,6 +81,16 @@ export default function SaleList (props) {
                             }, 100)
                         }}>
                     </Input>
+                    <div className='flex flex-col m-3 space-y-1'>
+                        <Button size="sm" color='success' className='font-bold text-lg h-[1.6rem] text-white'
+                            onClick={() => (IncreaseUnit())}>
+                            +
+                        </Button>
+                        <Button size="sm" color='danger' className='font-bold text-lg h-[1.6rem] text-white'
+                            onClick={() => (DecreaseUnit())}>
+                        -
+                        </Button>
+                    </div>
                 </section>
                 <section className='mb-4'>
                     {listSales.length > 0
