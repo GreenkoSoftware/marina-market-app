@@ -14,8 +14,11 @@ import useVocuherStore from '@/stores/voucher'
 export default function PayPage (props) {
     /* Change state to go back to sales table product */
     const {
-        setPayment, paymentTarget, setPaymentTarget,
-        voucherTarget, setVoucherTarget
+        setPayment,
+        paymentTarget,
+        setPaymentTarget,
+        voucherTarget,
+        setVoucherTarget
     } = props
     /* Use states */
 
@@ -37,7 +40,7 @@ export default function PayPage (props) {
             <section className="z-10 h-[6%] w-[7rem] top-[52px] rounded-t-[12px] bg-secondary-50 dark:bg-secondary-450">
                 <Button size="lg" className="flex flex-col items-center h-full w-full " isIconOnly variant="ligth" aria-label="" onClick={() => {
                     setPaymentTarget(listSalesActives, saleIdActive, null)
-                    setPayment(listSalesActives, saleIdActive, false)
+                    setPayment(false)
                 } }>volver</Button>
             </section>
             <section className='flex flex-col h-3/4  sm:h-[93%] items-center px-5 py-[1rem] shadow-md hover:shadow-lg  rounded-tl-[0px]  bg-secondary-50 dark:bg-secondary-450 rounded-[14px]'>

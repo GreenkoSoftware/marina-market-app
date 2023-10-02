@@ -10,7 +10,8 @@ import useSalesStore from '../sales/store'
 import ProductDetail from './components/productDetail'
 import LoadingCard from '@/components/ui/Loading'
 import Offers from './components/Offer/offers'
-import CreateCategory from './components/NewCategory/NewCategory'
+import CreateCategory from './components/NewCategory/newCategory'
+
 export default function Card () {
     const { isOpen, onClose, onOpen } = useDisclosure()
     const [targeProduct, setTargetProduct] = useState(null)

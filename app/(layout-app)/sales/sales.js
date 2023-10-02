@@ -60,7 +60,8 @@ const SalesMenu = () => {
             <div className="flex h-full w-full space-x-2">
                 <section className="w-full flex-1">
                     {payment
-                        ? <PayPage payment={payment} setPayment={setPayment} paymentTarget={paymentTargetValue} setPaymentTarget={setPaymentTarget}
+                        ? <PayPage setPayment={setPayment}
+                            paymentTarget={paymentTargetValue} setPaymentTarget={setPaymentTarget}
                             voucherTarget={voucherTargetValue} setVoucherTarget={setVoucherTarget}
                         />
                         : <TableInventory setSearchInput={setSearchInput} searchInput={searchInput}/>

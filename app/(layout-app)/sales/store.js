@@ -15,7 +15,6 @@ const useSalesStore = create(
             id: 1,
             keyFocus: null,
             totalPrice: 0,
-            // listSales: [],
             saleProductsList: [],
             paymentTarget: null,
             voucherTarget: 1
