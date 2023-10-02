@@ -33,8 +33,8 @@ export default function ScannerDetection () {
         const enabledRedirectSales = useSalesStore.getState().enabledRedirect
         const units = useSalesStore.getState().units
         const offers = useOffersStore.getState().offers
-        const listSalesActives = useOffersStore.getState().listSalesActives
-        const saleIdActive = useOffersStore.getState().saleIdActive
+        const listSalesActives = useSalesStore.getState().listSalesActives
+        const saleIdActive = useSalesStore.getState().saleIdActive
 
         const product = useInventoryStore.getState().getProductByCode(
             useInventoryStore.getState().listInventory,
