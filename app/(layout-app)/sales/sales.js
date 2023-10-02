@@ -53,15 +53,16 @@ const SalesMenu = () => {
     }, [saleIdActive])
  */
     useEffect(() => {
-        console.log('valor search:' + searchInput)
-    }, [searchInput])
+        console.log('payment' + paymentTargetValue)
+    }, [paymentTargetValue])
     return (
         <section className='h-full w-full flex md:flex-col'>
             <div className="flex h-full w-full space-x-2">
                 <section className="w-full flex-1">
                     {payment
                         ? <PayPage setPayment={setPayment}
-                            paymentTarget={paymentTargetValue} setPaymentTarget={setPaymentTarget}
+                            paymentTarget={paymentTargetValue}
+                            setPaymentTarget={setPaymentTarget}
                             voucherTarget={voucherTargetValue} setVoucherTarget={setVoucherTarget}
                         />
                         : <TableInventory setSearchInput={setSearchInput} searchInput={searchInput}/>
@@ -123,6 +124,7 @@ const SalesMenu = () => {
                     setPageTarget={setPageTarget}
                     setPaymentTarget={setPaymentTarget}
                     setSearchInput={setSearchInput}
+                    setPaymentTargetValue={setPaymentTargetValue}
 
                 />
             </div>
