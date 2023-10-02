@@ -16,9 +16,7 @@ export default function ScannerDetection () {
         scannerEnabled,
         enabledRedirect,
         units,
-        setUnits,
-        listSalesActives,
-        saleIdActive
+        setUnits
     } = useSalesStore()
     const {
         msRangeScan,
@@ -35,6 +33,8 @@ export default function ScannerDetection () {
         const enabledRedirectSales = useSalesStore.getState().enabledRedirect
         const units = useSalesStore.getState().units
         const offers = useOffersStore.getState().offers
+        const listSalesActives = useOffersStore.getState().listSalesActives
+        const saleIdActive = useOffersStore.getState().saleIdActive
 
         const product = useInventoryStore.getState().getProductByCode(
             useInventoryStore.getState().listInventory,
