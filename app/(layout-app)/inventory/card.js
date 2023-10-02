@@ -10,6 +10,7 @@ import useSalesStore from '../sales/store'
 import ProductDetail from './components/productDetail'
 import LoadingCard from '@/components/ui/Loading'
 import Offers from './components/Offer/offers'
+import CreateCategory from './components/NewCategory/NewCategory'
 export default function Card () {
     const { isOpen, onClose, onOpen } = useDisclosure()
     const [targeProduct, setTargetProduct] = useState(null)
@@ -89,9 +90,9 @@ export default function Card () {
     }, [])
     return (
         <section className='h-full flex flex-col'>
-            <section className="flex items-start justify-between z-10">
+            <section className="flex items-center justify-between  z-10">
                 <section className='flex flex-row rounded-t-[12px] space-x-5 bg-secondary-50 dark:bg-secondary-450 pr-3 pt-1 items-center  '>
-                    <div className='h-[3rem] w-[400px] top-[0px] overflow-x-auto mx-2 rounded-r-2xl overflow-hidden flex items-center'>
+                    <div className='h-[3rem] w-[900px] top-[0px] overflow-x-auto mx-2 rounded-r-2xl overflow-hidden flex items-center'>
                         {loadingCategories && loading
                             ? <section className="pt-1 pl-3 pr-3 w-full flex ">
                                 <Skeleton className="w-full h-8 rounded-lg"></Skeleton>
@@ -141,6 +142,7 @@ export default function Card () {
                     {/* <ScannerDetection/> */}
                     <Offers/>
                     <CreateProduct/>
+                    <CreateCategory/>
                 </div>
             </section>
             <section className="flex flex-1 p-[1rem] w-auto shadow-md hover:shadow-lg  rounded-tl-[0px]  bg-secondary-50 dark:bg-secondary-450 rounded-[14px]">

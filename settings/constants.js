@@ -12,6 +12,8 @@ export const CREATE_OFFER_API_URL = BASE_MARKET_API_URL + '/product/create/offer
 export const PRODUCT_API_URL = BASE_MARKET_API_URL + '/product'
 // Get categories
 export const CATEGORIES_API_URL = BASE_MARKET_API_URL + '/product/categories'
+export const CREATE_CATEGORIES_API_URL = BASE_MARKET_API_URL + '/product/create/category'
+
 // Get type of stock
 export const TYPE_STOCK_API_URL = BASE_MARKET_API_URL + '/product/type-stock'
 // Get type of payment
