@@ -1,7 +1,7 @@
 import { StyleSheet /* , Font */ } from '@react-pdf/renderer'
 const COL_WIDTH_1 = 12.5
-const COL_WIDTH_2 = 50
-const COL_WIDTH_3 = 12.5
+const COL_WIDTH_2 = 56.5//
+const COL_WIDTH_3 = 18.5
 const COL_WIDTH_4 = 25
 export const StylePdf = StyleSheet.create({
     table: {
