@@ -20,7 +20,9 @@ export default function SaleList (props) {
     const { loading } = useInventoryStore()
     const [inputValue, setInputValue] = useState(1)
     useEffect(() => {
-        setInputValue(units)
+        if (!isNaN(units)) {
+            setInputValue(units)
+        }
     }, [units])
 
     const onChange = (event) => {
