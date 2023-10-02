@@ -6,7 +6,7 @@ import toast, { Toaster } from 'react-hot-toast'
 import { formatter } from '@/utils/number'
 import useSalesStore from '../store'
 
-export default function PayDetailed ({ loadingSale, setPageTarget, setPayment, isOpen, onClose, setGoPay, totalPay, payDetailed, setPayDetailed, listSales, createSale, paymentTarget, voucherTarget, clearList, pageTarget, onOpen, setPaymentTarget }) {
+export default function PayDetailed ({ loadingSale, setPageTarget, setPayment, isOpen, onClose, setGoPay, totalPay, payDetailed, setPayDetailed, listSales, createSale, paymentTarget, voucherTarget, clearList, pageTarget, onOpen, setPaymentTarget, setSearchInput }) {
     const notify = (text) => toast(text)
     const {
         listSalesActives,
@@ -19,6 +19,7 @@ export default function PayDetailed ({ loadingSale, setPageTarget, setPayment, i
             onOpen()
             // createSale(paymentTarget, voucherTarget, listSales, notify, setPayment, onClose, setGoPay, clearList, setPageTarget, pageTarget, totalPay)
         } else if (paymentTarget === 2) {
+            setSearchInput(null)
             createSale(listSalesActives, saleIdActive, notify, setPayment, onClose, setGoPay, setPageTarget, pageTarget, removeSale)
         }
     }, [paymentTarget])
@@ -128,9 +129,11 @@ export default function PayDetailed ({ loadingSale, setPageTarget, setPayment, i
                                     const result = totalPay - payDetailed
                                     if (result <= 0) {
                                         setPayDetailed(null)
+                                        setSearchInput(null)
                                         createSale(listSalesActives, saleIdActive, notify, setPayment, onClose, setGoPay, setPageTarget, pageTarget, removeSale)
                                         // createSale(paymentTarget, voucherTarget, listSales, notify, setPayment, onClose, setGoPay, clearList, setPayment, totalPay)
                                     } else {
+                                        setSearchInput(null)
                                         setPayDetailed(null)
                                     }
                                 }

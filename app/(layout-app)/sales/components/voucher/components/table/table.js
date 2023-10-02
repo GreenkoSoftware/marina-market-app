@@ -35,7 +35,7 @@ export const TableProductVoucher = ({ listSales }) =>
                                 <Text style={StylePdf.textRow}>{element?.quantity}</Text>
                             </View>
                             <View style={StylePdf.tableColumn4}>
-                                <Text style={StylePdf.textRow}>{ formatter.format(element?.total ?? 0)}</Text>
+                                <Text style={StylePdf.textRow}>{ formatter.format((element?.offers > 0 ? ((element?.product?.price * element?.quantity) - (element?.discount)) : element?.product?.price * element?.quantity) ?? 0)}</Text>
                             </View>
                         </View>)
                     )}

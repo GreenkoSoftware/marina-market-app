@@ -12,11 +12,14 @@ export default function SearchBar (props) {
                 isClearable
                 radius="lg"
                 onClear={onClear}
-                onFocusChange={(value) =>
-                    value
-                        ? useSalesStore.getState()?.disabledScanner()
-                        : useSalesStore.getState()?.enabledScanner()
-                }
+                onFocusChange={(value) => {
+                    if (value) {
+                        onClear()
+                        useSalesStore.getState()?.disabledScanner()
+                    } else {
+                        useSalesStore.getState()?.enabledScanner()
+                    }
+                }}
                 classNames={{
                     label: 'text-black/50 dark:text-white/90',
                     input: [

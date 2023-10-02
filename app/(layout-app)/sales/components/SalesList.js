@@ -78,6 +78,7 @@ export default function SaleList (props) {
                 <section className='flex flex-row px-1'>
                     <SearchBar onChange={onChange} onClear={onClear}/>
                     <Input
+                        onFocus={''}
                         className='w-auto mt-3 px-1'
                         label="Unidades"
                         value={inputValue}

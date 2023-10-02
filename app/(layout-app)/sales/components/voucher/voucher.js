@@ -7,7 +7,7 @@ import { TableProductVoucher } from './components/table/table'
 import ViewTotal from './components/total/total'
 
 // Create Document Component
-export const Voucher = ({ listSales, totalPay, date }) => (
+export const Voucher = ({ listSales, totalPay, date, totalDiscount }) => (
     <Document>
         <Page size={[180]} style={StylePdf.page}>
             <View style={StylePdf.container}>
@@ -36,7 +36,7 @@ export const Voucher = ({ listSales, totalPay, date }) => (
                 <TableProductVoucher listSales={listSales}/>
             </View>
             <View style={StylePdf.containerFlexCol}>
-                <ViewTotal totalPay={totalPay} />
+                <ViewTotal totalPay={totalPay} totalDiscount={totalDiscount}/>
             </View>
         </Page>
     </Document>

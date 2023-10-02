@@ -10,7 +10,9 @@ export default function Card (props) {
     const { item, index, setTargetProduct, isFromSales } = props
     return (
         isFromSales
-            ? <CardUI className='w-full h-full animation-fade-in flex' shadow="sm" key={index} isPressable onClick={() => { setTargetProduct(item) }}>
+            ? <CardUI className='w-full h-full animation-fade-in flex' shadow="sm" key={index} isPressable onClick={() => {
+                setTargetProduct(item)
+            }}>
                 <CardBody className="p-0 max-h-[7rem] bg-slate-100 dark:bg-white">
                     <div className=''>
                         <Image
