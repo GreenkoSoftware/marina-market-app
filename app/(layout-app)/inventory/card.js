@@ -84,7 +84,7 @@ export default function Card () {
     }, [])
     return (
         <section className='h-full flex flex-col'>
-            <section className="flex items-start justify-between z-10">
+            <section className="flex items-center justify-between  z-10">
                 <section className='flex flex-row rounded-t-[12px] space-x-5 bg-secondary-50 dark:bg-secondary-450 pr-3 pt-1 items-center  '>
                     <div className='h-[3rem] w-[400px] top-[0px] overflow-x-auto mx-2 rounded-r-2xl overflow-hidden flex items-center'>
                         {loadingCategories && loading

@@ -18,6 +18,12 @@ export default function PayDetailed ({ loadingSale, setPageTarget, setPayment, i
     useEffect(() => {
         setPayDetailed(0)
     }, [])
+
+    useEffect(() => {
+        if (isNaN(payDetailed)) {
+            setPayDetailed(0)
+        }
+    }, [payDetailed])
     return (
         <>
             <Toaster
@@ -80,7 +86,6 @@ export default function PayDetailed ({ loadingSale, setPageTarget, setPayment, i
                     </ModalHeader>
                     <ModalBody>
                         <div className="flex flex-col space-y-6 items-start justify-start content-between">
-
                             <Input
                                 size='lg'
                                 autoFocus={true}
