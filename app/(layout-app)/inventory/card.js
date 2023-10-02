@@ -10,6 +10,7 @@ import useSalesStore from '../sales/store'
 import ProductDetail from './components/productDetail'
 import LoadingCard from '@/components/ui/Loading'
 import Offers from './components/Offer/offers'
+import CreateCategory from './components/NewCategory/NewCategory'
 export default function Card () {
     const { isOpen, onClose, onOpen } = useDisclosure()
     const [targeProduct, setTargetProduct] = useState(null)
@@ -130,6 +131,7 @@ export default function Card () {
                     {/* <ScannerDetection/> */}
                     <Offers/>
                     <CreateProduct/>
+                    <CreateCategory/>
                 </div>
             </section>
             <section className="flex flex-1 p-[1rem] w-auto shadow-md hover:shadow-lg  rounded-tl-[0px]  bg-secondary-50 dark:bg-secondary-450 rounded-[14px]">

@@ -98,7 +98,7 @@ export default function tableProducts (props) {
     return (
         <section className='animation-fade-in h-full w-full flex flex-col'>
             {/* <section className='flex flex-row rounded-t-[12px] w-full space-x-5 bg-secondary-50 dark:bg-secondary-450 pt-1 items-center'> */}
-            <div style={{ scrollbarGutter: 'stable', scrollbarWidth: 0 }} className='rounded-t-[12px] top-[0px] overflow-x-auto overflow-hidden flex items-center'>
+            <div style={{ scrollbarGutter: 'stable', scrollbarWidth: 0 }} className='rounded-t-[12px] top-[0px] overflow-x-auto overflow-hidden flex items-center w-[8rem] s:w-[14rem] sm:w-[20rem] md:w-full'>
 
                 {loadingCategories
                     ? <section className="pt-3 px-3  flex bg-secondary-50 rounded-t-[12px] dark:bg-secondary-450">
@@ -117,6 +117,7 @@ export default function tableProducts (props) {
                     : <Tabs
                         color="success"
                         aria-label="Options"
+                        // items={listCategories?.length > 0 ? listCategories : []}
                         items={listCategories?.length > 0 ? listCategories?.filter((element) => element?.label === 'FRUTAS' || element?.label === 'VERDURAS' || element?.label === 'CARNES' || element?.label === 'PAN' || element?.label === 'MASCOTAS' || element?.label === 'CIGARROS' || element?.label === 'DULCES' || element?.label === 'BAZAR' || element?.label === 'OTROS' || element?.label === 'PROMOS' || element?.label === 'REMEDIOS') : [] }
                         selectedKey={categoryTabSelected}
                         onSelectionChange={setCategoryTabSelected}
