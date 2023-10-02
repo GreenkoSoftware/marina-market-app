@@ -10,7 +10,7 @@ import WeighingScaleModal from './weighingScaleModal'
 import useOffersStore from '@/stores/offers'
 
 export default function tableProducts (props) {
-    const { searchInput, setKeyFocus, setSearchInput } = props
+    const { searchInput, setSearchInput } = props
     const { isOpen, onClose, onOpen } = useDisclosure()
     const [targeProduct, setTargetProduct] = useState(null)
     const [selectedProductWithKG, setSelectedProductWithKG] = useState(null)
@@ -18,9 +18,23 @@ export default function tableProducts (props) {
     const [listInventory, setListInventory] = useState([])
     const { listCategories, listInventory: list, getCategories, getListInventory, loading, loadingCategories } = useInventoryStore(({ listCategories, listInventory: list, getCategories, getListInventory, loading, loadingCategories }) => ({ listCategories, listInventory: list, getCategories, getListInventory, loading, loadingCategories }))
     const [filteredList, setFilteredList] = useState([])
-    const { listSales, addFromNewSales, setTotalPrice, units, setUnits } = useSalesStore()
+    const {
+        addFromNewSales,
+        setTotalPrice,
+        units,
+        listSalesActives,
+        saleIdActive
+    } = useSalesStore()
+
     const { offers, getOffers } = useOffersStore()
     const listEmpty = new Array(20).fill(null)
+
+    const [listSales, setListSales] = useState([])
+
+    useEffect(() => {
+        const sale = listSalesActives?.find((sale) => sale.id === saleIdActive)
+        setListSales(sale.saleProductsList)
+    }, [saleIdActive, listSalesActives, useSalesStore.getState()])
 
     useEffect(() => {
         if (categoryTabSelected) {
@@ -40,7 +54,7 @@ export default function tableProducts (props) {
             if (targeProduct?.stockTypeId === 1) {
                 setSelectedProductWithKG(targeProduct)
             } else {
-                addFromNewSales(listSales, targeProduct, units, offers, onCompleteFunction)
+                addFromNewSales(listSalesActives, saleIdActive, targeProduct, units, offers, onCompleteFunction)
             }
         }
     }, [targeProduct])
@@ -65,9 +79,9 @@ export default function tableProducts (props) {
             listSales?.forEach((item) => {
                 currentTotal += item?.discount ? item.product?.price * item.quantity - item?.discount : item.product?.price * item.quantity
             })
-            setTotalPrice(Math.round(currentTotal / 10) * 10)
+            setTotalPrice(listSalesActives, saleIdActive, Math.round(currentTotal / 10) * 10)
         } else {
-            setTotalPrice(0)
+            setTotalPrice(listSalesActives, saleIdActive, 0)
         }
     }, [listSales])
 
@@ -156,7 +170,7 @@ export default function tableProducts (props) {
 
                 </section>
             </section>
-            <WeighingScaleModal setKeyFocus={setKeyFocus} isOpen={isOpen} onClose={onClose} product={selectedProductWithKG}/>
+            <WeighingScaleModal isOpen={isOpen} onClose={onClose} product={selectedProductWithKG}/>
         </section>
     )
 }

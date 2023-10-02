@@ -2,13 +2,20 @@
 'use client'
 import React from 'react'
 import { Button } from '@nextui-org/react'
+import useSalesStore from '@/app/(layout-app)/sales/store'
 
 export default function PaymentButton ({ key, id, icon, title, paymentTarget, setPaymentTarget, voucherTarget, setVoucherTarget }) {
     const handleButton = () => {
         if (setPaymentTarget) {
-            setPaymentTarget(id)
+            setPaymentTarget(
+                useSalesStore.getState().listSalesActives,
+                useSalesStore.getState().saleIdActive,
+                id)
         } else if (voucherTarget) {
-            setVoucherTarget(id)
+            setVoucherTarget(
+                useSalesStore.getState().listSalesActives,
+                useSalesStore.getState().saleIdActive,
+                id)
         }
     }
 

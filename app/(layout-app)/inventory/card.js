@@ -125,10 +125,15 @@ export default function Card () {
 
                     <Button
                         isDisabled={loadingCategories || loading}
+                        isLoading={loadingCategories || loading}
                         variant={sectionSearch ? 'solid' : 'ghost'} color={sectionSearch ? 'warning' : ''} isIconOnly onClick={() => {
                             setSectionSearch(!sectionSearch)
                         }}>
-                        <MagnifyingGlassIcon className='w-5 h-5'/>
+                        {
+                            loadingCategories || loading
+                                ? null
+                                : <MagnifyingGlassIcon className='w-5 h-5'/>
+                        }
                     </Button>
 
                 </section>

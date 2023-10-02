@@ -9,7 +9,7 @@ import hubScale from './store/connectionScale'
 import useSalesStore from '../store'
 import useOffersStore from '@/stores/offers'
 
-export default function WeighingScaleModal ({ isOpen, onClose, product, setKeyFocus }) {
+export default function WeighingScaleModal ({ isOpen, onClose, product }) {
     const [handShake, setHandShake] = useState(false)
     const [url, setUrl] = useState(null)
     const [manualMode, setManualMode] = useState(false)
@@ -17,7 +17,11 @@ export default function WeighingScaleModal ({ isOpen, onClose, product, setKeyFo
     const [isDefaultValue, setIsDefaultValue] = useState(false)
     const { setIsConnected } = hubScale()
 
-    const { listSales, addFromNewSales } = useSalesStore()
+    const {
+        addFromNewSales,
+        listSalesActives,
+        saleIdActive
+    } = useSalesStore()
     const { offers } = useOffersStore()
 
     const {
@@ -38,7 +42,7 @@ export default function WeighingScaleModal ({ isOpen, onClose, product, setKeyFo
     }
 
     const onSubmitHandler = (product, unitsKg, priceTotal) => {
-        addFromNewSales(listSales, product, unitsKg, offers, handleOnClose)
+        addFromNewSales(listSalesActives, saleIdActive, product, unitsKg, offers, handleOnClose)
     }
     /* Last message ws from fleet status */
     useEffect(() => {

@@ -11,11 +11,17 @@ export default function ScannerDetection () {
     const [detected, setDetected] = useState(true)
     const [scanner, setScanner] = useState(null)
     const router = useRouter()
-    const { addFromNewSales, scannerEnabled, enabledRedirect, units, setUnits } = useSalesStore()
+    const {
+        addFromNewSales,
+        scannerEnabled,
+        enabledRedirect,
+        units,
+        setUnits,
+        listSalesActives,
+        saleIdActive
+    } = useSalesStore()
     const {
         msRangeScan,
-        diableSetUnits,
-        enableSetUnits,
         setDatetimeLastScan,
         getMillisecondsSinceLastScan
     } = useScannerStore()
@@ -43,7 +49,7 @@ export default function ScannerDetection () {
                 router.push('/sales')
                 console.log('/sales')
             }
-            addFromNewSales(currentListSales, product, units, offers)
+            addFromNewSales(listSalesActives, saleIdActive, product, units, offers)
         } else {
             alert(`El producto ${code} no ha sido encontrado.`)
         }

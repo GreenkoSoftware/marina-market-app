@@ -21,6 +21,10 @@ export default function PayPage (props) {
 
     const { payment, getPaymentType, loadingPayment } = usePaymentStore()
     const { voucher, getVoucherType, loadingVoucher } = useVocuherStore()
+    const {
+        listSalesActives,
+        saleIdActive
+    } = useSalesStore()
     const listEmpty = new Array(2).fill(null)
     const listEmpty3 = new Array(3).fill(null)
     useEffect(() => {
@@ -32,8 +36,8 @@ export default function PayPage (props) {
         <section className='animation-fade-in h-full w-full'>
             <section className="z-10 h-[6%] w-[7rem] top-[52px] rounded-t-[12px] bg-secondary-50 dark:bg-secondary-450">
                 <Button size="lg" className="flex flex-col items-center h-full w-full " isIconOnly variant="ligth" aria-label="" onClick={() => {
-                    setPaymentTarget(null)
-                    setPayment(false)
+                    setPaymentTarget(listSalesActives, saleIdActive, null)
+                    setPayment(listSalesActives, saleIdActive, false)
                 } }>volver</Button>
             </section>
             <section className='flex flex-col h-3/4  sm:h-[93%] items-center px-5 py-[1rem] shadow-md hover:shadow-lg  rounded-tl-[0px]  bg-secondary-50 dark:bg-secondary-450 rounded-[14px]'>

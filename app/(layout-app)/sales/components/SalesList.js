@@ -13,10 +13,27 @@ export default function SaleList (props) {
     const {
         setPayment, payment, setSearchInput,
         paymentTarget,
-        voucherTarget, setGoPay, keyFocus, setKeyFocus,
+        voucherTarget, setGoPay, keyFocus,
         setPageTarget, loadingSale
     } = props
-    const { listSales, totalPrice, units, setUnits, clearList } = useSalesStore()
+
+    const {
+        units,
+        setUnits,
+        removeSale,
+        listSalesActives,
+        saleIdActive
+    } = useSalesStore()
+
+    const [listSales, setListSales] = useState([])
+    const [totalPrice, setTotalPrice] = useState([])
+
+    useEffect(() => {
+        const sale = listSalesActives?.find((sale) => sale.id === saleIdActive)
+        setListSales(sale.saleProductsList)
+        setTotalPrice(sale.totalPrice)
+    }, [saleIdActive, listSalesActives, useSalesStore.getState()])
+
     const { loading } = useInventoryStore()
     const [inputValue, setInputValue] = useState(1)
     useEffect(() => {
@@ -33,9 +50,10 @@ export default function SaleList (props) {
     }
 
     const handleButton = () => {
-        clearList()
+        removeSale(listSalesActives, saleIdActive)
         setPayment(false)
     }
+
     useEffect(() => {
         if (keyFocus) {
             const focusKey = document.getElementById(keyFocus)
@@ -43,8 +61,8 @@ export default function SaleList (props) {
         }
     }, [keyFocus])
     return (
-        <section className='flex flex-col m-1 items-center h-full w-full pt-[3.2rem] '>
-            <section className='w-full h-full rounded-[14px] bg-primary-50 border border-gray-200 dark:border-secondary-450 shadow  dark:bg-secondary-450 '>
+        <section className='flex flex-1 flex-col items-center w-full'>
+            <section className='w-full h-full rounded-xl rounded-tr-[0px] bg-primary-50 shadow  dark:bg-secondary-450 '>
                 <section className='flex flex-row px-1'>
                     <SearchBar onChange={onChange} onClear={onClear}/>
                     <Input

@@ -4,20 +4,29 @@ import React, { useEffect, useState } from 'react'
 import { Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Button, Input, Text } from '@nextui-org/react'
 import toast, { Toaster } from 'react-hot-toast'
 import { formatter } from '@/utils/number'
+import useSalesStore from '../store'
+
 export default function PayDetailed ({ loadingSale, setPageTarget, setPayment, isOpen, onClose, setGoPay, totalPay, payDetailed, setPayDetailed, listSales, createSale, paymentTarget, voucherTarget, clearList, pageTarget, onOpen, setPaymentTarget }) {
     const notify = (text) => toast(text)
+    const {
+        listSalesActives,
+        saleIdActive,
+        removeSale
+    } = useSalesStore()
+
     useEffect(() => {
         if (paymentTarget === 1) {
             onOpen()
             // createSale(paymentTarget, voucherTarget, listSales, notify, setPayment, onClose, setGoPay, clearList, setPageTarget, pageTarget, totalPay)
         } else if (paymentTarget === 2) {
-            createSale(paymentTarget, voucherTarget, listSales, notify, setPayment, onClose, setGoPay, clearList, setPageTarget, pageTarget, totalPay, setPaymentTarget)
+            createSale(listSalesActives, saleIdActive, notify, setPayment, onClose, setGoPay, setPageTarget, pageTarget, removeSale)
         }
     }, [paymentTarget])
 
     useEffect(() => {
         setPayDetailed(0)
     }, [])
+
     return (
         <>
             <Toaster
@@ -46,7 +55,7 @@ export default function PayDetailed ({ loadingSale, setPageTarget, setPayment, i
                 onClose={() => {
                     onClose()
                     setGoPay()
-                    setPaymentTarget(null)
+                    setPaymentTarget(listSalesActives, saleIdActive, null)
                 }}
                 scrollBehavior={'inside'}
                 closeButton={<></>}
@@ -115,7 +124,7 @@ export default function PayDetailed ({ loadingSale, setPageTarget, setPayment, i
                                     const result = totalPay - payDetailed
                                     if (result <= 0) {
                                         setPayDetailed(null)
-                                        createSale(paymentTarget, voucherTarget, listSales, notify, setPayment, onClose, setGoPay, clearList, setPayment, pageTarget, totalPay, setPaymentTarget)
+                                        createSale(listSalesActives, saleIdActive, notify, setPayment, onClose, setGoPay, setPageTarget, pageTarget, removeSale)
                                         // createSale(paymentTarget, voucherTarget, listSales, notify, setPayment, onClose, setGoPay, clearList, setPayment, totalPay)
                                     } else {
                                         setPayDetailed(null)
@@ -129,7 +138,7 @@ export default function PayDetailed ({ loadingSale, setPageTarget, setPayment, i
 
                         <Button color="danger" variant="flat"
                             onClick={() => {
-                                setPaymentTarget(null)
+                                setPaymentTarget(listSalesActives, saleIdActive, null)
                                 setPayDetailed(null)
                                 onClose()
                                 setGoPay(false)

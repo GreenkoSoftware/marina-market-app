@@ -7,22 +7,55 @@ import { generatePdfDocument } from './components/voucher/services'
 
 const useSalesStore = create(
     (set) => ({
-        loading: false,
+        loadingSale: false,
         error: null,
-        keyFocus: null,
-        totalPrice: 0,
-        listSales: [],
+        units: 1,
+        saleIdActive: 1,
+        listSalesActives: [{
+            id: 1,
+            keyFocus: null,
+            totalPrice: 0,
+            // listSales: [],
+            saleProductsList: [],
+            paymentTarget: null,
+            voucherTarget: 1
+        }],
+
         scannerEnabled: false,
         enabledRedirect: false,
-        units: 1,
         enabledScanner: (value) => set({ scannerEnabled: true, enabledRedirect: false }),
         disabledScanner: (value) => set({ scannerEnabled: false }),
-        setTotalPrice: (value) => set({ totalPrice: value }),
         enabledRedirectSales: (value) => set({ enabledRedirect: true }),
         disabledRedirectSales: (value) => set({ enabledRedirect: false }),
+
         setUnits: (value) => set({ units: parseInt(value) }),
-        addFromNewSales: (listSales, product, units, offers, onCompleteFunction) => {
+        setSelectedSaleId: (value) => set({ saleIdActive: parseInt(value) }),
+        addNewSaleActive: (sales) => {
+            const size = sales?.length
+            const newSaleId = size + 1
+            if (size < 3) {
+                sales.push({
+                    id: size + 1,
+                    keyFocus: null,
+                    totalPrice: 0,
+                    saleProductsList: [],
+                    paymentTarget: null,
+                    voucherTarget: 1
+                })
+                set({ listSalesActives: sales })
+                set({ saleIdActive: newSaleId })
+            }
+        },
+        setTotalPrice: (sales, saleId, value) => {
+            const saleIndex = sales?.findIndex((sale) => sale.id === saleId)
+            sales[saleIndex].totalPrice = value
+            set({ listSalesActives: sales })
+        },
+        addFromNewSales: (sales, saleId, product, units, offers, onCompleteFunction) => {
             units = units || 1
+            const saleIndex = sales?.findIndex((sale) => sale.id === saleId)
+            let listSales = sales[saleIndex].saleProductsList
+
             const searhProduct = listSales?.find((item) => { return item?.product?.id === product?.id })
             const offersProduct = offers?.find((item) => { return item?.productId === product?.id })
             if (offersProduct) {
@@ -32,51 +65,82 @@ const useSalesStore = create(
                     const offersOfProduct = Math.trunc(quantitySale / offersProduct.quantity)
                     const newList = listSales?.filter((item) => item?.product?.id !== product?.id)
                     const total = ((product?.price * offersProduct?.quantity) - (offersProduct?.quantity * offersProduct?.unitPrice)) * offersOfProduct
-                    set({ listSales: [...newList, { product, quantity: searhProduct?.quantity + units, offers: offersOfProduct, discount: offersOfProduct > 0 ? total : 0, total: product?.price * quantitySale }] })
+                    listSales = [...newList, { product, quantity: searhProduct?.quantity + units, offers: offersOfProduct, discount: offersOfProduct > 0 ? total : 0, total: product?.price * quantitySale }]
                 } else {
                     const quantitySale = units
                     const offersOfProduct = Math.trunc(quantitySale / offersProduct.quantity)
                     const total = ((product?.price * offersProduct?.quantity) - (offersProduct?.quantity * offersProduct?.unitPrice)) * offersOfProduct
-                    set({ listSales: [...listSales, { product, quantity: units, offers: offersOfProduct, discount: offersOfProduct > 0 ? total : 0, total: product?.price * quantitySale }] })
+                    listSales = [...listSales, { product, quantity: units, offers: offersOfProduct, discount: offersOfProduct > 0 ? total : 0, total: product?.price * quantitySale }]
                 }
             } else {
                 if (!searhProduct) {
-                    set({ listSales: [...listSales, { product, quantity: parseFloat(units), discount: 0, total: product?.price * 1 }] })
+                    listSales = [...listSales, { product, quantity: parseFloat(units), discount: 0, total: product?.price * 1 }]
                 } else {
                     const newList = listSales?.filter((item) => item?.product?.id !== product?.id)
-                    set({ listSales: [...newList, { product, quantity: searhProduct?.quantity + parseFloat(units), discount: 0, total: product?.price * (searhProduct?.quantity + units) }] })
+                    listSales = [...newList, { product, quantity: searhProduct?.quantity + parseFloat(units), discount: 0, total: product?.price * (searhProduct?.quantity + units) }]
                 }
             }
+
+            sales[saleIndex].saleProductsList = listSales
+            sales[saleIndex].keyFocus = product?.code
+
+            set({ listSalesActives: sales })
             set({ units: 1 })
-            set({ keyFocus: product?.code })
+
             if (onCompleteFunction) {
                 onCompleteFunction()
             }
         },
-        removeProduct: (listSales, productId) => {
+        removeProduct: (sales, saleId, productId) => {
+            const saleIndex = sales?.findIndex((sale) => sale.id === saleId)
+            const listSales = sales[saleIndex].saleProductsList
+
             const newList = listSales?.filter((item) => item?.product?.id !== productId)
-            set({ listSales: newList })
-        },
-        clearList: () => {
-            set({ listSales: [], totalPrice: 0 })
-        },
-        setKeyFocus: (value) => set({ keyFocus: value }),
-        /* Added method pay and voucher, ticket,etc */
-        paymentTarget: null,
-        voucherTarget: 1,
-        setPaymentTarget: (value) => set({ paymentTarget: value }),
-        setVoucherTarget: (value) => set({ voucherTarget: value }),
 
-        loadingSale: false,
-
+            sales[saleIndex].saleProductsList = newList
+            set({ listSalesActives: sales })
+        },
+        removeSale: (sales, saleId) => {
+            const saleIndex = sales?.findIndex((sale) => sale.id === saleId)
+            const newSaleList = sales?.filter((sale) => sale.id !== saleId)
+            if (newSaleList?.length) {
+                newSaleList?.forEach((_, index) => {
+                    newSaleList[index].id = index + 1
+                })
+                set({ saleIdActive: newSaleList[0].id })
+                set({ listSalesActives: newSaleList })
+            } else {
+                sales[saleIndex].saleProductsList = []
+                sales[saleIndex].totalPrice = 0
+                set({ listSalesActives: sales })
+            }
+            console.log(newSaleList)
+        },
+        setPaymentTarget: (sales, saleId, value) => {
+            const saleIndex = sales?.findIndex((sale) => sale.id === saleId)
+            sales[saleIndex].paymentTarget = value
+            set({ listSalesActives: sales })
+        },
+        setVoucherTarget: (sales, saleId, value) => {
+            const saleIndex = sales?.findIndex((sale) => sale.id === saleId)
+            sales[saleIndex].voucherTarget = value
+            set({ listSalesActives: sales })
+        },
         /* Create sale */
-        createSale: (paymentTarget, voucherTarget, listSales, notify, setPayment, onClose, setGoPay, clearList, setPageTarget, pageTarget, totalPay, setPaymentTarget) => {
+        createSale: (sales, saleId, notify, setPayment, onClose, setGoPay, setPageTarget, pageTarget, removeSale) => {
+            const saleIndex = sales?.findIndex((sale) => sale.id === saleId)
+            const sale = sales[saleIndex]
+            const saleProductsList = sale.saleProductsList
+            const paymentTarget = sale.paymentTarget
+            const voucherTarget = sale.voucherTarget
+            const totalPay = sale.totalPrice
+
             const body = {
-                sales_receipt: listSales?.map((sale) => {
+                sales_receipt: saleProductsList?.map((item) => {
                     return {
-                        product_id: sale?.product?.id,
-                        quantity: sale?.quantity,
-                        total_price: sale?.total
+                        product_id: item?.product?.id,
+                        quantity: item?.quantity,
+                        total_price: item?.total
                     }
                 }),
                 payment_type_id: paymentTarget,
@@ -86,10 +150,10 @@ const useSalesStore = create(
             try {
                 fetchPost(SALE_TICKET_CREATE, body).then(result => {
                     setPageTarget(false)
-                    setPaymentTarget(null)
+                    // setPaymentTarget(sales, saleId, null)
                     set({ loadingSale: false })
                     if (result?.code === 200) {
-                        generatePdfDocument({ listSales, totalPay })
+                        generatePdfDocument({ listSales: saleProductsList, totalPay })
                         if (pageTarget) {
                             notify('✅ Pago con tarjeta con éxito')
                         } else {
@@ -99,7 +163,8 @@ const useSalesStore = create(
                         setPayment(false)
                         onClose()
                         setGoPay(false)
-                        clearList()
+                        removeSale(sales, saleId)
+                        // clearList()
                     } else {
                         if (pageTarget) {
                             notify('❌ Problemas con el pago con la tarjeta')

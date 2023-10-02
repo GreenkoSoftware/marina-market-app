@@ -23,7 +23,7 @@ export default function LayoutApp ({ children }) {
                     <Header/>
                 </header>
                 <div className="flex-1 flex flex-row">
-                    <main className="flex-1 mx-[1rem] xl:mx-[6rem] xlg:mx-[6rem]">
+                    <main className="flex-1 mx-[1rem] xl:mx-[2rem] xlg:mx-[2rem]">
                         {children}
                     </main>
                 </div>

@@ -6,8 +6,9 @@ import useSalesStore from '@/app/(layout-app)/sales/store'
 
 export default function DeleteButton ({ productId }) {
     const handleButton = () => {
-        const sales = useSalesStore.getState().listSales
-        useSalesStore.getState().removeProduct(sales, productId)
+        const sales = useSalesStore.getState().listSalesActives
+        const saleId = useSalesStore.getState().saleIdActive
+        useSalesStore.getState().removeProduct(sales, saleId, productId)
     }
 
     return (
