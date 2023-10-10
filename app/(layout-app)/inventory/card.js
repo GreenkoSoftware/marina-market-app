@@ -70,16 +70,16 @@ export default function Card () {
         getListInventory()
     }, [])
     return (
-        <section className='h-full flex flex-col'>
-            <section className="flex items-start justify-between z-10">
-                <div className='h-[3rem] top-[0px] rounded-t-[12px] bg-secondary-50 dark:bg-secondary-450'>
+        <section className='h-full flex flex-col w-5/12 sm:w-full'>
+            <section className="flex items-start justify-between z-10 ">
+                <div className='w-4/12 sm:w-full h-[4rem] sm:h-[3rem] top-[0px] rounded-t-[12px] bg-secondary-50 dark:bg-secondary-450'>
                     <Tabs
                         aria-label="Options"
                         items={listCategories}
                         selectedKey={selected}
                         onSelectionChange={setSelected}
                         variant={'light'}
-                        className="pt-3 pl-3"
+                        className="pt-3 sm:pl-3 w-full"
                     >
                         {(item) => (
                             <Tab key={item.id} size={'lg'} title={item.label === 'search' ? <MagnifyingGlassIcon className='w-5 h-5'/> : item?.label}>
@@ -93,7 +93,7 @@ export default function Card () {
                     <CreateProduct/>
                 </div>
             </section>
-            <section className="flex flex-1 p-[1rem] w-auto shadow-md hover:shadow-lg  rounded-tl-[0px]  bg-secondary-50 dark:bg-secondary-450 rounded-[14px]">
+            <section className="flex flex-1 p-[1rem]  w-4/12 sm:w-auto shadow-md hover:shadow-lg  sm:rounded-tl-[0px]  bg-secondary-50 dark:bg-secondary-450 rounded-b-[14px] sm:rounded-[14px]">
                 {sectionSearch
                     ? <section style={{ scrollbarGutter: 'stable' }} className='max-h-[44rem] w-full overflow-y-auto flex flex-wrap snap-y snap-mandatory content-start'>
                         <Input
