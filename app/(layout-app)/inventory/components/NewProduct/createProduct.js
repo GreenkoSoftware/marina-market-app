@@ -9,7 +9,9 @@ import Barcosde from '@/components/barcode'
 import useProductFormStore from './store'
 import useInventoryStore from '../../store'
 import useSalesStore from '@/app/(layout-app)/sales/store'
+import toast, { Toaster } from 'react-hot-toast'
 
+const notify = (text) => toast(text)
 export const SectionProduct = ({ title, children, showDivider }) => {
     return (
         <section className="mt-3 space-y-2">
@@ -65,17 +67,17 @@ export const InputComponent = ({ title, type, placeholder, isPrice, isBarCode, .
 }
 
 export default function CreateProduct () {
-    /*  const productName = 'COCA-COLA'
-    const productCode = generateProductCode(productName) */
-
     const { isOpen, onClose, onOpen } = useDisclosure()
     const [scanProduct, setScanProduct] = useState(false)
 
     const [categoryOptions, setCategoryOptions] = useState([])
     const [stockTypeOptions, setStockTypeOptions] = useState([])
 
-    const { data, setFormData, requestCreateProduct, loading, error, setError, complete, hasRequeredValues, clearStore } = useProductFormStore()
-    const { listCategories, listStockTypes, getCategories, getStockTypes } = useInventoryStore()
+    const [barcodeValue, setBarcodeValue] = useState(null)
+    const [isBarcodeGenerated, setIsBarcodeGenerated] = useState(false)
+
+    const { data, setFormData, requestCreateProduct, loadingStock, loadingCategories, error, setError, complete, hasRequeredValues, clearStore } = useProductFormStore()
+    const { listCategories, listStockTypes, getCategories, getStockTypes, getListInventory } = useInventoryStore()
 
     useEffect(() => {
         if (isOpen) {
@@ -84,6 +86,8 @@ export default function CreateProduct () {
             useSalesStore.getState()?.disabledRedirectSales()
         } else {
             useSalesStore.getState()?.enabledRedirectSales()
+            setIsBarcodeGenerated(false)
+            setBarcodeValue(null)
         }
     }, [isOpen])
 
@@ -96,8 +100,15 @@ export default function CreateProduct () {
         if (complete && !error) {
             clearStore()
             onClose()
+            getListInventory()
         }
     }, [complete, error])
+
+    useEffect(() => {
+        if (barcodeValue) {
+            handleInputChange({ field: 'barcode', value: barcodeValue })
+        }
+    }, [barcodeValue])
 
     const handleInputChange = ({ field, value, isSalePrice }) => {
         const newFormValues = { ...data, [field]: !isNaN(value) ? parseInt(value) : value }
@@ -108,10 +119,34 @@ export default function CreateProduct () {
         setFormData(newFormValues)
     }
 
+    const handleGenerateCode = () => {
+        const productCode = generateProductCode('name')
+        setBarcodeValue(productCode)
+        setIsBarcodeGenerated(true)
+    }
+
     return (
         <section>
+            <Toaster
+                position="top-center"
+                reverseOrder={false}
+                gutter={8}
+                containerClassName=""
+                containerStyle={{}}
+                className={' bg-primary-50 text-primary-500 dark:bg-primary-200 dark:text-primary-500'}
+                toastOptions={{
+                    className: '',
+                    duration: 10000,
+                    success: {
+                        duration: 3000,
+                        theme: {
+                            primary: 'green',
+                            secondary: 'black'
+                        }
+                    }
+                }} />
             <header className="flex justify-end">
-                <Button className='bg-primary-400 dark:bg-primary-400' color='primary' onClick={onOpen}>Crear nuevo producto</Button>
+                <Button className='bg-primary-400 dark:bg-emerald-600 font-bold' color='primary' onClick={onOpen}>Crear nuevo producto</Button>
             </header>
             <Modal size={'2xl'}
                 isOpen={isOpen}
@@ -124,15 +159,8 @@ export default function CreateProduct () {
                     <ModalHeader className="flex flex-col gap-1 text-primary-500 dark:text-primary-200">Nuevo producto</ModalHeader>
                     <ModalBody>
                         <section>
-                            {/* <Barcosde showDetail={true} productName = {productName} productCode ={ productCode } productCost={"1790"}/> */}
                             <SectionProduct title={null}>
                                 <div className="my-4 items-center gap-4 grid grid-cols-1 md:grid-cols-2">
-                                    {/*  <div>
-                        <Button onClick={() => {scanProduct ? setScanProduct(false) : setScanProduct(true)}}>{!scanProduct ? 'Scanner' : 'Finalizar Scanner'}</Button>
-                        {scanProduct ?
-                        <BarcodeScanner stopScan={() => setScanProduct(false)}/>
-                        : null}
-                        </div> */}
                                     <div className="flex-3">
                                         <ProductImage/>
                                     </div>
@@ -140,10 +168,35 @@ export default function CreateProduct () {
                                         <InputComponent
                                             isRequired
                                             isBarCode={true}
+                                            value={barcodeValue}
                                             type="text"
                                             title="Codigo de barra"
-                                            onValueChange={(value) => { handleInputChange({ field: 'barcode', value }) }}
+                                            onValueChange={(value) => {
+                                                setBarcodeValue(value)
+                                            }}
                                         />
+                                        {
+                                            isBarcodeGenerated
+                                                ? <div>
+
+                                                    <Button className =" bg-red-500 text-primary-50"
+                                                        onClick={() => {
+                                                            setIsBarcodeGenerated(false)
+                                                            setBarcodeValue('')
+                                                        }}
+                                                    >
+                                                        {'Eliminar código'}
+                                                    </Button>
+                                                </div>
+                                                : <div>
+                                                    <Button className =" bg-green-500 text-primary-50"
+                                                        onClick={() => { handleGenerateCode() }}
+                                                    >
+                                                        {'Generar código'}
+                                                    </Button>
+
+                                                </div>
+                                        }
                                         <InputComponent
                                             type="text"
                                             title="Nombre"
@@ -216,8 +269,8 @@ export default function CreateProduct () {
                             </div>
                             : null}
                         <Button className =" bg-green-500 text-primary-50"
-                            onClick={() => { requestCreateProduct(data) }}
-                            isLoading={!!loading}>
+                            onClick={() => { requestCreateProduct(data, notify) }}
+                            isLoading={!!loadingStock && !!loadingCategories}>
                             Guardar
                         </Button>
                         <Button color="danger" variant="flat"

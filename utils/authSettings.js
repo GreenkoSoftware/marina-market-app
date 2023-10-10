@@ -37,7 +37,8 @@ export async function authenticate ({ email, password }) {
                         token,
                         userType,
                         name: userData?.name,
-                        lastName: userData?.last_name
+                        lastName: userData?.last_name,
+                        idUser: userData?.ID
                     }
                 } else {
                     data.error = response?.messages

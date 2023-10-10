@@ -1,19 +1,27 @@
+/* eslint-disable no-unused-vars */
 'use client'
 import React from 'react'
 import { Button } from '@nextui-org/react'
 import useSalesStore from '@/app/(layout-app)/sales/store'
 
-export default function PaymentButton ({ productId, icon, title, isSelected, setIsSelected, onOpen }) {
+export default function PaymentButton ({ key, id, icon, title, paymentTarget, setPaymentTarget, voucherTarget, setVoucherTarget }) {
     const handleButton = () => {
-        setIsSelected(true)
-        onOpen = true
-        const sales = useSalesStore.getState().listSales
-        useSalesStore.getState().removeProduct(sales, productId)
+        if (setPaymentTarget) {
+            setPaymentTarget(
+                useSalesStore.getState().listSalesActives,
+                useSalesStore.getState().saleIdActive,
+                id)
+        } else if (voucherTarget) {
+            setVoucherTarget(
+                useSalesStore.getState().listSalesActives,
+                useSalesStore.getState().saleIdActive,
+                id)
+        }
     }
 
     return (
         <div>
-            {isSelected
+            {paymentTarget === id || voucherTarget === id
                 ? <Button color="success" size="lg" className="flex flex-col border border-primary-200 dark:border-secondary-200  w-44 h-44  dark:bg-green-600 bg-green-500" isIconOnly variant="shadow" aria-label=""
                     onClick={handleButton}>
                     {icon}

@@ -4,7 +4,7 @@ import { Card, Image, CardFooter, CardHeader, Button } from '@nextui-org/react'
 import { useRouter } from 'next/navigation'
 
 export default function MainTittleCard (props) {
-    const { title, footerMessage, imgSrc, route } = props
+    const { title, footerMessage, imgSrc, route, disabled } = props
     const router = useRouter()
 
     return (
@@ -13,7 +13,7 @@ export default function MainTittleCard (props) {
             isFooterBlurred
             radius="lg"
             className="col-span-12 sm:col-auto saturate-100 hover:saturate-140 h-full  sm:h-[40rem] shadow-2xl"
-            isPressable onPress = {() => route === '/reports' ? null : router.push(route)}
+            isPressable onPress = {() => (disabled || route === '/reports') ? null : router.push(route)}
         >
             <CardHeader className="absolute z-10 top-1 flex-col drop-shadow-6xl !items-start ">
                 <p className="text-tiny text-white/60 uppercase font-bold ">MÓDULO</p>
@@ -31,7 +31,8 @@ export default function MainTittleCard (props) {
                 <p className="text-l sm:text-2xl text-white/80 m-2 px-3 ">{footerMessage}</p>
                 <Button className={`${route === '/reports' ? 'cursor-not-allowed' : ''} text-xl text-white bg-sky-500/75 w-[50px] sm:w-[100px]`} variant="flat" color="default" radius="md" size="lg"
                     onPress = {() => route === '/reports' ? null : router.push(route)
-                    }>
+                    }
+                    isDisabled={disabled}>
                 Ingresar
                 </Button>
             </CardFooter>

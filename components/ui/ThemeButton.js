@@ -19,7 +19,7 @@ const ThemeButton = () => {
         <button
             aria-label='Toggle Dark Mode'
             type='button'
-            className='flex items-center justify-center rounded-lg p-2 transition-colors hover:bg-zinc-100 dark:hover:bg-zinc-700'
+            className='flex items-center justify-center rounded-lg p-2 transition-colors hover:bg-zinc-100 dark:hover:bg-zinc-700 animation-fade-in'
             onClick={() => setTheme(resolvedTheme === 'dark' ? 'light' : 'dark')}
         >
             {resolvedTheme === 'dark'
@@ -27,7 +27,7 @@ const ThemeButton = () => {
                     <SunIcon className='w-6 h-6 sm:w-10 sm:h-10 text-orange-300' />
                 )
                 : (
-                    <MoonIcon className='w-6 h-6 sm:w-10 sm:h-10 text-primary-500' />
+                    <MoonIcon className='w-6 h-6 sm:w-10 sm:h-10 text-indigo-950' />
                 )}
         </button>
     )

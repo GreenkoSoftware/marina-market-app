@@ -4,33 +4,135 @@ import { InputComponent, SectionProduct, SelectComponent } from './NewProduct/cr
 import ProductImage from './NewProduct/productImage'
 import useInventoryStore from '../store'
 import Image from 'next/image'
-import { ConvertBytesToImage } from '@/utils/image'
+import { ConvertBytesToImage, DefaultImageMarinaMarket } from '@/utils/image'
 import { DeleteIcon } from '@/components/ui/DeleteIcon'
-import { deleteProduct } from '@/services/products'
+import { deleteProduct, updateProduct } from '@/services/products'
+import toast, { Toaster } from 'react-hot-toast'
 
 export default function ProductDetail ({ targeProduct, isOpen, onClose, setTargetProduct }) {
+    const { listCategories, listStockTypes, getListInventory } = useInventoryStore()
     const [edit, setEdit] = useState(false)
     const [categoryOptions, setCategoryOptions] = useState([])
     const [stockTypeOptions, setStockTypeOptions] = useState([])
-    const { listCategories, listStockTypes } = useInventoryStore()
+    const [image, setImage] = useState([])
+    const notify = (text) => toast(text)
+    const defaultState = {
+        image: null,
+        code: null,
+        name: null,
+        category_id: null,
+        stock_type_id: null,
+        cost_price: null,
+        net_price: null,
+        price: null,
+        stock: null,
+        stock_min: null
+    }
+    const [productData, setProductData] = useState(defaultState)
+    const [newProductData, setNewProductData] = useState(defaultState)
+    const [loadingEdit, setLoadingEdit] = useState(false)
+    const [loadingDelete, setLoadingDelete] = useState(false)
 
     useEffect(() => {
         setCategoryOptions(listCategories)
         setStockTypeOptions(listStockTypes)
     }, [listCategories, listStockTypes])
 
+    useEffect(() => {
+        const newProductValues = { ...newProductData, image }
+        console.log(newProductValues)
+        setNewProductData(newProductValues)
+    }, [image])
+
+    const handleInputChange = ({ field, value, isSalePrice, isCode }) => {
+        const newProductValues = { ...newProductData, [field]: !isNaN(value) && !isCode ? parseInt(value) : value }
+        if (isSalePrice) {
+            newProductValues.net_price = newProductValues?.price / 1.19
+        }
+        console.log(newProductValues)
+        setNewProductData(newProductValues)
+    }
+
+    useEffect(() => {
+        if (targeProduct && !edit) {
+            console.log(targeProduct)
+            setProductData({
+                image: targeProduct?.image,
+                code: targeProduct?.code,
+                name: targeProduct?.name,
+                category_id: targeProduct?.productCategoryId,
+                stock_type_id: targeProduct?.stockTypeId,
+                cost_price: targeProduct?.costPrice,
+                price: targeProduct?.price,
+                stock: targeProduct?.stock,
+                stock_min: targeProduct?.stockMin
+            })
+        }
+    }, [targeProduct, edit])
+
     const handleDeleteProduct = () => {
+        setLoadingDelete(true)
         const productId = targeProduct?.id
-        deleteProduct({ id: productId }).then(
+        deleteProduct({ id: productId, notify }).then(
             (response) => {
                 console.log(response)
+                setTargetProduct(null)
+                setLoadingDelete(false)
+                getListInventory()
+                onClose()
             }
         )
+    }
+
+    const handleUpdateProduct = () => {
+        setLoadingEdit(true)
+        const productId = targeProduct?.id
+        try {
+            updateProduct({ id: productId, ...newProductData, notify }).then(
+                (response) => {
+                    console.log(response)
+                    setLoadingEdit(false)
+                    setEdit(false)
+                    setTargetProduct(null)
+                    onClose()
+                    getListInventory()
+                }
+            )
+        } catch (err) {
+            console.log(err)
+            setLoadingEdit(false)
+            setEdit(false)
+            setTargetProduct(null)
+            onClose()
+        }
+    }
+
+    const handleCancelUpdateProduct = () => {
+        setEdit(false)
+        setNewProductData(defaultState)
     }
 
     return (
         <>
             <div className="flex flex-wrap gap-3">
+                <Toaster
+                    position="top-center"
+                    reverseOrder={false}
+                    gutter={8}
+                    containerClassName=""
+                    containerStyle={{}}
+                    className={' bg-primary-50 text-primary-500 dark:bg-primary-200 dark:text-primary-500'}
+                    toastOptions={{
+                        className: '',
+                        duration: 10000,
+                        success: {
+                            duration: 3000,
+                            theme: {
+                                primary: 'green',
+                                secondary: 'black'
+                            }
+                        }
+                    }} />
             </div>
             <Modal size={'2xl'}
                 isOpen={isOpen}
@@ -50,13 +152,13 @@ export default function ProductDetail ({ targeProduct, isOpen, onClose, setTarge
                                         <div className="flex-3">
                                             {
                                                 edit
-                                                    ? <ProductImage defaultImg={targeProduct?.image}/>
+                                                    ? <ProductImage defaultImg={productData?.image} setImage={setImage}/>
                                                     : <div className="rounded-lg flex items-center m-auto w-[250px] flex-col space-y-2 p-2 border-2 border-gray-300 border-dashed cursor-pointer hover:bg-gray-100 dark:border-gray-600 dark:hover:border-gray-500 dark:hover:bg-gray-600">
 
                                                         <Image id='imageProduct'
-                                                            src={ConvertBytesToImage({ imageBytes: targeProduct?.image })}
+                                                            src={productData?.image?.length ? ConvertBytesToImage({ imageBytes: productData?.image }) : DefaultImageMarinaMarket()}
                                                             alt="Image name"
-                                                            width={250}
+                                                            width={200}
                                                             height={200}
                                                         />
                                                     </div>
@@ -67,15 +169,15 @@ export default function ProductDetail ({ targeProduct, isOpen, onClose, setTarge
                                                 isBarCode={true}
                                                 type="text"
                                                 title="Codigo de barra"
-                                                defaultValue={targeProduct?.code}
+                                                defaultValue={productData?.code}
                                                 disabled={!edit}
-                                                onValueChange={(value) => { console.log({ field: 'barcode', value }) }}
+                                                onValueChange={(value) => { handleInputChange({ field: 'code', value, isCode: true }) }}
                                             />
                                             <InputComponent
                                                 type="text"
                                                 title="Nombre"
-                                                defaultValue={targeProduct?.name}
-                                                onValueChange={(value) => { console.log({ field: 'name', value }) }}
+                                                defaultValue={productData?.name}
+                                                onValueChange={(value) => { handleInputChange({ field: 'name', value }) }}
                                                 disabled={!edit}
                                             />
 
@@ -87,20 +189,20 @@ export default function ProductDetail ({ targeProduct, isOpen, onClose, setTarge
                                             isRequired
                                             title="Categoria"
                                             placeholder="Seleccione"
-                                            defaultSelectedKeys={[targeProduct?.productCategoryId?.toString()]}
+                                            defaultSelectedKeys={[productData?.category_id?.toString()]}
                                             options={categoryOptions}
                                             // defaultValue={targeProduct?.}
-                                            onSelectionChange={(value) => { console.log({ field: 'category_id', value: value?.currentKey }) }}
+                                            onSelectionChange={(value) => { handleInputChange({ field: 'category_id', value: value?.currentKey }) }}
                                             isDisabled={!edit}
                                         />
                                         <SelectComponent
                                             isRequired
                                             title="Tipo de stock"
                                             placeholder="Seleccione"
-                                            defaultSelectedKeys={[targeProduct?.stockTypeId?.toString()]}
+                                            defaultSelectedKeys={[productData?.stock_type_id?.toString()]}
                                             options={stockTypeOptions}
                                             // defaultValue={targeProduct?.}
-                                            onSelectionChange={(value) => { console.log({ field: 'stock_type_id', value: value?.currentKey }) }}
+                                            onSelectionChange={(value) => { handleInputChange({ field: 'stock_type_id', value: value?.currentKey }) }}
                                             isDisabled={!edit}
                                         />
                                     </div>
@@ -112,8 +214,8 @@ export default function ProductDetail ({ targeProduct, isOpen, onClose, setTarge
                                             title="Precio costo"
                                             placeholder="0"
                                             isPrice
-                                            defaultValue={targeProduct?.costPrice}
-                                            onValueChange={(value) => { console.log({ field: 'cost_price', value }) }}
+                                            defaultValue={productData?.cost_price}
+                                            onValueChange={(value) => { handleInputChange({ field: 'cost_price', value }) }}
                                             disabled={!edit}
                                         />
                                         <InputComponent
@@ -121,8 +223,8 @@ export default function ProductDetail ({ targeProduct, isOpen, onClose, setTarge
                                             title="Precio venta"
                                             placeholder="0"
                                             isPrice
-                                            defaultValue={targeProduct?.price}
-                                            onValueChange={(value) => { console.log({ field: 'sale_price', value }) }}
+                                            defaultValue={productData?.price}
+                                            onValueChange={(value) => { handleInputChange({ field: 'sale_price', value, isSalePrice: true }) }}
                                             disabled={!edit}
                                         />
                                     </div>
@@ -133,16 +235,16 @@ export default function ProductDetail ({ targeProduct, isOpen, onClose, setTarge
                                             type="number"
                                             title="Stock mínimo"
                                             placeholder="0"
-                                            defaultValue={targeProduct?.stock}
-                                            onValueChange={(value) => { console.log({ field: 'stock_min', value }) }}
+                                            defaultValue={productData?.stock_min}
+                                            onValueChange={(value) => { handleInputChange({ field: 'stock_min', value }) }}
                                             disabled={!edit}
                                         />
                                         <InputComponent
                                             type="number"
                                             title="Stock disponible"
                                             placeholder="0"
-                                            defaultValue={targeProduct?.stock}
-                                            onValueChange={(value) => { console.log({ field: 'stock', value }) }}
+                                            defaultValue={productData?.stock}
+                                            onValueChange={(value) => { handleInputChange({ field: 'stock', value }) }}
                                             disabled={!edit}
                                         />
                                     </div>
@@ -152,18 +254,13 @@ export default function ProductDetail ({ targeProduct, isOpen, onClose, setTarge
                         {edit
 
                             ? <ModalFooter>
-                                <Button className =" bg-green-500 text-primary-50" onClick={() => {
-                                    setEdit(false)
-                                    setTargetProduct(null)
-                                    onClose()
-                                }
-                                }>
-                                    {'Guardar'}
+                                <Button className =" bg-green-500 text-primary-50"
+                                    onClick={handleUpdateProduct}
+                                    isLoading={loadingEdit}>
+                                    {loadingEdit ? 'Guardando' : 'Guardar'}
                                 </Button>
                                 <Button color="danger" variant="light"
-                                    onClick={() => {
-                                        setEdit(false)
-                                    }}
+                                    onClick={handleCancelUpdateProduct}
                                 >
                                     {'Cancelar'}
                                 </Button>
@@ -171,8 +268,9 @@ export default function ProductDetail ({ targeProduct, isOpen, onClose, setTarge
                             : <ModalFooter>
                                 <Button color="danger" variant="bordered"
                                     startContent={<DeleteIcon/>}
-                                    onClick={handleDeleteProduct}>
-                                    {'Eliminar'}
+                                    onClick={handleDeleteProduct}
+                                    isLoading={loadingDelete}>
+                                    {loadingDelete ? 'Eliminando' : 'Eliminar'}
                                 </Button>
                                 <Button className =" bg-blue-500 text-primary-50"
                                     onClick={() => {

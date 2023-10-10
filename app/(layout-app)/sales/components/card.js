@@ -16,9 +16,10 @@ export default function Card () {
 
     useEffect(() => {
         if (selected) {
-            setListInventory(list.filter((item) => item.productCategoryId === parseInt(selected)))
+            setListInventory(list?.filter((item) => item.productCategoryId === parseInt(selected)))
         }
     }, [selected, list])
+
     useEffect(() => {
         if (targeProduct) {
             onOpen()
@@ -50,18 +51,15 @@ export default function Card () {
                 </Tabs>
             </section>
             <section className="p-[2rem]  shadow-md hover:shadow-lg  rounded-tl-[0px]  bg-secondary-50 dark:bg-secondary-450 rounded-[14px]">
-                <ScrollShadow className="h-[38rem] w-[44rem] p-1">
-                    <div className="gap-4 grid grid-cols-2 md:grid-cols-5">
-                        {listInventory.map((item, index) => (
-                            <CardUi className key={index}
-                                item={item}
-                                index={index}
-                                isFromSales={true}
-                                setTargetProduct={setTargetProduct}
-                            />
-                        ))}
-
-                    </div>
+                <ScrollShadow className="h-full w-full p-1">
+                    {listInventory.map((item, index) => (
+                        <CardUi className key={index}
+                            item={item}
+                            index={index}
+                            isFromSales={true}
+                            setTargetProduct={setTargetProduct}
+                        />
+                    ))}
                 </ScrollShadow>
             </section>
             <DetailedProduct targeProduct={targeProduct} isOpen={isOpen} onClose={onClose} setTargetProduct={setTargetProduct} />
