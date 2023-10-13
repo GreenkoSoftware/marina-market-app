@@ -1,7 +1,7 @@
 'use client'
 import React, { useEffect, useState } from 'react'
 import CardUi from '@/components/ui/Card'
-import { Tabs, Tab, useDisclosure, Input, Skeleton, ScrollShadow, Button } from '@nextui-org/react'
+import { useDisclosure, Input, Skeleton, ScrollShadow, Button } from '@nextui-org/react'
 import useInventoryStore from './store'
 import CreateProduct from './components/NewProduct/createProduct'
 import { MagnifyingGlassIcon } from '@heroicons/react/24/solid'
@@ -11,11 +11,12 @@ import ProductDetail from './components/productDetail'
 import LoadingCard from '@/components/ui/Loading'
 import Offers from './components/Offer/offers'
 import CreateCategory from './components/NewCategory/newCategory'
+import TabsCustom from '@/components/ui/Tabs'
 
 export default function Card () {
     const { isOpen, onClose, onOpen } = useDisclosure()
     const [targeProduct, setTargetProduct] = useState(null)
-    const [selected, setSelected] = useState(1)
+    const [selected, setSelected] = useState(null)
     const [listInventory, setListInventory] = useState([])
     const [sectionSearch, setSectionSearch] = useState(false)
     const [searchInput, setSearchInput] = useState(null)
@@ -93,38 +94,19 @@ export default function Card () {
         <section className='h-full flex flex-col'>
             <section className="flex items-center justify-between  z-10">
                 <section className='flex flex-row rounded-t-[12px] space-x-5 bg-secondary-50 dark:bg-secondary-450 pr-3 pt-1 items-center  '>
-                    <div className='h-[3rem] w-[900px] top-[0px] overflow-x-auto mx-2 rounded-r-2xl overflow-hidden flex items-center'>
+                    <div className='h-[3rem] top-[0px] overflow-x-auto mx-2 rounded-r-2xl overflow-hidden flex items-center'>
                         {loadingCategories && loading
-                            ? <section className="pt-1 pl-3 pr-3 w-full flex ">
+                            ? <section className="pl-3 w-full min-w-[10rem] flex">
                                 <Skeleton className="w-full h-8 rounded-lg"></Skeleton>
                             </section>
 
-                            : <Tabs
-                                aria-label="Options"
+                            : <TabsCustom
                                 items={listCategories}
                                 selectedKey={selected}
                                 onSelectionChange={setSelected}
-                                className="pt-3 pl-3 bg-secondary-50 rounded-t-[12px] dark:bg-secondary-450 pb-3 px-5 "
-                                color={!sectionSearch ? '' : ''}
-                                classNames={{
-                                    cursor: sectionSearch ? 'w-full bg-secondary-200' : 'w-full bg-green-400',
-                                    tabContent: 'group-data-[selected=true]:text-primary-50'
-                                }}
-                                onClick={() => setSectionSearch(false)}
-                            >
-                                {listCategories
-                                    ? listCategories.map(
-                                        (item) => (
-                                            <Tab key={item.id} size={'lg'} title={item.label}/>
-                                        )
-                                    )
-                                    : null}
-
-                            </Tabs>
+                            />
                         }
-
                     </div>
-
                     <Button
                         isDisabled={loadingCategories || loading}
                         isLoading={loadingCategories || loading}
