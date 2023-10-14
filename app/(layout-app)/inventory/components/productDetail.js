@@ -6,18 +6,17 @@ import useInventoryStore from '../store'
 import Image from 'next/image'
 import { ConvertBytesToImage, DefaultImageMarinaMarket } from '@/utils/image'
 import { DeleteIcon } from '@/components/ui/DeleteIcon'
-import { /* deleteProduct, */ updateProduct } from '@/services/products'
-import toast, { Toaster } from 'react-hot-toast'
+import { Toaster } from 'react-hot-toast'
 import ConfirmModal from '@/components/ui/ConfirmModal'
 
 export default function ProductDetail ({ targeProduct, isOpen, onClose, setTargetProduct }) {
     const { listCategories, listStockTypes, getListInventory } = useInventoryStore()
     const [edit, setEdit] = useState(false)
+    const [type, setType] = useState(false)
     const [confirm, setConfirm] = useState(false)
     const [categoryOptions, setCategoryOptions] = useState([])
     const [stockTypeOptions, setStockTypeOptions] = useState([])
     const [image, setImage] = useState([])
-    const notify = (text) => toast(text)
     const defaultState = {
         image: null,
         code: null,
@@ -34,6 +33,14 @@ export default function ProductDetail ({ targeProduct, isOpen, onClose, setTarge
     const [newProductData, setNewProductData] = useState(defaultState)
     const [loadingEdit, setLoadingEdit] = useState(false)
     const [loadingDelete, setLoadingDelete] = useState(false)
+
+    useEffect(() => {
+        if (!confirm) {
+            setLoadingDelete(false)
+            setConfirm(false)
+            setLoadingEdit(false)
+        }
+    }, [confirm])
 
     useEffect(() => {
         setCategoryOptions(listCategories)
@@ -74,6 +81,7 @@ export default function ProductDetail ({ targeProduct, isOpen, onClose, setTarge
 
     const handleDeleteProduct = () => {
         setLoadingDelete(true)
+        setType('Eliminar')
         // const productId = targeProduct?.id
         setConfirm(true)
         /* deleteProduct({ id: productId, notify }).then(
@@ -89,7 +97,9 @@ export default function ProductDetail ({ targeProduct, isOpen, onClose, setTarge
 
     const handleUpdateProduct = () => {
         setLoadingEdit(true)
-        const productId = targeProduct?.id
+        setType('Editar')
+        setConfirm(true)
+        /* const productId = targeProduct?.id
         try {
             updateProduct({ id: productId, ...newProductData, notify }).then(
                 (response) => {
@@ -103,15 +113,17 @@ export default function ProductDetail ({ targeProduct, isOpen, onClose, setTarge
             )
         } catch (err) {
             console.log(err)
+            setConfirm(false)
             setLoadingEdit(false)
             setEdit(false)
             setTargetProduct(null)
             onClose()
-        }
+        } */
     }
 
     const handleCancelUpdateProduct = () => {
         setEdit(false)
+        setConfirm(false)
         setNewProductData(defaultState)
     }
 
@@ -298,12 +310,18 @@ export default function ProductDetail ({ targeProduct, isOpen, onClose, setTarge
             </Modal>
             {confirm
                 ? <ConfirmModal
+                    setConfirm ={setConfirm}
                     product={productData}
-                    type={'Eliminar'}
+                    type={type}
                     setLoadingDelete={setLoadingDelete}
                     setTargetProduct ={setTargetProduct}
                     getListInventory={getListInventory}
                     onClose ={onClose}
+                    targeProduct={targeProduct}
+                    onCloseTargetModal = {onClose}
+                    setLoadingEdit ={setLoadingEdit}
+                    setEdit ={setEdit}
+                    newProductData ={ newProductData}
                 />
                 : <div></div>
             }

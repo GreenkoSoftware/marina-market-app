@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Button, useDisclosure, Input } from '@nextui-org/react'
-import { deleteProduct } from '@/services/products'
+import { deleteProduct, /* deleteProduct, */ updateProduct } from '@/services/products'
 import toast from 'react-hot-toast'
 
 export default function ConfirmModal (props) {
@@ -9,29 +9,71 @@ export default function ConfirmModal (props) {
         type,
         setLoadingDelete,
         setTargetProduct,
-        getListInventory
+        getListInventory,
+        targeProduct,
+        onCloseTargetModal,
+        setConfirm,
+        setLoadingEdit,
+        setEdit,
+        newProductData
     } = props
     const [productData, setProductData] = useState(product)
-    const { isOpen, onOpen, onClose, onOpenChange } = useDisclosure()
+    const { isOpen, onOpen, onClose } = useDisclosure()
     const [value, setValue] = React.useState('')
+    const [invalid, setInvalid] = React.useState(false)
     const notify = (text) => toast(text)
 
-    const handleModal = () => {
+    const target = () => {
         const newValue = value
         if (newValue === productData?.name && productData !== undefined) {
-            console.log('diarrea')
-            setLoadingDelete(false)
-            deleteProduct({ id: productData?.id, notify }).then(
-                (response) => {
-                    console.log(response)
-                    setTargetProduct(null)
-                    setLoadingDelete(false)
-                    getListInventory()
-                    onClose()
-                })
+            setInvalid(true)
+            if (type === 'Eliminar') {
+                console.log('diarrea')
+                const productId = targeProduct?.id
+                setLoadingDelete(false)
+                deleteProduct({ id: productId, notify }).then(
+                    (response) => {
+                        console.log(response)
+                        setTargetProduct(null)
+                        getListInventory()
+                        onClose()
+                        onCloseTargetModal()
+                    })
+            } else {
+                if (type === 'Editar') {
+                    const productId = targeProduct?.id
+                    try {
+                        updateProduct({ id: productId, ...newProductData, notify }).then(
+                            (response) => {
+                                console.log(response)
+                                setLoadingEdit(false)
+                                setEdit(false)
+                                setTargetProduct(null)
+                                onClose()
+                                getListInventory()
+                            }
+                        )
+                    } catch (err) {
+                        console.log(err)
+                        setConfirm(false)
+                        setLoadingEdit(false)
+                        setEdit(false)
+                        setTargetProduct(null)
+                        onClose()
+                    }
+                }
+            }
         } else {
-            console.log(newValue)
+            setInvalid(true)
         }
+    }
+
+    const close = () => {
+        setLoadingDelete(false)
+        setLoadingEdit(false)
+        onOpen(false)
+        setConfirm(false)
+        onClose()
     }
 
     useEffect(() => {
@@ -43,7 +85,6 @@ export default function ConfirmModal (props) {
         <Modal
             backdrop="opaque"
             isOpen={isOpen}
-            onOpenChange={onOpenChange}
             radius="2xl"
             classNames={{
                 body: 'py-6',
@@ -64,20 +105,24 @@ export default function ConfirmModal (props) {
                         }
                         <p>Para confirmar, debes ingresar el nombre del producto</p>
                         <Input
+                            classNames={'max-w-xs' }
+                            isInvalid={invalid}
+                            color={invalid ? 'danger' : ''}
+                            errorMessage={invalid && 'Respuesta invalida'}
                             isRequired
                             type="text"
                             label="Producto"
                             placeholder={product?.name}
-                            className="max-w-xs"
                             onValueChange={setValue}
                         />
+
                     </div>
                 </ModalBody>
                 <ModalFooter className='justify-center'>
-                    <Button color="foreground" variant="light" onPress={onClose}>
+                    <Button color="foreground" variant="light" onPress={close}>
                                     Cancelar
                     </Button>
-                    <Button color="danger" className="shadow-lg shadow-indigo-500/20" onPress={handleModal()}>
+                    <Button color="danger" className="shadow-lg shadow-indigo-500/20" onPress={target}>
                                     Aceptar
                     </Button>
                 </ModalFooter>
