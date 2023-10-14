@@ -6,12 +6,14 @@ import useInventoryStore from '../store'
 import Image from 'next/image'
 import { ConvertBytesToImage, DefaultImageMarinaMarket } from '@/utils/image'
 import { DeleteIcon } from '@/components/ui/DeleteIcon'
-import { deleteProduct, updateProduct } from '@/services/products'
+import { /* deleteProduct, */ updateProduct } from '@/services/products'
 import toast, { Toaster } from 'react-hot-toast'
+import ConfirmModal from '@/components/ui/ConfirmModal'
 
 export default function ProductDetail ({ targeProduct, isOpen, onClose, setTargetProduct }) {
     const { listCategories, listStockTypes, getListInventory } = useInventoryStore()
     const [edit, setEdit] = useState(false)
+    const [confirm, setConfirm] = useState(false)
     const [categoryOptions, setCategoryOptions] = useState([])
     const [stockTypeOptions, setStockTypeOptions] = useState([])
     const [image, setImage] = useState([])
@@ -72,8 +74,9 @@ export default function ProductDetail ({ targeProduct, isOpen, onClose, setTarge
 
     const handleDeleteProduct = () => {
         setLoadingDelete(true)
-        const productId = targeProduct?.id
-        deleteProduct({ id: productId, notify }).then(
+        // const productId = targeProduct?.id
+        setConfirm(true)
+        /* deleteProduct({ id: productId, notify }).then(
             (response) => {
                 console.log(response)
                 setTargetProduct(null)
@@ -81,7 +84,7 @@ export default function ProductDetail ({ targeProduct, isOpen, onClose, setTarge
                 getListInventory()
                 onClose()
             }
-        )
+        ) */
     }
 
     const handleUpdateProduct = () => {
@@ -293,6 +296,17 @@ export default function ProductDetail ({ targeProduct, isOpen, onClose, setTarge
                 </ModalContent>
 
             </Modal>
+            {confirm
+                ? <ConfirmModal
+                    product={productData}
+                    type={'Eliminar'}
+                    setLoadingDelete={setLoadingDelete}
+                    setTargetProduct ={setTargetProduct}
+                    getListInventory={getListInventory}
+                    onClose ={onClose}
+                />
+                : <div></div>
+            }
         </>
     )
 }
