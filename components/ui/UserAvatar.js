@@ -18,8 +18,8 @@ export default function UserAvatar () {
         }
     }, [fullName])
     return (
-        <div className="flex w-full">
-            <Card className="flex gap-1">
+        <div>
+            <Card >
                 <CardHeader className="justify-between space-x-1">
                     <div className="flex gap-3 ">
                         <Avatar className="flex pr-12 sm:scale-100 scale-75" isBordered color="warning" radius="full" size="lg" src="/avatars/avatar-1.png" />

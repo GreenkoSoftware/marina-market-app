@@ -1,7 +1,8 @@
 'use client'
 import React from 'react'
-import { Card, Image, CardFooter, CardHeader, Button } from '@nextui-org/react'
+import { Card, CardFooter, CardHeader, Button } from '@nextui-org/react'
 import { useRouter } from 'next/navigation'
+import Image from 'next/image'
 
 export default function MainTittleCard (props) {
     const { title, footerMessage, imgSrc, route, disabled } = props
@@ -24,7 +25,7 @@ export default function MainTittleCard (props) {
                 alt="Card background"
                 className="z-0 w-full h-full object-cover"
                 isZoomed
-                src={imgSrc}
+                src={imgSrc || null}
 
             />
             <CardFooter className="justify-between before:bg-white/10 border-white/20 border-1 overflow-hidden py-1 absolute before:rounded-xl rounded-large bottom-1 w-[calc(100%_-_8px)] h-20 sm:h-40 shadow-small ml-1 z-10">
