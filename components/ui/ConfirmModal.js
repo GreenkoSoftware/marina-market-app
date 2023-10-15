@@ -86,14 +86,15 @@ export default function ConfirmModal (props) {
             backdrop="opaque"
             isOpen={isOpen}
             radius="2xl"
-            classNames={{
-                body: 'py-6',
-                backdrop: 'bg-[#C70039]/50 backdrop-opacity-40',
-                base: 'border-[#C70039] bg-[#19172c] dark:bg-[#19172c] text-[#a8b0d3]',
-                header: 'border-b-[1px] border-[#C70039]',
-                footer: 'border-t-[1px] border-[#C70039]',
-                closeButton: 'hover:bg-white/5 active:bg-white/10'
-            }}
+            classNames={
+                {
+                    body: 'py-6',
+                    backdrop: `${type === 'Eliminar' ? 'bg-[#C70039]/50 backdrop-opacity-40' : 'bg-[#ffd700]/50 backdrop-opacity-40'}`,
+                    base: `${type === 'Eliminar' ? 'border-[#C70039] bg-[#19172c] dark:bg-[#19172c] text-[#a8b0d3]' : 'border-[#ffd700] bg-[#19172c] dark:bg-[#19172c] text-[#a8b0d3]'}`,
+                    header: `${type === 'Eliminar' ? 'border-b-[1px] border-[#C70039]' : ' border-b-[1px] border-[#ffd700]'}`,
+                    footer: `${type === 'Eliminar' ? 'border-t-[1px] border-[#C70039]' : 'border-t-[1px] border-[#ffd700]'}`,
+                    closeButton: 'hover:bg-white/5 active:bg-white/10'
+                }}
         >
             <ModalContent>
                 <ModalHeader className="flex flex-col gap-1 font-bold items-center">{type} producto</ModalHeader>
@@ -122,7 +123,7 @@ export default function ConfirmModal (props) {
                     <Button color="foreground" variant="light" onPress={close}>
                                     Cancelar
                     </Button>
-                    <Button color="danger" className="shadow-lg shadow-indigo-500/20" onPress={target}>
+                    <Button color={`${type === 'Eliminar' ? 'danger' : 'warning'}`} className="shadow-lg shadow-indigo-500/20" onPress={target}>
                                     Aceptar
                     </Button>
                 </ModalFooter>
