@@ -18,17 +18,17 @@ export default function ConfirmModal (props) {
         newProductData
     } = props
     const [productData, setProductData] = useState(product)
-    const { isOpen, onOpen, onClose } = useDisclosure()
+    const [openModal, setOpenModal] = useState(false)
+    const { onClose } = useDisclosure()
     const [value, setValue] = React.useState('')
     const [invalid, setInvalid] = React.useState(false)
     const notify = (text) => toast(text)
 
     const target = () => {
         const newValue = value
-        if (newValue === productData?.name && productData !== undefined) {
+        if ((newValue === productData?.name && productData !== undefined) || type === 'Editar') {
             setInvalid(true)
             if (type === 'Eliminar') {
-                console.log('diarrea')
                 const productId = targeProduct?.id
                 setLoadingDelete(false)
                 deleteProduct({ id: productId, notify }).then(
@@ -69,27 +69,29 @@ export default function ConfirmModal (props) {
     }
 
     const close = () => {
+        target()
+        setOpenModal(false)
         setLoadingDelete(false)
         setLoadingEdit(false)
-        onOpen(false)
         setConfirm(false)
-        onClose()
+        onClose(true)
+        onCloseTargetModal(true)
     }
 
     useEffect(() => {
-        onOpen(true)
+        setOpenModal(true)
         setProductData(product)
     }, [])
 
     return (
         <Modal
             backdrop="opaque"
-            isOpen={isOpen}
+            isOpen={openModal}
             radius="2xl"
             classNames={
                 {
                     body: 'py-6',
-                    backdrop: `${type === 'Eliminar' ? 'bg-[#C70039]/50 backdrop-opacity-40' : 'bg-[#ffd700]/50 backdrop-opacity-40'}`,
+                    backdrop: 'backdrop-opacity-75',
                     base: `${type === 'Eliminar' ? 'border-[#C70039] bg-[#19172c] dark:bg-[#19172c] text-[#a8b0d3]' : 'border-[#ffd700] bg-[#19172c] dark:bg-[#19172c] text-[#a8b0d3]'}`,
                     header: `${type === 'Eliminar' ? 'border-b-[1px] border-[#C70039]' : ' border-b-[1px] border-[#ffd700]'}`,
                     footer: `${type === 'Eliminar' ? 'border-t-[1px] border-[#C70039]' : 'border-t-[1px] border-[#ffd700]'}`,
@@ -99,31 +101,35 @@ export default function ConfirmModal (props) {
             <ModalContent>
                 <ModalHeader className="flex flex-col gap-1 font-bold items-center">{type} producto</ModalHeader>
                 <ModalBody>
-                    <div className='flex flex-col justify-between mx-10 gap-4'>
-                        {type === 'Eliminar'
-                            ? <p>Se eliminara el producto:<p className='font-bold'>{product?.name}</p></p>
-                            : <p>Se modificara el producto:<p className='font-bold'>{product?.name}</p></p>
-                        }
-                        <p>Para confirmar, debes ingresar el nombre del producto</p>
-                        <Input
-                            classNames={'max-w-xs' }
-                            isInvalid={invalid}
-                            color={invalid ? 'danger' : ''}
-                            errorMessage={invalid && 'Respuesta invalida'}
-                            isRequired
-                            type="text"
-                            label="Producto"
-                            placeholder={product?.name}
-                            onValueChange={setValue}
-                        />
 
-                    </div>
+                    {type === 'Eliminar'
+                        ? <div className='flex flex-col justify-between mx-10 gap-4'>
+                            <p>Se eliminara el producto:<p className='font-bold'>{product?.name}</p></p>
+                            <p>Para confirmar, debes ingresar el nombre del producto</p>
+                            <Input
+                                classNames={'max-w-xs' }
+                                isInvalid={invalid}
+                                color={invalid ? 'danger' : ''}
+                                errorMessage={invalid && 'Respuesta invalida'}
+                                isRequired
+                                type="text"
+                                label="Producto"
+                                placeholder={product?.name}
+                                onValueChange={setValue}
+                            />
+                        </div>
+                        : <div className='flex flex-col justify-between mx-10 gap-4'>
+                            <p>Se modificara el producto:<p className='font-bold'>{product?.name}</p></p>
+                            <p>¿Esta seguro que desea modificar el producto?</p>
+                        </div>
+                    }
+
                 </ModalBody>
                 <ModalFooter className='justify-center'>
                     <Button color="foreground" variant="light" onPress={close}>
                                     Cancelar
                     </Button>
-                    <Button color={`${type === 'Eliminar' ? 'danger' : 'warning'}`} className="shadow-lg shadow-indigo-500/20" onPress={target}>
+                    <Button color={`${type === 'Eliminar' ? 'danger' : 'warning'}`} className="shadow-lg shadow-indigo-500/20" onPress={close} onClose={close} >
                                     Aceptar
                     </Button>
                 </ModalFooter>

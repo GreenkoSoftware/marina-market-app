@@ -23,9 +23,9 @@ export default function MainTittleCard (props) {
             <Image
                 removeWrapper
                 alt="Card background"
-                className="z-0 w-full h-full object-cover"
+                className="z-0 w-full h-full object-cover hover:scale-125 duration-300"
                 isZoomed
-                src={imgSrc || null}
+                src={imgSrc}
 
             />
             <CardFooter className="justify-between before:bg-white/10 border-white/20 border-1 overflow-hidden py-1 absolute before:rounded-xl rounded-large bottom-1 w-[calc(100%_-_8px)] h-20 sm:h-40 shadow-small ml-1 z-10">

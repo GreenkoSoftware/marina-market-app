@@ -21,7 +21,7 @@ export default function PayDetailed ({ loadingSale, setPageTarget, setPayment, i
         } else if (paymentTarget === 2) {
             setSearchInput(null)
             setPaymentTarget(listSalesActives, saleIdActive, paymentTarget)
-            createSale(listSalesActives, saleIdActive, notify, setPayment, onClose, setGoPay, setPageTarget, pageTarget, removeSale)
+            createSale(listSalesActives, saleIdActive, notify, setPayment, onClose, setGoPay, setPageTarget, paymentTarget, removeSale)
             setPaymentTarget(listSalesActives, saleIdActive, null)
         }
     }, [paymentTarget])

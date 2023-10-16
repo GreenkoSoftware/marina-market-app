@@ -35,6 +35,12 @@ export default function ProductDetail ({ targeProduct, isOpen, onClose, setTarge
     const [loadingDelete, setLoadingDelete] = useState(false)
 
     useEffect(() => {
+        setLoadingDelete(false)
+        setConfirm(false)
+        setLoadingEdit(false)
+    }, [])
+
+    useEffect(() => {
         if (!confirm) {
             setLoadingDelete(false)
             setConfirm(false)
@@ -82,43 +88,13 @@ export default function ProductDetail ({ targeProduct, isOpen, onClose, setTarge
     const handleDeleteProduct = () => {
         setLoadingDelete(true)
         setType('Eliminar')
-        // const productId = targeProduct?.id
         setConfirm(true)
-        /* deleteProduct({ id: productId, notify }).then(
-            (response) => {
-                console.log(response)
-                setTargetProduct(null)
-                setLoadingDelete(false)
-                getListInventory()
-                onClose()
-            }
-        ) */
     }
 
     const handleUpdateProduct = () => {
         setLoadingEdit(true)
         setType('Editar')
         setConfirm(true)
-        /* const productId = targeProduct?.id
-        try {
-            updateProduct({ id: productId, ...newProductData, notify }).then(
-                (response) => {
-                    console.log(response)
-                    setLoadingEdit(false)
-                    setEdit(false)
-                    setTargetProduct(null)
-                    onClose()
-                    getListInventory()
-                }
-            )
-        } catch (err) {
-            console.log(err)
-            setConfirm(false)
-            setLoadingEdit(false)
-            setEdit(false)
-            setTargetProduct(null)
-            onClose()
-        } */
     }
 
     const handleCancelUpdateProduct = () => {
@@ -157,7 +133,6 @@ export default function ProductDetail ({ targeProduct, isOpen, onClose, setTarge
                 closeButton={<></>}
             >
                 <ModalContent>
-
                     <section>
                         <ModalHeader className="flex flex-col gap-1 text-primary-500 dark:text-primary-200">Detalles del producto</ModalHeader>
                         <ModalBody>
