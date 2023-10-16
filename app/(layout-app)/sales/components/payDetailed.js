@@ -5,8 +5,10 @@ import { Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Button, Input
 import toast, { Toaster } from 'react-hot-toast'
 import { formatter } from '@/utils/number'
 import useSalesStore from '../store'
-
-export default function PayDetailed ({ loadingSale, setPageTarget, setPayment, isOpen, onClose, setGoPay, totalPay, payDetailed, setPayDetailed, listSales, createSale, paymentTarget, voucherTarget, clearList, pageTarget, onOpen, setPaymentTarget, setSearchInput }) {
+import InvoiceDetailed from './invoice/invoice'
+export default function PayDetailed ({ loadingSale, setPageTarget, setPayment, isOpen, onClose, setGoPay, totalPay, payDetailed, setPayDetailed, listSales, createSale, paymentTarget, voucherTarget, clearList, pageTarget, onOpen, setPaymentTarget, setSearchInput, setVoucherTargetValue }) {
+    /* Open Modal */
+    const [openModal, setOpenModal] = useState(false)
     const notify = (text) => toast(text)
     const {
         listSalesActives,
@@ -21,10 +23,15 @@ export default function PayDetailed ({ loadingSale, setPageTarget, setPayment, i
         } else if (paymentTarget === 2) {
             setSearchInput(null)
             setPaymentTarget(listSalesActives, saleIdActive, null)
-            createSale(listSalesActives, saleIdActive, notify, setPayment, onClose, setGoPay, setPageTarget, pageTarget, removeSale)
+            createSale(listSalesActives, saleIdActive, notify, setPayment, onClose, setGoPay, setPageTarget, paymentTarget, removeSale)
         }
     }, [paymentTarget])
-
+    useEffect(() => {
+        if (voucherTarget === 2) {
+            // es factura open modal para agregar el cliente
+            setOpenModal(true)
+        }
+    }, [voucherTarget])
     useEffect(() => {
         setPayDetailed(0)
     }, [])
@@ -53,7 +60,8 @@ export default function PayDetailed ({ loadingSale, setPageTarget, setPayment, i
                             secondary: 'black'
                         }
                     }
-                }} />
+                }}
+            />
             <div className="flex flex-wrap gap-3">
             </div>
             <Modal size={'2xl'}
@@ -132,7 +140,7 @@ export default function PayDetailed ({ loadingSale, setPageTarget, setPayment, i
                                         setPayDetailed(null)
                                         setSearchInput(null)
                                         setPaymentTarget(listSalesActives, saleIdActive, null)
-                                        createSale(listSalesActives, saleIdActive, notify, setPayment, onClose, setGoPay, setPageTarget, pageTarget, removeSale)
+                                        createSale(listSalesActives, saleIdActive, notify, setPayment, onClose, setGoPay, setPageTarget, paymentTarget, removeSale)
                                         // createSale(paymentTarget, voucherTarget, listSales, notify, setPayment, onClose, setGoPay, clearList, setPayment, totalPay)
                                     } else {
                                         setSearchInput(null)
@@ -160,6 +168,11 @@ export default function PayDetailed ({ loadingSale, setPageTarget, setPayment, i
                 </ModalContent>
 
             </Modal>
+            <InvoiceDetailed
+                openModal={openModal}
+                setOpenModal={setOpenModal}
+                setVoucherTargetValue={setVoucherTargetValue}
+            />
         </>
     )
 }
