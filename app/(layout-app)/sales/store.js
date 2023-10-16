@@ -19,7 +19,6 @@ const useSalesStore = create(
             paymentTarget: null,
             voucherTarget: 1
         }],
-
         scannerEnabled: false,
         enabledRedirect: false,
         enabledScanner: (value) => set({ scannerEnabled: true, enabledRedirect: false }),

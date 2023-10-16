@@ -73,7 +73,7 @@ export const Tabs = ({
                                                     setOpenMenu(false)
                                                     setTimeout(() => {
                                                         onSelectionChange(id.toString())
-                                                    }, 1)
+                                                    }, 300)
                                                 }}
                                                 variant={selected
                                                     ? 'shadow'
