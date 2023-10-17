@@ -1,6 +1,6 @@
 'use client'
 import React from 'react'
-import { Card, CardFooter, CardHeader, Button } from '@nextui-org/react'
+import { Card, CardFooter, CardHeader } from '@nextui-org/react'
 import { useRouter } from 'next/navigation'
 import Image from 'next/image'
 
@@ -28,14 +28,8 @@ export default function MainTittleCard (props) {
                 src={imgSrc}
 
             />
-            <CardFooter className="border-white/20 absolute rounded-large bottom-1 w-full h-20 sm:h-40 shadow-small ">
-                <p className="text-l sm:text-2xl text-white/80 m-2 px-3 ">{footerMessage}</p>
-                <Button className={`${route === '/reports' ? 'cursor-not-allowed' : ''} text-xl text-white bg-sky-500/75 w-[50px] sm:w-[100px] h-[4rem]`} variant="shadow" color="default" radius="md"
-                    onPress = {() => route === '/reports' ? null : router.push(route)
-                    }
-                    isDisabled={disabled}>
-                Ingresar
-                </Button>
+            <CardFooter className="border-white/20 absolute rounded-large bottom-1 h-20 sm:h-40 shadow-small ">
+                <p className="text-l sm:text-3xl text-white/80">{footerMessage}</p>
             </CardFooter>
         </Card>
     )
