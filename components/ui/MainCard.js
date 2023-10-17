@@ -13,7 +13,7 @@ export default function MainTittleCard (props) {
         <Card
             isFooterBlurred
             radius="lg"
-            className="col-span-12 sm:col-auto saturate-100 hover:saturate-140 h-full  sm:h-[40rem] shadow-2xl items items-center"
+            className="col-span-12 sm:col-auto  h-full  sm:h-[40rem] shadow-2xl items items-center hover:scale-105 hover:shadow-lg duration-300"
             isPressable onPress = {() => (disabled || route === '/reports') ? null : router.push(route)}
         >
             <CardHeader className="absolute z-10 top-1 flex-col drop-shadow-6xl !items-start ">

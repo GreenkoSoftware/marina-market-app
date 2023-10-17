@@ -31,7 +31,7 @@ export default function Home () {
                                 delay: 0.2,
                                 ease: [0, 0.71, 0.2, 1.01]
                             }}
-                            className="gap-5 grid grid-cols-3 grid-rows-[auto_minmax(auto,_1fr)_auto] mx-5 "
+                            className="gap-10 grid grid-cols-3 grid-rows-[auto_minmax(auto,_1fr)_auto] mx-5 "
                         >
                             <MainTittleCard
                                 disabled={salesDisabled}
