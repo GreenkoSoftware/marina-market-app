@@ -53,9 +53,18 @@ export default function Home () {
                                 footerMessage="Datos clave para decisiones informadas y estratégicas."
                             />
                         </motion.div>
-                        <div className="flex sm:flex-col-reverse sm:m-0 m-5  items-end px-5">
+                        <motion.div
+                            initial={{ opacity: 0, scale: 0.5 }}
+                            animate={{ opacity: 1, scale: 1 }}
+                            transition={{
+                                duration: 0.6,
+                                delay: 0.2,
+                                ease: [0, 0.71, 0.2, 1.01]
+                            }}
+                            className="flex sm:flex-col-reverse sm:m-0 m-5  items-end px-5"
+                        >
                             <UserAvatar />
-                        </div>
+                        </motion.div>
                     </div>
                 </main>
             </div>
