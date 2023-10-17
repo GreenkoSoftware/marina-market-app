@@ -13,7 +13,7 @@ export default function MainTittleCard (props) {
         <Card
             isFooterBlurred
             radius="lg"
-            className="col-span-12 sm:col-auto saturate-100 hover:saturate-140 h-full  sm:h-[40rem] shadow-2xl"
+            className="col-span-12 sm:col-auto saturate-100 hover:saturate-140 h-full  sm:h-[40rem] shadow-2xl items items-center"
             isPressable onPress = {() => (disabled || route === '/reports') ? null : router.push(route)}
         >
             <CardHeader className="absolute z-10 top-1 flex-col drop-shadow-6xl !items-start ">
@@ -28,9 +28,9 @@ export default function MainTittleCard (props) {
                 src={imgSrc}
 
             />
-            <CardFooter className="justify-between before:bg-white/10 border-white/20 border-1 overflow-hidden py-1 absolute before:rounded-xl rounded-large bottom-1 w-[calc(100%_-_8px)] h-20 sm:h-40 shadow-small ml-1 z-10">
+            <CardFooter className="border-white/20 absolute rounded-large bottom-1 w-full h-20 sm:h-40 shadow-small ">
                 <p className="text-l sm:text-2xl text-white/80 m-2 px-3 ">{footerMessage}</p>
-                <Button className={`${route === '/reports' ? 'cursor-not-allowed' : ''} text-xl text-white bg-sky-500/75 w-[50px] sm:w-[100px]`} variant="flat" color="default" radius="md" size="lg"
+                <Button className={`${route === '/reports' ? 'cursor-not-allowed' : ''} text-xl text-white bg-sky-500/75 w-[50px] sm:w-[100px] h-[4rem]`} variant="shadow" color="default" radius="md"
                     onPress = {() => route === '/reports' ? null : router.push(route)
                     }
                     isDisabled={disabled}>
