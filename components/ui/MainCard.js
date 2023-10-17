@@ -28,7 +28,7 @@ export default function MainTittleCard (props) {
                 src={imgSrc}
 
             />
-            <CardFooter className="border-white/20 absolute border rounded-large bottom-1 h-20 sm:h-40 shadow-small ">
+            <CardFooter className="border-white/20 absolute border rounded-xl bottom-1 h-20 sm:h-40 ">
                 <p className="text-l sm:text-3xl text-white/80">{footerMessage}</p>
             </CardFooter>
         </Card>
