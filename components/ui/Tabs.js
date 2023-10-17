@@ -43,8 +43,9 @@ export const Tabs = ({
                         <Menu open={openMenu} handler={setOpenMenu} allowHover placement="right-start">
                             <MenuHandler className='font-semibold'>
                                 <Button
+                                    onPress={() => setOpenMenu(!openMenu)}
                                     variant="bordered"
-                                    className="flex items-center gap-3 text-base font-semibold capitalize tracking-normal "
+                                    className="flex items-center gap-3 text-base font-semibold capitalize tracking-normal"
                                 >
                                     {`${selectedItemLabel || ''}`}
                                     <ChevronDownIcon
