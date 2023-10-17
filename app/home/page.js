@@ -18,7 +18,7 @@ export default function Home () {
         }
     }, [])
     return (
-        <section className="bg-primary-300 dark:bg-secondary-500" >
+        <section className="bg-primary-300 dark:bg-secondary-500 mx-10" >
             <Auth/>
             <div>
                 <main>
