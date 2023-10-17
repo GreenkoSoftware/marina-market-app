@@ -17,8 +17,8 @@ export default function MainTittleCard (props) {
             isPressable onPress = {() => (disabled || route === '/reports') ? null : router.push(route)}
         >
             <CardHeader className="absolute z-10 top-1 flex-col drop-shadow-6xl !items-start ">
-                <p className="text-tiny text-white/60 uppercase font-bold ">MÓDULO</p>
-                <h4 className="text-white/80 font-medium text-6xl">{title}</h4>
+                {/* <p className="text-tiny text-white/60 uppercase font-bold ">MÓDULO</p> */}
+                <h4 className="text-white/80 font-medium text-6xl sm:text-8xl">{title}</h4>
             </CardHeader>
             <Image
                 removeWrapper
