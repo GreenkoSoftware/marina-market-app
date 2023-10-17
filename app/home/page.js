@@ -18,11 +18,11 @@ export default function Home () {
         }
     }, [])
     return (
-        <section className="h-full w-full  flex flex-col bg-primary-300 dark:bg-secondary-500" >
+        <section className="bg-primary-300 dark:bg-secondary-500" >
             <Auth/>
-            <div className="sm:flex-row sm:mt-36 sm:ml-5 sm:mr-5 sm:mb-0 ">
+            <div>
                 <main>
-                    <div className="flex flex-col items-end sm:mr-0 mr-5 sm:ml-0 ml-5 sm:mt-0 mt-5">
+                    <div className="sm:mt-36 sm:mr-0 mr-5 sm:ml-0 ml-5 mt-5">
                         <motion.div
                             initial={{ opacity: 0, scale: 0.5 }}
                             animate={{ opacity: 1, scale: 1 }}
@@ -31,7 +31,7 @@ export default function Home () {
                                 delay: 0.2,
                                 ease: [0, 0.71, 0.2, 1.01]
                             }}
-                            className="gap-5 grid grid-cols-3 grid-rows-[auto_minmax(auto,_1fr)_auto] "
+                            className="gap-5 grid grid-cols-3 grid-rows-[auto_minmax(auto,_1fr)_auto] mx-5 "
                         >
                             <MainTittleCard
                                 disabled={salesDisabled}
@@ -53,7 +53,7 @@ export default function Home () {
                                 footerMessage="Datos clave para decisiones informadas y estratégicas."
                             />
                         </motion.div>
-                        <div className="flex sm:flex-row-reverse sm:items-end sm:m-0 m-5 justify-end ">
+                        <div className="flex sm:flex-col-reverse sm:m-0 m-5  items-end px-5">
                             <UserAvatar />
                         </div>
                     </div>
