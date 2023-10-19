@@ -22,8 +22,9 @@ export default function PayDetailed ({ loadingSale, setPageTarget, setPayment, i
             // createSale(paymentTarget, voucherTarget, listSales, notify, setPayment, onClose, setGoPay, clearList, setPageTarget, pageTarget, totalPay)
         } else if (paymentTarget === 2) {
             setSearchInput(null)
-            setPaymentTarget(listSalesActives, saleIdActive, null)
+            setPaymentTarget(listSalesActives, saleIdActive, paymentTarget)
             createSale(listSalesActives, saleIdActive, notify, setPayment, onClose, setGoPay, setPageTarget, paymentTarget, removeSale)
+            setPaymentTarget(listSalesActives, saleIdActive, null)
         }
     }, [paymentTarget])
     useEffect(() => {
